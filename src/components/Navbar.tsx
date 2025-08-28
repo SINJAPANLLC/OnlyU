@@ -3,11 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Bell, Settings, LogOut, User } from 'lucide-react';
 import { AuthContext } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Navbar = () => {
   const authContext = useContext(AuthContext);
   const location = useLocation();
   const [showDropdown, setShowDropdown] = useState(false);
+  const { t } = useLanguage();
 
   if (!authContext) return null;
 
@@ -22,7 +24,7 @@ const Navbar = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 type="text"
-                placeholder="検索..."
+                placeholder={t('nav.search') + '...'}
                 className="pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent w-64"
               />
             </div>
@@ -71,7 +73,7 @@ const Navbar = () => {
                       onClick={() => setShowDropdown(false)}
                     >
                       <User className="w-4 h-4 mr-2" />
-                      プロフィール
+                      {t('nav.profile')}
                     </Link>
                     <Link
                       to="/settings"
@@ -79,7 +81,7 @@ const Navbar = () => {
                       onClick={() => setShowDropdown(false)}
                     >
                       <Settings className="w-4 h-4 mr-2" />
-                      設定
+                      {t('nav.settings')}
                     </Link>
                     <hr className="my-1" />
                     <button
@@ -90,7 +92,7 @@ const Navbar = () => {
                       className="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                     >
                       <LogOut className="w-4 h-4 mr-2" />
-                      ログアウト
+                      {t('settings.logout')}
                     </button>
                   </motion.div>
                 )}

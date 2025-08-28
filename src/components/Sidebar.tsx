@@ -1,26 +1,42 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Home, Search, Heart, MessageCircle, User, Users, Settings } from 'lucide-react';
+import { Home, Search, Heart, MessageCircle, User, Users, Settings, Shield, Palette } from 'lucide-react';
 import { AuthContext } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Sidebar = () => {
   const authContext = useContext(AuthContext);
   const location = useLocation();
+  const { t } = useLanguage();
 
   if (!authContext) return null;
 
-  const { user } = authContext;
+  const { user, isManager } = authContext;
 
-  const menuItems = [
-    { path: '/', icon: Home, label: 'ホーム', count: null },
-    { path: '/search', icon: Search, label: '検索', count: null },
-    { path: '/notifications', icon: Heart, label: '通知', count: 3 },
-    { path: '/messages', icon: MessageCircle, label: 'メッセージ', count: 2 },
-    { path: `/profile/${user?.username}`, icon: User, label: 'プロフィール', count: null },
-    { path: '/community', icon: Users, label: 'コミュニティ', count: null },
-    { path: '/settings', icon: Settings, label: '設定', count: null },
-  ];
+  const menuItems = useMemo(() => {
+    const items = [
+      { path: '/', icon: Home, label: t('nav.home'), count: null },
+      { path: '/search', icon: Search, label: t('nav.search'), count: null },
+      { path: '/notifications', icon: Heart, label: t('nav.notifications'), count: 3 },
+      { path: '/messages', icon: MessageCircle, label: t('nav.messages'), count: 2 },
+      { path: `/profile/${user?.username}`, icon: User, label: t('nav.profile'), count: null },
+      { path: '/community', icon: Users, label: t('nav.community'), count: null },
+      { path: '/settings', icon: Settings, label: t('nav.settings'), count: null },
+    ];
+
+    // Add admin menu item for managers
+    if (isManager) {
+      items.push({ path: '/admin', icon: Shield, label: t('nav.admin'), count: null });
+    }
+
+    // Add creator menu item for creators
+    if (user?.role === 'creator') {
+      items.push({ path: '/creator', icon: Palette, label: t('nav.creator'), count: null });
+    }
+
+    return items;
+  }, [user, isManager, t]);
 
   return (
     <motion.nav
@@ -84,11 +100,28 @@ const Sidebar = () => {
             <div>
               <p className="font-medium text-gray-900">{user?.displayName}</p>
               <p className="text-sm text-gray-600">@{user?.username}</p>
+              <div className="mt-1">
+                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                  user?.role === 'manager' ? 'bg-purple-100 text-purple-800' :
+                  user?.role === 'creator' ? 'bg-blue-100 text-blue-800' :
+                  'bg-green-100 text-green-800'
+                }`}>
+                  {user?.role === 'manager' ? t('admin.manager') :
+                   user?.role === 'creator' ? t('admin.creator') :
+                   t('admin.fan')}
+                </span>
+              </div>
             </div>
           </div>
           <div className="flex justify-between text-sm text-gray-600">
-            <span>{user?.followers.toLocaleString()} フォロワー</span>
-            <span>{user?.following.toLocaleString()} フォロー中</span>
+            <div className="text-center">
+              <div className="font-semibold text-gray-900">{user?.followers.toLocaleString()}</div>
+              <div className="text-xs">{t('dashboard.followers')}</div>
+            </div>
+            <div className="text-center">
+              <div className="font-semibold text-gray-900">{user?.following.toLocaleString()}</div>
+              <div className="text-xs">{t('dashboard.following')}</div>
+            </div>
           </div>
         </motion.div>
       </div>

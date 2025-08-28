@@ -4,17 +4,37 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { AuthContext } from '../../contexts/AuthContext';
 
-const mockUser = {
-  id: '1',
-  username: 'sakura_chan',
-  displayName: '桜子',
-  email: 'sakura@example.com',
-  avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2',
-  bio: 'クリエイター｜毎日投稿中✨',
-  followers: 15420,
-  following: 892,
-  isVerified: true,
-  joinedDate: '2023-01-15'
+const mockUsers = {
+  fan: {
+    id: '1',
+    username: 'fan_user',
+    displayName: 'ファンユーザー',
+    email: 'fan@example.com',
+    avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2',
+    bio: '素晴らしいコンテンツを楽しみます',
+    followers: 45,
+    following: 120,
+    isVerified: false,
+    joinedDate: '2023-06-15',
+    role: 'fan' as const,
+    status: 'active' as const,
+    createdAt: '2023-06-15'
+  },
+  creator: {
+    id: '2',
+    username: 'sakura_chan',
+    displayName: '桜子',
+    email: 'sakura@example.com',
+    avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2',
+    bio: 'クリエイター｜毎日投稿中✨',
+    followers: 15420,
+    following: 892,
+    isVerified: true,
+    joinedDate: '2023-01-15',
+    role: 'creator' as const,
+    status: 'active' as const,
+    createdAt: '2023-01-15'
+  }
 };
 
 const Login = () => {
@@ -22,6 +42,7 @@ const Login = () => {
   const [password, setPassword] = useState('password123');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<'fan' | 'creator'>('creator');
 
   const authContext = useContext(AuthContext);
 
@@ -32,10 +53,18 @@ const Login = () => {
     // Simulate API call
     setTimeout(() => {
       if (authContext) {
-        authContext.login(mockUser);
+        const userToLogin = mockUsers[selectedRole];
+        authContext.login(userToLogin);
+        
+        // Navigate based on role - use replace to prevent double rendering
+        if (selectedRole === 'creator') {
+          window.location.href = '/creator';
+        } else {
+          window.location.href = '/';
+        }
       }
       setIsLoading(false);
-    }, 1500);
+    }, 600);
   };
 
   return (
@@ -62,6 +91,45 @@ const Login = () => {
           transition={{ delay: 0.2, duration: 0.4 }}
           className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100"
         >
+          {/* Role Selection */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              どちらとしてログインしますか？
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setSelectedRole('fan')}
+                className={`p-4 rounded-xl border-2 transition-all ${
+                  selectedRole === 'fan'
+                    ? 'border-pink-500 bg-pink-50 text-pink-700'
+                    : 'border-gray-200 hover:border-gray-300 text-gray-600'
+                }`}
+              >
+                <div className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <span className="text-pink-600 text-lg">❤️</span>
+                </div>
+                <div className="font-medium">ファン</div>
+                <div className="text-xs opacity-80">コンテンツを楽しむ</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedRole('creator')}
+                className={`p-4 rounded-xl border-2 transition-all ${
+                  selectedRole === 'creator'
+                    ? 'border-purple-500 bg-purple-50 text-purple-700'
+                    : 'border-gray-200 hover:border-gray-300 text-gray-600'
+                }`}
+              >
+                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <span className="text-purple-600 text-lg">🎨</span>
+                </div>
+                <div className="font-medium">クリエイター</div>
+                <div className="text-xs opacity-80">コンテンツを作成</div>
+              </button>
+            </div>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -124,10 +192,10 @@ const Login = () => {
               {isLoading ? (
                 <div className="flex items-center justify-center">
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                  ログイン中...
+                  {selectedRole === 'creator' ? 'クリエイターとしてログイン中...' : 'ファンとしてログイン中...'}
                 </div>
               ) : (
-                'ログイン'
+                `${selectedRole === 'creator' ? 'クリエイター' : 'ファン'}としてログイン`
               )}
             </motion.button>
           </form>

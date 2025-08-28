@@ -1,0 +1,115 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isManager() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'manager';
+    }
+    
+    function isCreator() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'creator';
+    }
+    
+    function isFan() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'fan';
+    }
+    
+    function isActive() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status == 'active';
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function isPostOwner(postId) {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/posts/$(postId)).data.creatorId == request.auth.uid;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      // Anyone can read user profiles
+      allow read: if true;
+      
+      // Only managers can create/update/delete users
+      allow create, update, delete: if isManager();
+      
+      // Users can update their own profile (except role and status)
+      allow update: if isOwner(userId) && 
+                      !('role' in request.resource.data.diff(resource.data).affectedKeys()) &&
+                      !('status' in request.resource.data.diff(resource.data).affectedKeys());
+    }
+
+    // Posts collection
+    match /posts/{postId} {
+      // Anyone can read public posts
+      allow read: if resource.data.status == 'public';
+      
+      // Private posts can only be read by the creator
+      allow read: if resource.data.status == 'private' && isPostOwner(postId);
+      
+      // Only creators can create posts
+      allow create: if isCreator() && isActive() && 
+                      request.resource.data.creatorId == request.auth.uid;
+      
+      // Only the creator can update their own posts
+      allow update: if isPostOwner(postId) && isActive();
+      
+      // Only managers and post creators can delete posts
+      allow delete: if isManager() || isPostOwner(postId);
+    }
+
+    // Reports collection
+    match /reports/{reportId} {
+      // Only managers can read all reports
+      allow read: if isManager();
+      
+      // Fans can create reports
+      allow create: if isFan() && isActive() && 
+                      request.resource.data.reporterId == request.auth.uid;
+      
+      // Only managers can update report status
+      allow update: if isManager() && 
+                      !('postId' in request.resource.data.diff(resource.data).affectedKeys()) &&
+                      !('reporterId' in request.resource.data.diff(resource.data).affectedKeys()) &&
+                      !('reason' in request.resource.data.diff(resource.data).affectedKeys()) &&
+                      !('timestamp' in request.resource.data.diff(resource.data).affectedKeys());
+      
+      // Only managers can delete reports
+      allow delete: if isManager();
+    }
+
+    // Comments collection (if you add one)
+    match /comments/{commentId} {
+      // Anyone can read comments on public posts
+      allow read: if get(/databases/$(database)/documents/posts/$(resource.data.postId)).data.status == 'public';
+      
+      // Only active users can create comments
+      allow create: if isAuthenticated() && isActive() && 
+                      request.resource.data.authorId == request.auth.uid;
+      
+      // Only comment authors can update/delete their comments
+      allow update, delete: if isAuthenticated() && 
+                              resource.data.authorId == request.auth.uid && isActive();
+    }
+
+    // Likes collection (if you add one)
+    match /likes/{likeId} {
+      // Anyone can read likes
+      allow read: if true;
+      
+      // Only active users can create/delete likes
+      allow create, delete: if isAuthenticated() && isActive() && 
+                              request.resource.data.userId == request.auth.uid;
+    }
+  }
+}

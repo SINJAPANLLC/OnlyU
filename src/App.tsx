@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
@@ -14,8 +14,13 @@ import Settings from './components/settings/Settings';
 import Community from './components/community/Community';
 import Terms from './components/static/Terms';
 import Privacy from './components/static/Privacy';
+import AdminDashboard from './components/admin/AdminDashboard';
+import CreatorDashboard from './components/creator/CreatorDashboard';
+import CreatorProfile from './components/creator/CreatorProfile';
+import CreatorPostEditor from './components/creator/CreatorPostEditor';
 import { User, AuthContextType } from './types';
 import { AuthContext } from './contexts/AuthContext';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 const mockUser: User = {
   id: '1',
@@ -27,7 +32,10 @@ const mockUser: User = {
   followers: 15420,
   following: 892,
   isVerified: true,
-  joinedDate: '2023-01-15'
+  joinedDate: '2023-01-15',
+  role: 'manager',
+  status: 'active',
+  createdAt: '2023-01-15'
 };
 
 function App() {
@@ -57,12 +65,13 @@ function App() {
     localStorage.removeItem('myfans_user');
   };
 
-  const authContextValue: AuthContextType = {
+  const authContextValue: AuthContextType = useMemo(() => ({
     user,
     login,
     logout,
-    isAuthenticated: !!user
-  };
+    isAuthenticated: !!user,
+    isManager: user?.role === 'manager'
+  }), [user]);
 
   if (isLoading) {
     return (
@@ -81,9 +90,10 @@ function App() {
   }
 
   return (
-    <AuthContext.Provider value={authContextValue}>
-      <Router>
-        <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <LanguageProvider>
+      <AuthContext.Provider value={authContextValue}>
+        <Router>
+          <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
           {user ? (
             <div className="flex">
               <Sidebar />
@@ -99,6 +109,10 @@ function App() {
                       <Route path="/notifications" element={<Notifications />} />
                       <Route path="/settings" element={<Settings />} />
                       <Route path="/community" element={<Community />} />
+                      <Route path="/admin" element={<AdminDashboard />} />
+                      <Route path="/creator" element={<CreatorDashboard />} />
+                      <Route path="/creator/:username" element={<CreatorProfile />} />
+                      <Route path="/creator/post/new" element={<CreatorPostEditor />} />
                       <Route path="/terms" element={<Terms />} />
                       <Route path="/privacy" element={<Privacy />} />
                       <Route path="/login" element={<Navigate to="/" replace />} />
@@ -119,7 +133,8 @@ function App() {
           )}
         </div>
       </Router>
-    </AuthContext.Provider>
+        </AuthContext.Provider>
+      </LanguageProvider>
   );
 }
 
