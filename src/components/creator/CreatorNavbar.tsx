@@ -7,15 +7,16 @@ import {
   Settings, 
   LogOut, 
   User, 
-  Heart, 
-  MessageSquare, 
-  Crown,
-  Star
+  BarChart3, 
+  DollarSign, 
+  Plus,
+  MessageSquare,
+  Crown
 } from 'lucide-react';
-import { AuthContext } from '../contexts/AuthContext';
-import { useLanguage } from '../contexts/LanguageContext';
+import { AuthContext } from '../../contexts/AuthContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 
-const Navbar = () => {
+const CreatorNavbar = () => {
   const authContext = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -28,23 +29,23 @@ const Navbar = () => {
   const notifications = [
     {
       id: '1',
-      type: 'new_post',
-      message: 'yuki_creator posted new content',
-      time: '1 hour ago',
+      type: 'new_follower',
+      message: 'yuki_fan started following you',
+      time: '2 hours ago',
       read: false
     },
     {
       id: '2',
-      type: 'new_like',
-      message: 'Your comment was liked by miku_creator',
-      time: '3 hours ago',
+      type: 'new_tip',
+      message: 'You received a ¥500 tip from miku_fan',
+      time: '4 hours ago',
       read: false
     },
     {
       id: '3',
-      type: 'new_follow',
-      message: 'sakura_creator started following you',
-      time: '5 hours ago',
+      type: 'new_comment',
+      message: 'sakura_fan commented on your latest post',
+      time: '6 hours ago',
       read: true
     }
   ];
@@ -61,32 +62,47 @@ const Navbar = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 type="text"
-                placeholder="Search creators, content..."
+                placeholder="Search your content, fans..."
                 className="pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent w-64"
               />
             </div>
             
-
+            {/* Creator Quick Actions */}
+            <div className="hidden md:flex items-center space-x-2">
+              <Link
+                to="/creator/statistics"
+                className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-600 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
+              >
+                <BarChart3 className="w-4 h-4" />
+                <span>Analytics</span>
+              </Link>
+              <Link
+                to="/creator/post/new"
+                className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-600 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                <span>New Post</span>
+              </Link>
+            </div>
           </div>
 
           {/* Right side - Notifications and User Menu */}
           <div className="flex items-center space-x-4">
-            {/* Premium Status */}
-            {user?.role === 'creator' && (
-              <div className="hidden lg:flex items-center space-x-2 px-3 py-1.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg">
-                <Crown className="w-4 h-4" />
-                <span className="text-sm font-medium">Creator</span>
-              </div>
-            )}
+            {/* Earnings Display */}
+            <div className="hidden lg:flex items-center space-x-2 px-3 py-1.5 bg-green-50 border border-green-200 rounded-lg">
+              <DollarSign className="w-4 h-4 text-green-600" />
+              <span className="text-sm font-medium text-green-700">¥1,250</span>
+              <span className="text-xs text-green-600">This month</span>
+            </div>
 
             {/* Messages */}
             <Link
-              to="/fan/messages"
+              to="/creator/messages"
               className="relative p-2 text-gray-600 hover:text-pink-600 transition-colors"
             >
               <MessageSquare className="w-5 h-5" />
               <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                1
+                2
               </span>
             </Link>
 
@@ -133,7 +149,7 @@ const Navbar = () => {
                     </div>
                     <div className="px-4 py-2 border-t border-gray-100">
                       <Link
-                        to="/fan/notifications"
+                        to="/creator/notifications"
                         className="text-sm text-pink-600 hover:text-pink-700 font-medium"
                         onClick={() => setShowNotifications(false)}
                       >
@@ -155,19 +171,17 @@ const Navbar = () => {
               >
                 <div className="relative">
                   <img
-                    src={user?.avatar || 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2'}
+                    src={user?.avatar || 'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2'}
                     alt={user?.displayName}
                     className="w-8 h-8 rounded-full object-cover"
                   />
-                  {user?.role === 'creator' && (
-                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
-                      <Crown className="w-2.5 h-2.5 text-white" />
-                    </div>
-                  )}
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <Crown className="w-2.5 h-2.5 text-white" />
+                  </div>
                 </div>
                 <div className="hidden sm:block text-left">
                   <p className="text-sm font-medium text-gray-700">{user?.displayName}</p>
-                  <p className="text-xs text-gray-500">{user?.role === 'creator' ? 'Creator' : 'Fan'}</p>
+                  <p className="text-xs text-gray-500">Creator</p>
                 </div>
               </motion.button>
 
@@ -186,36 +200,42 @@ const Navbar = () => {
                     </div>
                     
                     <Link
-                      to={`/fan/profile/${user?.username}`}
+                      to={`/creator/profile/${user?.username}`}
                       className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       onClick={() => setShowDropdown(false)}
                     >
                       <User className="w-4 h-4 mr-2" />
-                      My Profile
+                      Creator Profile
                     </Link>
                     
                     <Link
-                      to="/fan/settings"
+                      to="/creator/statistics"
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      onClick={() => setShowDropdown(false)}
+                    >
+                      <BarChart3 className="w-4 h-4 mr-2" />
+                      Analytics
+                    </Link>
+                    
+                    <Link
+                      to="/creator/settings"
                       className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       onClick={() => setShowDropdown(false)}
                     >
                       <Settings className="w-4 h-4 mr-2" />
-                      Settings
+                      Creator Settings
                     </Link>
                     
-                    {user?.role === 'creator' && (
-                      <>
-                        <hr className="my-1" />
-                        <Link
-                          to="/creator"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                          onClick={() => setShowDropdown(false)}
-                        >
-                          <Crown className="w-4 h-4 mr-2" />
-                          Switch to Creator Mode
-                        </Link>
-                      </>
-                    )}
+                    <hr className="my-1" />
+                    
+                    <Link
+                      to="/fan/home"
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      onClick={() => setShowDropdown(false)}
+                    >
+                      <User className="w-4 h-4 mr-2" />
+                      Switch to Fan Mode
+                    </Link>
                     
                     <hr className="my-1" />
                     
@@ -240,4 +260,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default CreatorNavbar;

@@ -107,7 +107,7 @@ export interface CreatorActivity {
   content: string;
   timestamp: string;
   relatedId?: string;
-  relatedData?: any;
+  relatedData?: Record<string, unknown>;
 }
 
 export interface CreatorPost {

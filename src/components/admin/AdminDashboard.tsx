@@ -9,11 +9,10 @@ import {
   Trash2, 
   CheckCircle, 
   TrendingUp,
-  AlertTriangle,
   UserCheck,
   UserX
 } from 'lucide-react';
-import { User, Post, Report, AdminStats } from '../../types';
+import { User, AdminStats } from '../../types';
 import { useLanguage } from '../../contexts/LanguageContext';
 
 const AdminDashboard = () => {
@@ -25,8 +24,6 @@ const AdminDashboard = () => {
   }, [language]);
   const [activeTab, setActiveTab] = useState('overview');
   const [users, setUsers] = useState<User[]>([]);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [reports, setReports] = useState<Report[]>([]);
   const [stats, setStats] = useState<AdminStats>({
     totalUsers: 0,
     totalPosts: 0,

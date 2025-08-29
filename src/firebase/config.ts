@@ -1,7 +1,7 @@
 // Firebase configuration and Firestore data model
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, doc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, query, where, orderBy } from 'firebase/firestore';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore, collection, doc, setDoc, getDoc, getDocs, updateDoc, query, where, orderBy } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 // Your Firebase config (replace with your actual config)
 const firebaseConfig = {

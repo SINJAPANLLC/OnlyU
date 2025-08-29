@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { User, Lock, Bell, Shield, Palette, Globe, HelpCircle, LogOut } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';

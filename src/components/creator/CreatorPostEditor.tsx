@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Image, Video, FileText, Star, Eye, EyeOff, Users, Calendar, Tag, X, Plus } from 'lucide-react';
 
 const CreatorPostEditor = () => {
-  const [postType, setPostType] = useState<'text' | 'image' | 'video' | 'premium'>('text');
+  const [postType] = useState<'text' | 'image' | 'video' | 'premium'>('text');
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
-  const [visibility, setVisibility] = useState<'public' | 'private' | 'subscribers_only'>('public');
+  const [visibility] = useState<'public' | 'private' | 'subscribers_only'>('public');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

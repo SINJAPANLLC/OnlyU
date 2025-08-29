@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
+// Layout-level components are now imported via layouts
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Feed from './components/feed/Feed';
@@ -12,31 +11,28 @@ import Messages from './components/messages/Messages';
 import Notifications from './components/notifications/Notifications';
 import Settings from './components/settings/Settings';
 import Community from './components/community/Community';
+import Favorites from './components/fan/Favorites';
 import Terms from './components/static/Terms';
 import Privacy from './components/static/Privacy';
 import AdminDashboard from './components/admin/AdminDashboard';
 import CreatorDashboard from './components/creator/CreatorDashboard';
 import CreatorProfile from './components/creator/CreatorProfile';
 import CreatorPostEditor from './components/creator/CreatorPostEditor';
+import CreatorFeed from './components/creator/CreatorFeed';
+import CreatorNotifications from './components/creator/CreatorNotifications';
+import CreatorMessages from './components/creator/CreatorMessages';
+import CreatorStatistics from './components/creator/CreatorStatistics';
+import CreatorFans from './components/creator/CreatorFans';
+import CreatorMarketing from './components/creator/CreatorMarketing';
+import CreatorQueue from './components/creator/CreatorQueue';
+import CreatorSettings from './components/creator/CreatorSettings';
 import { User, AuthContextType } from './types';
 import { AuthContext } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
+import FanLayout from './components/layouts/FanLayout';
+import CreatorLayout from './components/layouts/CreatorLayout';
 
-const mockUser: User = {
-  id: '1',
-  username: 'sakura_chan',
-  displayName: '桜子',
-  email: 'sakura@example.com',
-  avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2',
-  bio: 'クリエイター｜毎日投稿中✨',
-  followers: 15420,
-  following: 892,
-  isVerified: true,
-  joinedDate: '2023-01-15',
-  role: 'manager',
-  status: 'active',
-  createdAt: '2023-01-15'
-};
+// mockUser removed; real user is loaded from localStorage
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -89,50 +85,65 @@ function App() {
     );
   }
 
+  const defaultRoute = user?.role === 'creator' ? '/creator' : '/fan';
+
   return (
     <LanguageProvider>
       <AuthContext.Provider value={authContextValue}>
         <Router>
           <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
-          {user ? (
-            <div className="flex">
-              <Sidebar />
-              <div className="flex-1 ml-0 lg:ml-64">
-                <Navbar />
-                <main className="pt-16 pb-6">
-                  <AnimatePresence mode="wait">
-                    <Routes>
-                      <Route path="/" element={<Feed />} />
-                      <Route path="/profile/:username" element={<Profile />} />
-                      <Route path="/search" element={<Search />} />
-                      <Route path="/messages" element={<Messages />} />
-                      <Route path="/notifications" element={<Notifications />} />
-                      <Route path="/settings" element={<Settings />} />
-                      <Route path="/community" element={<Community />} />
-                      <Route path="/admin" element={<AdminDashboard />} />
-                      <Route path="/creator" element={<CreatorDashboard />} />
-                      <Route path="/creator/:username" element={<CreatorProfile />} />
-                      <Route path="/creator/post/new" element={<CreatorPostEditor />} />
-                      <Route path="/terms" element={<Terms />} />
-                      <Route path="/privacy" element={<Privacy />} />
-                      <Route path="/login" element={<Navigate to="/" replace />} />
-                      <Route path="/register" element={<Navigate to="/" replace />} />
-                    </Routes>
-                  </AnimatePresence>
-                </main>
-              </div>
-            </div>
-          ) : (
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="*" element={<Navigate to="/login" replace />} />
-            </Routes>
-          )}
-        </div>
-      </Router>
+            {user ? (
+              <AnimatePresence mode="wait">
+                <Routes>
+                  <Route path="/" element={<Navigate to={defaultRoute} replace />} />
+
+                  <Route path="/fan" element={<FanLayout />}>
+                    <Route index element={<Feed />} />
+                    <Route path="profile/:username" element={<Profile />} />
+                    <Route path="search" element={<Search />} />
+                    <Route path="messages" element={<Messages />} />
+                    <Route path="notifications" element={<Notifications />} />
+                    <Route path="favorites" element={<Favorites />} />
+                    <Route path="settings" element={<Settings />} />
+                    <Route path="community" element={<Community />} />
+                    <Route path="/fan/terms" element={<Terms />} />
+                    <Route path="/fan/privacy" element={<Privacy />} />
+                  </Route>
+
+                  <Route path="/creator" element={<CreatorLayout />}>
+                    <Route index element={<CreatorDashboard />} />
+                    <Route path="feed" element={<CreatorFeed />} />
+                    <Route path="notifications" element={<CreatorNotifications />} />
+                    <Route path="messages" element={<CreatorMessages />} />
+                    <Route path="statistics" element={<CreatorStatistics />} />
+                    <Route path="fans" element={<CreatorFans />} />
+                    <Route path="marketing" element={<CreatorMarketing />} />
+                    <Route path="queue" element={<CreatorQueue />} />
+                    <Route path="settings" element={<CreatorSettings />} />
+                    <Route path="post/new" element={<CreatorPostEditor />} />
+                    <Route path=":username" element={<CreatorProfile />} />
+                  </Route>
+
+                  <Route path="/admin" element={<AdminDashboard />} />
+
+                  <Route path="/login" element={<Navigate to={defaultRoute} replace />} />
+                  <Route path="/register" element={<Navigate to={defaultRoute} replace />} />
+
+                  <Route path="*" element={<Navigate to={defaultRoute} replace />} />
+                </Routes>
+              </AnimatePresence>
+            ) : (
+              <Routes>
+                <Route path="/" element={<Navigate to="/login" replace />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="*" element={<Navigate to="/login" replace />} />
+              </Routes>
+            )}
+          </div>
+        </Router>
         </AuthContext.Provider>
       </LanguageProvider>
   );
