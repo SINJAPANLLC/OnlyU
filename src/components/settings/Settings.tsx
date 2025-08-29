@@ -35,10 +35,10 @@ const Settings = () => {
       case 'profile':
         return (
           <div className="space-y-6">
-            <h2 className="text-xl font-bold text-gray-900">{language === 'ja' ? 'プロフィール設定' : 'Profile Settings'}</h2>
+            <h2 className="text-xl font-bold text-gray-900">{t('settings.profileSettings')}</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{language === 'ja' ? 'プロフィール画像' : 'Profile Image'}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('settings.profileImage')}</label>
                 <div className="flex items-center space-x-4">
                   <img
                     src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2"
@@ -46,30 +46,30 @@ const Settings = () => {
                     className="w-16 h-16 rounded-full object-cover"
                   />
                   <button className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition-colors">
-                    {language === 'ja' ? '画像を変更' : 'Change Image'}
+                    {t('settings.changeImage')}
                   </button>
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{language === 'ja' ? '表示名' : 'Display Name'}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('settings.displayName')}</label>
                 <input
                   type="text"
-                  defaultValue={language === 'ja' ? '桜子' : 'Sakura'}
+                  defaultValue={t('settings.defaultDisplayName')}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{language === 'ja' ? 'ユーザー名' : 'Username'}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('settings.username')}</label>
                 <input
                   type="text"
-                  defaultValue={language === 'ja' ? 'sakura_chan' : 'sakura_chan'}
+                  defaultValue={t('settings.defaultUsername')}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{language === 'ja' ? 'プロフィール' : 'Bio'}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('settings.bio')}</label>
                 <textarea
-                  defaultValue={language === 'ja' ? 'クリエイター｜毎日投稿中✨' : 'Creator | Posting daily ✨'}
+                  defaultValue={t('settings.defaultBio')}
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
                 />
@@ -81,12 +81,12 @@ const Settings = () => {
       case 'privacy':
         return (
           <div className="space-y-6">
-            <h2 className="text-xl font-bold text-gray-900">{language === 'ja' ? 'プライバシー設定' : 'Privacy Settings'}</h2>
+            <h2 className="text-xl font-bold text-gray-900">{t('settings.privacySettings')}</h2>
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <h3 className="font-medium text-gray-900">{language === 'ja' ? 'プライベートアカウント' : 'Private Account'}</h3>
-                  <p className="text-sm text-gray-600">{language === 'ja' ? 'フォロワーのみがあなたの投稿を見ることができます' : 'Only followers can see your posts'}</p>
+                  <h3 className="font-medium text-gray-900">{t('settings.privateAccount')}</h3>
+                  <p className="text-sm text-gray-600">{t('settings.privateAccountDesc')}</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" />
@@ -95,8 +95,8 @@ const Settings = () => {
               </div>
               <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <h3 className="font-medium text-gray-900">{language === 'ja' ? 'DMを受信' : 'Receive DMs'}</h3>
-                  <p className="text-sm text-gray-600">{language === 'ja' ? 'フォロワー以外からのメッセージを受信' : 'Receive messages from non-followers'}</p>
+                  <h3 className="font-medium text-gray-900">{t('settings.receiveDMs')}</h3>
+                  <p className="text-sm text-gray-600">{t('settings.receiveDMsDesc')}</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" defaultChecked className="sr-only peer" />
@@ -110,24 +110,24 @@ const Settings = () => {
       case 'notifications':
         return (
           <div className="space-y-6">
-            <h2 className="text-xl font-bold text-gray-900">{language === 'ja' ? '通知設定' : 'Notification Settings'}</h2>
+            <h2 className="text-xl font-bold text-gray-900">{t('settings.notificationSettings')}</h2>
             <div className="space-y-4">
               {[
                 { 
-                  label: language === 'ja' ? 'いいね' : 'Likes', 
-                  description: language === 'ja' ? '投稿にいいねがついたとき' : 'When someone likes your post' 
+                                    label: t('settings.notificationLikes'),
+                  description: t('settings.notificationLikesDesc') 
                 },
                 { 
-                  label: language === 'ja' ? 'コメント' : 'Comments', 
-                  description: language === 'ja' ? '投稿にコメントがついたとき' : 'When someone comments on your post' 
+                                    label: t('settings.notificationComments'),
+                  description: t('settings.notificationCommentsDesc') 
                 },
                 { 
-                  label: language === 'ja' ? 'フォロー' : 'Follows', 
-                  description: language === 'ja' ? '新しいフォロワーがついたとき' : 'When someone follows you' 
+                                    label: t('settings.notificationFollows'),
+                  description: t('settings.notificationFollowsDesc') 
                 },
                 { 
-                  label: language === 'ja' ? 'メッセージ' : 'Messages', 
-                  description: language === 'ja' ? '新しいメッセージを受信したとき' : 'When you receive a new message' 
+                                    label: t('settings.notificationMessages'),
+                  description: t('settings.notificationMessagesDesc') 
                 }
               ].map((item, index) => (
                 <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
@@ -148,16 +148,16 @@ const Settings = () => {
       case 'appearance':
         return (
           <div className="space-y-6">
-            <h2 className="text-xl font-bold text-gray-900">{language === 'ja' ? '外観設定' : 'Appearance Settings'}</h2>
+            <h2 className="text-xl font-bold text-gray-900">{t('settings.appearanceSettings')}</h2>
             <div className="space-y-4">
               <div>
-                <h3 className="font-medium text-gray-900 mb-3">{language === 'ja' ? 'テーマ' : 'Theme'}</h3>
+                <h3 className="font-medium text-gray-900 mb-3">{t('settings.theme')}</h3>
                 <div className="space-y-2">
-                  {[
-                    language === 'ja' ? 'ライト' : 'Light',
-                    language === 'ja' ? 'ダーク' : 'Dark',
-                    language === 'ja' ? 'システム' : 'System'
-                  ].map((theme, index) => (
+                                      {[
+                      t('settings.themeLight'),
+                      t('settings.themeDark'),
+                      t('settings.themeSystem')
+                    ].map((theme, index) => (
                     <label key={index} className="flex items-center p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
                       <input
                         type="radio"
@@ -184,7 +184,7 @@ const Settings = () => {
               <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <div className="flex items-center space-x-2 mb-2">
                   <Globe className="w-5 h-5 text-blue-600" />
-                  <span className="font-medium text-blue-800">{t('settings.language.current')}: {language === 'ja' ? '日本語' : 'English'}</span>
+                  <span className="font-medium text-blue-800">{t('settings.language.current')}: {t('settings.language.currentValue')}</span>
                 </div>
               </div>
               

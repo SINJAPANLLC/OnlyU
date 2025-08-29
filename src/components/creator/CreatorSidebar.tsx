@@ -13,11 +13,13 @@ import {
   Plus,
 } from 'lucide-react';
 import { AuthContext } from '../../contexts/AuthContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 import LogoCreator from '../../assets/logo.png';
 
 const CreatorSidebar: React.FC = () => {
   const authContext = useContext(AuthContext);
   const location = useLocation();
+  const { t } = useLanguage();
 
   if (!authContext) return null;
   const { user } = authContext;
@@ -25,16 +27,16 @@ const CreatorSidebar: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const menuItems = useMemo(() => {
     return [
-      { path: '/creator/feed', icon: Home, label: 'My Feed' },
-      { path: '/creator/notifications', icon: Bell, label: 'Notifications' },
-      { path: '/creator/messages', icon: MessageSquare, label: 'Messages' },
-      { path: '/creator/statistics', icon: BarChart3, label: 'Statistics' },
-      { path: '/creator/fans', icon: Users, label: 'My Fans' },
-      { path: '/creator/marketing', icon: Megaphone, label: 'Marketing' },
-      { path: '/creator/queue', icon: ListChecks, label: 'Queue' },
-      { path: '/creator/settings', icon: Settings, label: 'Settings' },
+      { path: '/creator/feed', icon: Home, label: t('creator.quickActions.myFeed') },
+      { path: '/creator/notifications', icon: Bell, label: t('creator.quickActions.notifications') },
+      { path: '/creator/messages', icon: MessageSquare, label: t('creator.quickActions.messages') },
+      { path: '/creator/statistics', icon: BarChart3, label: t('creator.quickActions.statistics') },
+      { path: '/creator/fans', icon: Users, label: t('creator.quickActions.myFans') },
+      { path: '/creator/marketing', icon: Megaphone, label: t('creator.quickActions.marketing') },
+      { path: '/creator/queue', icon: ListChecks, label: t('creator.quickActions.contentQueue') },
+      { path: '/creator/settings', icon: Settings, label: t('creator.quickActions.settings') },
     ];
-  }, []);
+  }, [t]);
 
   return (
     <motion.nav
@@ -85,7 +87,7 @@ const CreatorSidebar: React.FC = () => {
             className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-xl font-medium flex items-center justify-center space-x-2 shadow-md"
           >
             <Plus className="w-5 h-5" />
-            <span>New Post</span>
+            <span>{t('creator.dashboard.newPost')}</span>
           </motion.button>
         </Link>
 

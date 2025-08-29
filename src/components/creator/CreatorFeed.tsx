@@ -25,7 +25,10 @@ const CreatorFeed = () => {
           followers: 15420,
           following: 892,
           isVerified: true,
-          joinedDate: '2023-01-15'
+          joinedDate: '2023-01-15',
+          role: 'creator',
+          status: 'active',
+          createdAt: '2023-01-15'
         },
         content: '今日の撮影お疲れ様でした！✨ 新しいコンテンツをお楽しみに💕',
         images: [
@@ -36,7 +39,9 @@ const CreatorFeed = () => {
         likes: 1247,
         comments: 89,
         isLiked: true,
-        isPremium: false
+        isPremium: false,
+        status: 'public',
+        type: 'image'
       },
       {
         id: '2',
@@ -50,7 +55,10 @@ const CreatorFeed = () => {
           followers: 15420,
           following: 892,
           isVerified: true,
-          joinedDate: '2023-01-15'
+          joinedDate: '2023-01-15',
+          role: 'creator',
+          status: 'active',
+          createdAt: '2023-01-15'
         },
         content: 'プレミアム会員限定コンテンツです🔒 特別な写真をお届けします！',
         images: [
@@ -60,7 +68,9 @@ const CreatorFeed = () => {
         likes: 892,
         comments: 156,
         isLiked: false,
-        isPremium: true
+        isPremium: true,
+        status: 'public',
+        type: 'image'
       }
     ];
     setPosts(mockPosts);
@@ -82,8 +92,8 @@ const CreatorFeed = () => {
       >
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">My Feed</h1>
-            <p className="text-gray-600">Manage and track your content performance</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('creator.feed.title')}</h1>
+            <p className="text-gray-600">{t('creator.feed.subtitle')}</p>
           </div>
         </div>
 
@@ -99,7 +109,7 @@ const CreatorFeed = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                All Posts
+                {t('creator.feed.allPosts')}
               </button>
               <button
                 onClick={() => setFilter('published')}
@@ -109,7 +119,7 @@ const CreatorFeed = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                Published
+                {t('creator.feed.published')}
               </button>
               <button
                 onClick={() => setFilter('draft')}
@@ -119,7 +129,7 @@ const CreatorFeed = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                Drafts
+                {t('creator.feed.draft')}
               </button>
               <button
                 onClick={() => setFilter('scheduled')}
@@ -129,7 +139,7 @@ const CreatorFeed = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                Scheduled
+                {t('creator.feed.scheduled')}
               </button>
             </div>
 
@@ -140,10 +150,10 @@ const CreatorFeed = () => {
                 onChange={(e) => setSortBy(e.target.value as any)}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
               >
-                <option value="date">Sort by Date</option>
-                <option value="views">Sort by Views</option>
-                <option value="likes">Sort by Likes</option>
-                <option value="comments">Sort by Comments</option>
+                <option value="date">{t('creator.feed.sortByDate')}</option>
+                <option value="views">{t('creator.feed.sortByViews')}</option>
+                <option value="likes">{t('creator.feed.sortByLikes')}</option>
+                <option value="comments">{t('creator.feed.sortByComments')}</option>
               </select>
             </div>
           </div>
@@ -201,41 +211,41 @@ const CreatorFeed = () => {
                       <Eye className="w-4 h-4" />
                       <span className="font-medium">{stats.views.toLocaleString()}</span>
                     </div>
-                    <p className="text-xs text-gray-500">Views</p>
+                    <p className="text-xs text-gray-500">{t('creator.feed.views')}</p>
                   </div>
                   <div className="text-center">
                     <div className="flex items-center justify-center space-x-1 text-gray-600">
                       <Heart className="w-4 h-4" />
                       <span className="font-medium">{stats.likes.toLocaleString()}</span>
                     </div>
-                    <p className="text-xs text-gray-500">Likes</p>
+                    <p className="text-xs text-gray-500">{t('creator.feed.likes')}</p>
                   </div>
                   <div className="text-center">
                     <div className="flex items-center justify-center space-x-1 text-gray-600">
                       <MessageCircle className="w-4 h-4" />
                       <span className="font-medium">{stats.comments.toLocaleString()}</span>
                     </div>
-                    <p className="text-xs text-gray-500">Comments</p>
+                    <p className="text-xs text-gray-500">{t('creator.feed.comments')}</p>
                   </div>
                   <div className="text-center">
                     <div className="flex items-center justify-center space-x-1 text-gray-600">
                       <TrendingUp className="w-4 h-4" />
                       <span className="font-medium">{stats.engagement}%</span>
                     </div>
-                    <p className="text-xs text-gray-500">Engagement</p>
+                    <p className="text-xs text-gray-500">{t('creator.statistics.engagementRate')}</p>
                   </div>
                 </div>
 
                 {/* Actions */}
                 <div className="flex justify-end space-x-2 mt-4 pt-4 border-t border-gray-100">
                   <button className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors">
-                    Edit
+                    {t('creator.feed.edit')}
                   </button>
                   <button className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors">
-                    Analytics
+                    {t('creator.statistics.overview')}
                   </button>
                   <button className="px-4 py-2 text-sm text-red-600 hover:text-red-700 transition-colors">
-                    Delete
+                    {t('creator.feed.delete')}
                   </button>
                 </div>
               </motion.div>

@@ -97,8 +97,8 @@ const CreatorStatistics = () => {
       >
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Statistics</h1>
-            <p className="text-gray-600">Track your performance and growth</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('creator.statistics.title')}</h1>
+            <p className="text-gray-600">{t('creator.statistics.subtitle')}</p>
           </div>
           
           <div className="flex gap-2">
@@ -135,7 +135,7 @@ const CreatorStatistics = () => {
             <h3 className="text-2xl font-bold text-gray-900 mb-1">
               {currentStats.followers.toLocaleString()}
             </h3>
-            <p className="text-gray-600">Total Followers</p>
+            <p className="text-gray-600">{t('creator.statistics.followers')}</p>
           </div>
 
           <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -153,7 +153,7 @@ const CreatorStatistics = () => {
             <h3 className="text-2xl font-bold text-gray-900 mb-1">
               {currentStats.views.toLocaleString()}
             </h3>
-            <p className="text-gray-600">Total Views</p>
+            <p className="text-gray-600">{t('creator.statistics.views')}</p>
           </div>
 
           <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -171,7 +171,7 @@ const CreatorStatistics = () => {
             <h3 className="text-2xl font-bold text-gray-900 mb-1">
               {currentStats.likes.toLocaleString()}
             </h3>
-            <p className="text-gray-600">Total Likes</p>
+            <p className="text-gray-600">{t('creator.statistics.likes')}</p>
           </div>
 
           <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -189,14 +189,14 @@ const CreatorStatistics = () => {
             <h3 className="text-2xl font-bold text-gray-900 mb-1">
               ¥{currentStats.earnings.toLocaleString()}
             </h3>
-            <p className="text-gray-600">Total Earnings</p>
+            <p className="text-gray-600">{t('creator.statistics.earnings')}</p>
           </div>
         </div>
 
         {/* Engagement Rate */}
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Engagement Rate</h2>
+            <h2 className="text-xl font-bold text-gray-900">{t('creator.statistics.engagementRate')}</h2>
             <div className="flex items-center space-x-1">
               {getGrowthIcon(calculateGrowth(currentStats.engagement, previousStats.engagement))}
               <span className={`text-sm font-medium ${getGrowthColor(calculateGrowth(currentStats.engagement, previousStats.engagement))}`}>
@@ -218,13 +218,13 @@ const CreatorStatistics = () => {
             </div>
           </div>
           <p className="text-sm text-gray-600 mt-2">
-            Average engagement rate over the last {selectedPeriod}
+            {t('creator.statistics.averageEngagementRate')} {selectedPeriod}
           </p>
         </div>
 
         {/* Recent Activity */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Activity</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-4">{t('creator.statistics.recentActivity')}</h2>
           <div className="space-y-4">
             {stats.slice(0, 5).map((stat, index) => (
               <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
@@ -237,13 +237,13 @@ const CreatorStatistics = () => {
                       {new Date(stat.period).toLocaleDateString('ja-JP')}
                     </p>
                     <p className="text-sm text-gray-600">
-                      {stat.views.toLocaleString()} views • {stat.likes.toLocaleString()} likes
+                      {stat.views.toLocaleString()} {t('creator.statistics.views')} • {stat.likes.toLocaleString()} {t('creator.statistics.likes')}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="font-medium text-gray-900">¥{stat.earnings.toLocaleString()}</p>
-                  <p className="text-sm text-gray-600">{stat.engagement}% engagement</p>
+                  <p className="text-sm text-gray-600">{stat.engagement}% {t('creator.statistics.engagement')}</p>
                 </div>
               </div>
             ))}
