@@ -30,21 +30,21 @@ const CreatorNavbar = () => {
     {
       id: '1',
       type: 'new_follower',
-      message: 'yuki_fan started following you',
+      message: `yuki_fan ${t('creator.activity.newFollower')}`,
       time: '2 hours ago',
       read: false
     },
     {
       id: '2',
       type: 'new_tip',
-      message: 'You received a ¥500 tip from miku_fan',
+      message: t('creator.activity.newEarnings'),
       time: '4 hours ago',
       read: false
     },
     {
       id: '3',
       type: 'new_comment',
-      message: 'sakura_fan commented on your latest post',
+      message: `sakura_fan ${t('creator.activity.newComment')}`,
       time: '6 hours ago',
       read: true
     }
@@ -62,7 +62,7 @@ const CreatorNavbar = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 type="text"
-                placeholder="Search your content, fans..."
+                placeholder={t('creator.navbar.search')}
                 className="pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent w-64"
               />
             </div>
@@ -74,14 +74,14 @@ const CreatorNavbar = () => {
                 className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-600 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
               >
                 <BarChart3 className="w-4 h-4" />
-                <span>Analytics</span>
+                <span>{t('creator.statistics.overview')}</span>
               </Link>
               <Link
                 to="/creator/post/new"
                 className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-600 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
               >
                 <Plus className="w-4 h-4" />
-                <span>New Post</span>
+                <span>{t('creator.dashboard.newPost')}</span>
               </Link>
             </div>
           </div>
@@ -92,7 +92,7 @@ const CreatorNavbar = () => {
             <div className="hidden lg:flex items-center space-x-2 px-3 py-1.5 bg-green-50 border border-green-200 rounded-lg">
               <DollarSign className="w-4 h-4 text-green-600" />
               <span className="text-sm font-medium text-green-700">¥1,250</span>
-              <span className="text-xs text-green-600">This month</span>
+              <span className="text-xs text-green-600">{t('creator.dashboard.thisMonth')}</span>
             </div>
 
             {/* Messages */}
@@ -132,7 +132,7 @@ const CreatorNavbar = () => {
                     className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
                   >
                     <div className="px-4 py-2 border-b border-gray-100">
-                      <h3 className="text-sm font-semibold text-gray-900">Notifications</h3>
+                      <h3 className="text-sm font-semibold text-gray-900">{t('creator.navbar.notifications')}</h3>
                     </div>
                     <div className="max-h-64 overflow-y-auto">
                       {notifications.map((notification) => (
@@ -153,7 +153,7 @@ const CreatorNavbar = () => {
                         className="text-sm text-pink-600 hover:text-pink-700 font-medium"
                         onClick={() => setShowNotifications(false)}
                       >
-                        View all notifications
+                        {t('creator.dashboard.viewAll')}
                       </Link>
                     </div>
                   </motion.div>
@@ -181,7 +181,7 @@ const CreatorNavbar = () => {
                 </div>
                 <div className="hidden sm:block text-left">
                   <p className="text-sm font-medium text-gray-700">{user?.displayName}</p>
-                  <p className="text-xs text-gray-500">Creator</p>
+                  <p className="text-xs text-gray-500">{t('creator.navbar.creator')}</p>
                 </div>
               </motion.button>
 
@@ -205,7 +205,7 @@ const CreatorNavbar = () => {
                       onClick={() => setShowDropdown(false)}
                     >
                       <User className="w-4 h-4 mr-2" />
-                      Creator Profile
+                      {t('creator.navbar.profile')}
                     </Link>
                     
                     <Link
@@ -214,7 +214,7 @@ const CreatorNavbar = () => {
                       onClick={() => setShowDropdown(false)}
                     >
                       <BarChart3 className="w-4 h-4 mr-2" />
-                      Analytics
+                      {t('creator.statistics.overview')}
                     </Link>
                     
                     <Link
@@ -223,7 +223,7 @@ const CreatorNavbar = () => {
                       onClick={() => setShowDropdown(false)}
                     >
                       <Settings className="w-4 h-4 mr-2" />
-                      Creator Settings
+                      {t('creator.navbar.settings')}
                     </Link>
                     
                     <hr className="my-1" />
@@ -234,7 +234,7 @@ const CreatorNavbar = () => {
                       onClick={() => setShowDropdown(false)}
                     >
                       <User className="w-4 h-4 mr-2" />
-                      Switch to Fan Mode
+                      {t('creator.navbar.switchToFanMode')}
                     </Link>
                     
                     <hr className="my-1" />
@@ -247,7 +247,7 @@ const CreatorNavbar = () => {
                       className="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                     >
                       <LogOut className="w-4 h-4 mr-2" />
-                      Logout
+                      {t('creator.navbar.logout')}
                     </button>
                   </motion.div>
                 )}

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Settings, 
@@ -10,26 +10,43 @@ import {
   Camera,
   Save,
   Edit,
-  BarChart3
+  BarChart3,
+  Globe,
+  CheckCircle
 } from 'lucide-react';
 import { AuthContext } from '../../contexts/AuthContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const CreatorSettings = () => {
   const authContext = useContext(AuthContext);
   const [activeSection, setActiveSection] = useState('profile');
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [showLanguageSuccess, setShowLanguageSuccess] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
+
+  // Debug: Log when language changes
+  useEffect(() => {
+    console.log('Creator Settings language changed to:', language);
+  }, [language]);
+
+  const handleLanguageChange = (newLanguage: 'en' | 'ja') => {
+    setLanguage(newLanguage);
+    setShowLanguageSuccess(true);
+    setTimeout(() => setShowLanguageSuccess(false), 3000);
+  };
 
   if (!authContext) return null;
   const { user } = authContext;
 
   const sections = [
-    { id: 'profile', label: 'Profile Settings', icon: Users },
-    { id: 'content', label: 'Content Settings', icon: Palette },
-    { id: 'notifications', label: 'Notifications', icon: Bell },
-    { id: 'privacy', label: 'Privacy & Security', icon: Shield },
-    { id: 'monetization', label: 'Monetization', icon: DollarSign },
-    { id: 'analytics', label: 'Analytics', icon: BarChart3 }
+    { id: 'profile', label: t('settings.profile'), icon: Users },
+    { id: 'content', label: t('creator.settings.contentSettings'), icon: Palette },
+    { id: 'notifications', label: t('settings.notifications'), icon: Bell },
+    { id: 'privacy', label: t('settings.privacy'), icon: Shield },
+    { id: 'monetization', label: t('creator.settings.monetization'), icon: DollarSign },
+    { id: 'language', label: t('settings.language'), icon: Globe },
+    { id: 'analytics', label: t('creator.statistics.overview'), icon: BarChart3 }
   ];
 
   const [profileData, setProfileData] = useState({
@@ -75,8 +92,8 @@ const CreatorSettings = () => {
       >
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Creator Settings</h1>
-            <p className="text-gray-600">Customize your creator experience</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('creator.settings.title')}</h1>
+            <p className="text-gray-600">{t('creator.settings.subtitle')}</p>
           </div>
         </div>
 
@@ -113,13 +130,13 @@ const CreatorSettings = () => {
                   className="space-y-6"
                 >
                   <div className="flex justify-between items-center">
-                    <h2 className="text-xl font-bold text-gray-900">Profile Settings</h2>
+                    <h2 className="text-xl font-bold text-gray-900">{t('creator.settings.profileSettings')}</h2>
                     <button
                       onClick={() => setIsEditing(!isEditing)}
                       className="flex items-center space-x-2 px-4 py-2 bg-pink-100 text-pink-600 rounded-lg hover:bg-pink-200 transition-colors"
                     >
                       <Edit className="w-4 h-4" />
-                      <span>{isEditing ? 'Cancel' : 'Edit'}</span>
+                      <span>{isEditing ? t('settings.cancel') : t('creator.settings.edit')}</span>
                     </button>
                   </div>
 
@@ -139,15 +156,15 @@ const CreatorSettings = () => {
                         )}
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900">Profile Picture</h3>
-                        <p className="text-sm text-gray-600">Upload a new profile picture</p>
+                        <h3 className="font-semibold text-gray-900">{t('creator.settings.profilePicture')}</h3>
+                        <p className="text-sm text-gray-600">{t('creator.settings.uploadNewPicture')}</p>
                       </div>
                     </div>
 
                     {/* Profile Information */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Display Name</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('creator.profile.displayName')}</label>
                         <input
                           type="text"
                           value={profileData.displayName}
@@ -157,7 +174,7 @@ const CreatorSettings = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('creator.profile.username')}</label>
                         <input
                           type="text"
                           value={profileData.username}
@@ -167,7 +184,7 @@ const CreatorSettings = () => {
                         />
                       </div>
                       <div className="md:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Bio</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('creator.profile.bio')}</label>
                         <textarea
                           value={profileData.bio}
                           onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
@@ -177,7 +194,7 @@ const CreatorSettings = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Website</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('creator.profile.website')}</label>
                         <input
                           type="url"
                           value={profileData.website}
@@ -187,7 +204,7 @@ const CreatorSettings = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('creator.profile.location')}</label>
                         <input
                           type="text"
                           value={profileData.location}
@@ -204,7 +221,7 @@ const CreatorSettings = () => {
                           onClick={() => setIsEditing(false)}
                           className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
                         >
-                          Cancel
+                          {t('settings.cancel')}
                         </button>
                         <button
                           onClick={() => {
@@ -405,6 +422,67 @@ const CreatorSettings = () => {
                         </div>
                       ))}
                     </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeSection === 'language' && (
+                <motion.div
+                  key="language"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-6"
+                >
+                  <h2 className="text-xl font-bold text-gray-900">{t('settings.language.title')}</h2>
+                  <p className="text-gray-600">{t('settings.language.description')}</p>
+                  
+                  <div className="space-y-4">
+                    <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <Globe className="w-5 h-5 text-blue-600" />
+                        <span className="font-medium text-blue-800">{t('settings.language.current')}: {language === 'ja' ? '日本語' : 'English'}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <button
+                        onClick={() => handleLanguageChange('ja')}
+                        className={`p-6 rounded-xl border-2 transition-all ${
+                          language === 'ja'
+                            ? 'border-pink-500 bg-pink-50 text-pink-700'
+                            : 'border-gray-200 hover:border-gray-300 text-gray-600'
+                        }`}
+                      >
+                        <div className="text-center">
+                          <div className="text-2xl mb-2">🇯🇵</div>
+                          <div className="font-medium">{t('settings.language.japanese')}</div>
+                          <div className="text-sm opacity-80">日本語</div>
+                        </div>
+                      </button>
+                      
+                      <button
+                        onClick={() => handleLanguageChange('en')}
+                        className={`p-6 rounded-xl border-2 transition-all ${
+                          language === 'en'
+                            ? 'border-pink-500 bg-pink-50 text-pink-700'
+                            : 'border-gray-200 hover:border-gray-300 text-gray-600'
+                        }`}
+                      >
+                        <div className="text-center">
+                          <div className="text-2xl mb-2">🇺🇸</div>
+                          <div className="font-medium">{t('settings.language.english')}</div>
+                          <div className="text-sm opacity-80">English</div>
+                        </div>
+                      </button>
+                    </div>
+                    
+                    {showLanguageSuccess && (
+                      <div className="flex items-center p-3 bg-green-100 text-green-800 rounded-lg">
+                        <CheckCircle className="w-5 h-5 mr-2" />
+                        <span>{t('settings.language.success')}</span>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               )}

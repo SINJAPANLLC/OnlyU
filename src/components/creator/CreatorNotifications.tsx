@@ -26,8 +26,8 @@ const CreatorNotifications = () => {
       {
         id: '1',
         type: 'follow',
-        title: 'New Follower',
-        message: 'yuki_fan started following you',
+        title: t('creator.notifications.newFollower'),
+        message: `yuki_fan ${t('creator.activity.newFollower')}`,
         timestamp: '2024-01-15T14:30:00Z',
         isRead: false,
         avatar: 'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2'
@@ -35,8 +35,8 @@ const CreatorNotifications = () => {
       {
         id: '2',
         type: 'like',
-        title: 'New Like',
-        message: 'ai_creator liked your post "今日の撮影お疲れ様でした！"',
+        title: t('creator.notifications.newLike'),
+        message: `ai_creator ${t('creator.activity.newLikes')}`,
         timestamp: '2024-01-15T13:45:00Z',
         isRead: false,
         avatar: 'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2',
@@ -45,8 +45,8 @@ const CreatorNotifications = () => {
       {
         id: '3',
         type: 'comment',
-        title: 'New Comment',
-        message: 'miku_fan commented: "素敵な写真ですね！✨"',
+        title: t('creator.notifications.newComment'),
+        message: `miku_fan ${t('creator.activity.newComment')}`,
         timestamp: '2024-01-15T12:20:00Z',
         isRead: true,
         avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2',
@@ -55,8 +55,8 @@ const CreatorNotifications = () => {
       {
         id: '4',
         type: 'tip',
-        title: 'New Tip',
-        message: 'fan_123 sent you a tip',
+        title: t('creator.notifications.newTip'),
+        message: t('creator.activity.newEarnings'),
         timestamp: '2024-01-15T11:15:00Z',
         isRead: false,
         avatar: 'https://images.pexels.com/photos/1310522/pexels-photo-1310522.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2',
@@ -65,8 +65,8 @@ const CreatorNotifications = () => {
       {
         id: '5',
         type: 'subscription',
-        title: 'New Subscription',
-        message: 'premium_fan subscribed to your premium content',
+        title: t('creator.notifications.newSubscription'),
+        message: t('creator.notifications.subscriptionMessage'),
         timestamp: '2024-01-15T10:30:00Z',
         isRead: false,
         avatar: 'https://images.pexels.com/photos/1102341/pexels-photo-1102341.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2',
@@ -75,16 +75,16 @@ const CreatorNotifications = () => {
       {
         id: '6',
         type: 'earnings',
-        title: 'Earnings Update',
-        message: 'You earned ¥2,500 this week',
+        title: t('creator.notifications.earningsUpdate'),
+        message: t('creator.notifications.earningsMessage'),
         timestamp: '2024-01-15T09:00:00Z',
         isRead: true
       },
       {
         id: '7',
         type: 'system',
-        title: 'System Update',
-        message: 'New creator tools are now available',
+        title: t('creator.notifications.systemUpdate'),
+        message: t('creator.notifications.systemMessage'),
         timestamp: '2024-01-15T08:00:00Z',
         isRead: true
       }
@@ -168,15 +168,15 @@ const CreatorNotifications = () => {
       >
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Notifications</h1>
-            <p className="text-gray-600">Stay updated with your fan interactions</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('creator.notifications.title')}</h1>
+            <p className="text-gray-600">{t('creator.notifications.subtitle')}</p>
           </div>
           {unreadCount > 0 && (
             <button
               onClick={markAllAsRead}
               className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors"
             >
-              Mark all as read
+              {t('creator.notifications.markAllRead')}
             </button>
           )}
         </div>
@@ -191,39 +191,39 @@ const CreatorNotifications = () => {
                   ? 'bg-pink-500 text-white' 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
-            >
-              All ({notifications.length})
-            </button>
-            <button
-              onClick={() => setFilter('unread')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                filter === 'unread' 
-                  ? 'bg-pink-500 text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Unread ({unreadCount})
-            </button>
-            <button
-              onClick={() => setFilter('interactions')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                filter === 'interactions' 
-                  ? 'bg-pink-500 text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Interactions
-            </button>
-            <button
-              onClick={() => setFilter('earnings')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                filter === 'earnings' 
-                  ? 'bg-pink-500 text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Earnings
-            </button>
+                          >
+                {t('creator.notifications.all')} ({notifications.length})
+              </button>
+              <button
+                onClick={() => setFilter('unread')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  filter === 'unread' 
+                    ? 'bg-pink-500 text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {t('creator.notifications.unread')} ({unreadCount})
+              </button>
+              <button
+                onClick={() => setFilter('interactions')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  filter === 'interactions' 
+                    ? 'bg-pink-500 text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {t('creator.notifications.interactions')}
+              </button>
+              <button
+                onClick={() => setFilter('earnings')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  filter === 'earnings' 
+                    ? 'bg-pink-500 text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {t('creator.notifications.earnings')}
+              </button>
           </div>
         </div>
 
@@ -286,8 +286,8 @@ const CreatorNotifications = () => {
         {filteredNotifications.length === 0 && (
           <div className="text-center py-12">
             <Bell className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No notifications</h3>
-            <p className="text-gray-500">You're all caught up!</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">{t('creator.notifications.noNotifications')}</h3>
+            <p className="text-gray-500">{t('creator.notifications.allCaughtUp')}</p>
           </div>
         )}
       </motion.div>

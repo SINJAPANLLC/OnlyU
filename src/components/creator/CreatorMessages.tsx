@@ -81,12 +81,12 @@ const CreatorMessages = () => {
     <div className="h-screen flex">
       <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
         <div className="p-4 border-b border-gray-200">
-          <h1 className="text-xl font-bold text-gray-900 mb-4">Messages</h1>
+          <h1 className="text-xl font-bold text-gray-900 mb-4">{t('creator.messages.title')}</h1>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <input
               type="text"
-              placeholder="Search conversations..."
+              placeholder={t('creator.messages.searchConversations')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
@@ -160,7 +160,7 @@ const CreatorMessages = () => {
                   <div>
                     <h2 className="font-medium text-gray-900">{selectedConversation.fanName}</h2>
                     <p className="text-sm text-gray-500">
-                      {selectedConversation.isOnline ? 'Online' : 'Offline'}
+                      {selectedConversation.isOnline ? t('creator.messages.online') : t('creator.messages.offline')}
                     </p>
                   </div>
                 </div>
@@ -197,7 +197,7 @@ const CreatorMessages = () => {
                 <div className="flex-1">
                   <input
                     type="text"
-                    placeholder="Type a message..."
+                    placeholder={t('creator.messages.typeMessage')}
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
@@ -217,8 +217,8 @@ const CreatorMessages = () => {
         ) : (
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Select a conversation</h3>
-              <p className="text-gray-500">Choose a conversation to start messaging</p>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">{t('creator.messages.selectConversation')}</h3>
+              <p className="text-gray-500">{t('creator.messages.chooseConversation')}</p>
             </div>
           </div>
         )}

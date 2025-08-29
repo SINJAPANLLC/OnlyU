@@ -10,35 +10,35 @@ const CreatorMarketing = () => {
   const marketingTools = [
     {
       id: '1',
-      title: 'Promotional Posts',
-      description: 'Create special promotional content for your fans',
+      title: t('creator.marketing.promotionalPosts'),
+      description: t('creator.marketing.promotionalPostsDesc'),
       icon: Megaphone,
       status: 'active',
-      usage: '3/5 used this month'
+      usage: t('creator.marketing.usageThisMonth')
     },
     {
       id: '2',
-      title: 'Fan Engagement Campaigns',
-      description: 'Run targeted campaigns to increase fan interaction',
+      title: t('creator.marketing.fanEngagementCampaigns'),
+      description: t('creator.marketing.fanEngagementCampaignsDesc'),
       icon: Target,
       status: 'available',
-      usage: '2/3 campaigns active'
+      usage: t('creator.marketing.campaignsActive')
     },
     {
       id: '3',
-      title: 'Premium Content Promotions',
-      description: 'Promote your premium content to attract subscribers',
+      title: t('creator.marketing.premiumContentPromotions'),
+      description: t('creator.marketing.premiumContentPromotionsDesc'),
       icon: Gift,
       status: 'active',
-      usage: '1/2 promotions active'
+      usage: t('creator.marketing.promotionsActive')
     }
   ];
 
   const campaigns = [
     {
       id: '1',
-      name: 'New Year Special',
-      type: 'Premium Promotion',
+      name: t('creator.marketing.newYearSpecial'),
+      type: t('creator.marketing.premiumPromotion'),
       status: 'active',
       startDate: '2024-01-01',
       endDate: '2024-01-31',
@@ -48,8 +48,8 @@ const CreatorMarketing = () => {
     },
     {
       id: '2',
-      name: 'Fan Appreciation Week',
-      type: 'Engagement Campaign',
+      name: t('creator.marketing.fanAppreciationWeek'),
+      type: t('creator.marketing.engagementCampaign'),
       status: 'scheduled',
       startDate: '2024-02-01',
       endDate: '2024-02-07',
@@ -68,8 +68,8 @@ const CreatorMarketing = () => {
       >
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Marketing Tools</h1>
-            <p className="text-gray-600">Promote your content and grow your audience</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('creator.marketing.title')}</h1>
+            <p className="text-gray-600">{t('creator.marketing.subtitle')}</p>
           </div>
         </div>
 
@@ -83,29 +83,29 @@ const CreatorMarketing = () => {
                   ? 'bg-pink-500 text-white' 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
-            >
-              Campaigns
-            </button>
-            <button
-              onClick={() => setActiveTab('promotions')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                activeTab === 'promotions' 
-                  ? 'bg-pink-500 text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Promotions
-            </button>
-            <button
-              onClick={() => setActiveTab('analytics')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                activeTab === 'analytics' 
-                  ? 'bg-pink-500 text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Analytics
-            </button>
+                          >
+                {t('creator.marketing.campaigns')}
+              </button>
+              <button
+                onClick={() => setActiveTab('promotions')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === 'promotions' 
+                    ? 'bg-pink-500 text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {t('creator.marketing.promotions')}
+              </button>
+              <button
+                onClick={() => setActiveTab('analytics')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === 'analytics' 
+                    ? 'bg-pink-500 text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {t('creator.statistics.overview')}
+              </button>
           </div>
         </div>
 
@@ -135,7 +135,7 @@ const CreatorMarketing = () => {
                     <span className="text-xs text-gray-500">{tool.usage}</span>
                   </div>
                   <button className="w-full mt-4 px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors">
-                    Use Tool
+                    {t('creator.marketing.useTool')}
                   </button>
                 </div>
               ))}
@@ -143,7 +143,7 @@ const CreatorMarketing = () => {
 
             {/* Active Campaigns */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Active Campaigns</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">{t('creator.marketing.activeCampaigns')}</h2>
               <div className="space-y-4">
                 {campaigns.map((campaign) => (
                   <div key={campaign.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
@@ -163,15 +163,15 @@ const CreatorMarketing = () => {
                       <div className="flex items-center space-x-4">
                         <div>
                           <p className="text-sm font-medium text-gray-900">{campaign.reach.toLocaleString()}</p>
-                          <p className="text-xs text-gray-500">Reach</p>
+                          <p className="text-xs text-gray-500">{t('creator.marketing.reach')}</p>
                         </div>
                         <div>
                           <p className="text-sm font-medium text-gray-900">{campaign.conversions}</p>
-                          <p className="text-xs text-gray-500">Conversions</p>
+                          <p className="text-xs text-gray-500">{t('creator.marketing.conversions')}</p>
                         </div>
                         <div>
                           <p className="text-sm font-medium text-gray-900">¥{campaign.revenue.toLocaleString()}</p>
-                          <p className="text-xs text-gray-500">Revenue</p>
+                          <p className="text-xs text-gray-500">{t('creator.fans.totalRevenue')}</p>
                         </div>
                       </div>
                       <span className={`text-xs px-2 py-1 rounded-full mt-2 inline-block ${
@@ -191,27 +191,27 @@ const CreatorMarketing = () => {
 
         {activeTab === 'promotions' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Promotional Tools</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">{t('creator.marketing.promotionalTools')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="border border-gray-200 rounded-lg p-6">
                 <div className="flex items-center space-x-3 mb-4">
                   <Share2 className="w-6 h-6 text-blue-600" />
-                  <h3 className="font-medium text-gray-900">Social Media Promotion</h3>
+                  <h3 className="font-medium text-gray-900">{t('creator.marketing.socialMediaPromotion')}</h3>
                 </div>
-                <p className="text-gray-600 mb-4">Share your content across social media platforms to reach more fans.</p>
+                <p className="text-gray-600 mb-4">{t('creator.marketing.socialMediaPromotionDesc')}</p>
                 <button className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-                  Create Promotion
+                  {t('creator.marketing.createPromotion')}
                 </button>
               </div>
 
               <div className="border border-gray-200 rounded-lg p-6">
                 <div className="flex items-center space-x-3 mb-4">
                   <Gift className="w-6 h-6 text-purple-600" />
-                  <h3 className="font-medium text-gray-900">Special Offers</h3>
+                  <h3 className="font-medium text-gray-900">{t('creator.marketing.specialOffers')}</h3>
                 </div>
-                <p className="text-gray-600 mb-4">Create limited-time offers and discounts for your premium content.</p>
+                <p className="text-gray-600 mb-4">{t('creator.marketing.specialOffersDesc')}</p>
                 <button className="w-full px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors">
-                  Create Offer
+                  {t('creator.marketing.createOffer')}
                 </button>
               </div>
             </div>
@@ -220,22 +220,22 @@ const CreatorMarketing = () => {
 
         {activeTab === 'analytics' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Marketing Analytics</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">{t('creator.marketing.marketingAnalytics')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center p-4 bg-gray-50 rounded-lg">
                 <TrendingUp className="w-8 h-8 text-green-600 mx-auto mb-2" />
                 <h3 className="text-2xl font-bold text-gray-900">12.5%</h3>
-                <p className="text-gray-600">Growth Rate</p>
+                <p className="text-gray-600">{t('creator.marketing.growthRate')}</p>
               </div>
               <div className="text-center p-4 bg-gray-50 rounded-lg">
                 <BarChart3 className="w-8 h-8 text-blue-600 mx-auto mb-2" />
                 <h3 className="text-2xl font-bold text-gray-900">8,500</h3>
-                <p className="text-gray-600">Total Reach</p>
+                <p className="text-gray-600">{t('creator.marketing.totalReach')}</p>
               </div>
               <div className="text-center p-4 bg-gray-50 rounded-lg">
                 <Target className="w-8 h-8 text-pink-600 mx-auto mb-2" />
                 <h3 className="text-2xl font-bold text-gray-900">45</h3>
-                <p className="text-gray-600">Conversions</p>
+                <p className="text-gray-600">{t('creator.marketing.conversions')}</p>
               </div>
             </div>
           </div>

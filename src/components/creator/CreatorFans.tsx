@@ -59,8 +59,8 @@ const CreatorFans = () => {
       >
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">My Fans</h1>
-            <p className="text-gray-600">Manage and interact with your fan community</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('creator.fans.title')}</h1>
+            <p className="text-gray-600">{t('creator.fans.subtitle')}</p>
           </div>
         </div>
 
@@ -73,7 +73,7 @@ const CreatorFans = () => {
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-gray-900">{fans.length}</h3>
-                <p className="text-gray-600">Total Fans</p>
+                <p className="text-gray-600">{t('creator.fans.totalFans')}</p>
               </div>
             </div>
           </div>
@@ -87,7 +87,7 @@ const CreatorFans = () => {
                 <h3 className="text-2xl font-bold text-gray-900">
                   {fans.filter(fan => fan.isPremium).length}
                 </h3>
-                <p className="text-gray-600">Premium Fans</p>
+                <p className="text-gray-600">{t('creator.fans.premiumFans')}</p>
               </div>
             </div>
           </div>
@@ -101,7 +101,7 @@ const CreatorFans = () => {
                 <h3 className="text-2xl font-bold text-gray-900">
                   ¥{fans.reduce((sum, fan) => sum + fan.totalSpent, 0).toLocaleString()}
                 </h3>
-                <p className="text-gray-600">Total Revenue</p>
+                <p className="text-gray-600">{t('creator.fans.totalRevenue')}</p>
               </div>
             </div>
           </div>
@@ -113,7 +113,7 @@ const CreatorFans = () => {
             <Search className="w-4 h-4 text-gray-500" />
             <input
               type="text"
-              placeholder="Search fans..."
+              placeholder={t('creator.fans.searchFans')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
@@ -146,7 +146,7 @@ const CreatorFans = () => {
                 </div>
                 <div className="text-right">
                   <p className="font-medium text-gray-900">¥{fan.totalSpent.toLocaleString()}</p>
-                  <p className="text-sm text-gray-500">{fan.interactionCount} interactions</p>
+                  <p className="text-sm text-gray-500">{fan.interactionCount} {t('creator.fans.interactions')}</p>
                 </div>
               </div>
             </div>
@@ -156,8 +156,8 @@ const CreatorFans = () => {
         {filteredFans.length === 0 && (
           <div className="text-center py-12">
             <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No fans found</h3>
-            <p className="text-gray-500">Try adjusting your search criteria</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">{t('creator.fans.noFansFound')}</h3>
+            <p className="text-gray-500">{t('creator.fans.tryAdjustingSearch')}</p>
           </div>
         )}
       </motion.div>

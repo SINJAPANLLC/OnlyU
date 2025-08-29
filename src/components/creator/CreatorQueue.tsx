@@ -22,7 +22,7 @@ const CreatorQueue = () => {
     const mockPosts: QueuedPost[] = [
       {
         id: '1',
-        title: 'Behind the Scenes - Photo Shoot',
+        title: t('creator.queue.behindScenesPhotoShoot'),
         content: '今日の撮影の裏側をお見せします！✨',
         type: 'scheduled',
         scheduledDate: '2024-01-16T10:00:00Z',
@@ -31,7 +31,7 @@ const CreatorQueue = () => {
       },
       {
         id: '2',
-        title: 'Weekend Update',
+        title: t('creator.queue.weekendUpdate'),
         content: '週末の予定についてお話しします',
         type: 'draft',
         status: 'pending',
@@ -39,7 +39,7 @@ const CreatorQueue = () => {
       },
       {
         id: '3',
-        title: 'Premium Content Preview',
+        title: t('creator.queue.premiumContentPreview'),
         content: 'プレミアム会員限定コンテンツの予告',
         type: 'scheduled',
         scheduledDate: '2024-01-17T15:30:00Z',
@@ -48,7 +48,7 @@ const CreatorQueue = () => {
       },
       {
         id: '4',
-        title: 'Fan Q&A Session',
+        title: t('creator.queue.fanQASession'),
         content: 'ファンの皆さんからの質問に答えます',
         type: 'published',
         status: 'published',
@@ -112,8 +112,8 @@ const CreatorQueue = () => {
       >
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Content Queue</h1>
-            <p className="text-gray-600">Manage your scheduled and draft posts</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('creator.queue.title')}</h1>
+            <p className="text-gray-600">{t('creator.queue.subtitle')}</p>
           </div>
         </div>
 
@@ -127,39 +127,39 @@ const CreatorQueue = () => {
                   ? 'bg-pink-500 text-white' 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
-            >
-              All ({posts.length})
-            </button>
-            <button
-              onClick={() => setFilter('draft')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                filter === 'draft' 
-                  ? 'bg-pink-500 text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Drafts ({posts.filter(p => p.type === 'draft').length})
-            </button>
-            <button
-              onClick={() => setFilter('scheduled')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                filter === 'scheduled' 
-                  ? 'bg-pink-500 text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Scheduled ({posts.filter(p => p.type === 'scheduled').length})
-            </button>
-            <button
-              onClick={() => setFilter('published')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                filter === 'published' 
-                  ? 'bg-pink-500 text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Published ({posts.filter(p => p.type === 'published').length})
-            </button>
+                          >
+                {t('creator.queue.all')} ({posts.length})
+              </button>
+              <button
+                onClick={() => setFilter('draft')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  filter === 'draft' 
+                    ? 'bg-pink-500 text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {t('creator.queue.drafts')} ({posts.filter(p => p.type === 'draft').length})
+              </button>
+              <button
+                onClick={() => setFilter('scheduled')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  filter === 'scheduled' 
+                    ? 'bg-pink-500 text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {t('creator.queue.scheduled')} ({posts.filter(p => p.type === 'scheduled').length})
+              </button>
+              <button
+                onClick={() => setFilter('published')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  filter === 'published' 
+                    ? 'bg-pink-500 text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {t('creator.queue.published')} ({posts.filter(p => p.type === 'published').length})
+              </button>
           </div>
         </div>
 
@@ -190,7 +190,7 @@ const CreatorQueue = () => {
                     <div className="flex items-center space-x-2 text-sm text-gray-500">
                       <Calendar className="w-4 h-4" />
                       <span>
-                        Scheduled for {new Date(post.scheduledDate).toLocaleString('ja-JP')}
+                        {t('creator.queue.scheduledFor')} {new Date(post.scheduledDate).toLocaleString('ja-JP')}
                       </span>
                     </div>
                   )}
@@ -201,7 +201,7 @@ const CreatorQueue = () => {
                     <button
                       onClick={() => handlePublish(post.id)}
                       className="p-2 text-green-600 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors"
-                      title="Publish now"
+                      title={t('creator.queue.publishNow')}
                     >
                       <Play className="w-4 h-4" />
                     </button>
@@ -210,7 +210,7 @@ const CreatorQueue = () => {
                   {post.status === 'pending' && (
                     <button
                       className="p-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
-                      title="Edit post"
+                      title={t('creator.queue.edit')}
                     >
                       <Edit className="w-4 h-4" />
                     </button>
@@ -219,7 +219,7 @@ const CreatorQueue = () => {
                   <button
                     onClick={() => handleDelete(post.id)}
                     className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Delete post"
+                    title={t('creator.queue.delete')}
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -232,11 +232,11 @@ const CreatorQueue = () => {
         {filteredPosts.length === 0 && (
           <div className="text-center py-12">
             <Clock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No posts found</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">{t('creator.queue.noPostsFound')}</h3>
             <p className="text-gray-500">
               {filter === 'all' 
-                ? 'Start creating content to see it here' 
-                : `No ${filter} posts available`
+                ? t('creator.queue.startCreatingContent') 
+                : `${t('creator.queue.no')} ${filter} ${t('creator.queue.postsAvailable')}`
               }
             </p>
           </div>

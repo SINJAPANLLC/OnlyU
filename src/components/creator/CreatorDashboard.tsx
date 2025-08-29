@@ -21,10 +21,10 @@ import {
   Target
 } from 'lucide-react';
 import { CreatorStats } from '../../types';
-// import { useLanguage } from '../../contexts/LanguageContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const CreatorDashboard = () => {
-  // const { language, t } = useLanguage();
+  const { t } = useLanguage();
   
   const [stats, setStats] = useState<CreatorStats>({
     totalPosts: 0,
@@ -56,8 +56,8 @@ const CreatorDashboard = () => {
   const quickActions = [
     {
       id: 'feed',
-      title: 'My Feed',
-      description: 'Manage and track your content performance',
+      title: t('creator.quickActions.myFeed'),
+      description: t('creator.quickActions.myFeedDesc'),
       icon: FileText,
       path: '/creator/feed',
       color: 'bg-blue-500',
@@ -66,8 +66,8 @@ const CreatorDashboard = () => {
     },
     {
       id: 'notifications',
-      title: 'Notifications',
-      description: 'Stay updated with your fan interactions',
+      title: t('creator.quickActions.notifications'),
+      description: t('creator.quickActions.notificationsDesc'),
       icon: Bell,
       path: '/creator/notifications',
       color: 'bg-purple-500',
@@ -76,8 +76,8 @@ const CreatorDashboard = () => {
     },
     {
       id: 'messages',
-      title: 'Messages',
-      description: 'Connect with your fans directly',
+      title: t('creator.quickActions.messages'),
+      description: t('creator.quickActions.messagesDesc'),
       icon: MessageSquare,
       path: '/creator/messages',
       color: 'bg-green-500',
@@ -86,8 +86,8 @@ const CreatorDashboard = () => {
     },
     {
       id: 'statistics',
-      title: 'Statistics',
-      description: 'Track your performance and growth',
+      title: t('creator.quickActions.statistics'),
+      description: t('creator.quickActions.statisticsDesc'),
       icon: BarChart3,
       path: '/creator/statistics',
       color: 'bg-orange-500',
@@ -96,8 +96,8 @@ const CreatorDashboard = () => {
     },
     {
       id: 'fans',
-      title: 'My Fans',
-      description: 'Manage and interact with your fan community',
+      title: t('creator.quickActions.myFans'),
+      description: t('creator.quickActions.myFansDesc'),
       icon: Users,
       path: '/creator/fans',
       color: 'bg-pink-500',
@@ -106,8 +106,8 @@ const CreatorDashboard = () => {
     },
     {
       id: 'marketing',
-      title: 'Marketing',
-      description: 'Promote your content and grow your audience',
+      title: t('creator.quickActions.marketing'),
+      description: t('creator.quickActions.marketingDesc'),
       icon: Megaphone,
       path: '/creator/marketing',
       color: 'bg-indigo-500',
@@ -116,8 +116,8 @@ const CreatorDashboard = () => {
     },
     {
       id: 'queue',
-      title: 'Content Queue',
-      description: 'Manage your scheduled and draft posts',
+      title: t('creator.quickActions.contentQueue'),
+      description: t('creator.quickActions.contentQueueDesc'),
       icon: Clock,
       path: '/creator/queue',
       color: 'bg-yellow-500',
@@ -126,8 +126,8 @@ const CreatorDashboard = () => {
     },
     {
       id: 'settings',
-      title: 'Settings',
-      description: 'Customize your creator experience',
+      title: t('creator.quickActions.settings'),
+      description: t('creator.quickActions.settingsDesc'),
       icon: Settings,
       path: '/creator/settings',
       color: 'bg-gray-500',
@@ -140,29 +140,29 @@ const CreatorDashboard = () => {
     {
       id: '1',
       type: 'new_follower',
-      message: 'yuki_fan started following you',
-      time: '2 hours ago',
+      message: `yuki_fan ${t('creator.activity.newFollower')}`,
+      time: `2 ${t('creator.time.hoursAgo')}`,
       avatar: 'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2'
     },
     {
       id: '2',
       type: 'new_like',
-      message: 'Your post received 15 new likes',
-      time: '4 hours ago',
+      message: t('creator.activity.newLikes'),
+      time: `4 ${t('creator.time.hoursAgo')}`,
       avatar: null
     },
     {
       id: '3',
       type: 'new_comment',
-      message: 'miku_fan commented on your post',
-      time: '6 hours ago',
+      message: `miku_fan ${t('creator.activity.newComment')}`,
+      time: `6 ${t('creator.time.hoursAgo')}`,
       avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&dpr=2'
     },
     {
       id: '4',
       type: 'new_earnings',
-      message: 'You earned ¥500 from tips',
-      time: '1 day ago',
+      message: t('creator.activity.newEarnings'),
+      time: `1 ${t('creator.time.daysAgo')}`,
       avatar: null
     }
   ];
@@ -177,8 +177,8 @@ const CreatorDashboard = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Creator Dashboard</h1>
-            <p className="text-gray-600">Welcome back! Here's what's happening with your content.</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('creator.dashboard.title')}</h1>
+            <p className="text-gray-600">{t('creator.dashboard.subtitle')}</p>
           </div>
           <Link to="/creator/post/new">
             <motion.button
@@ -187,7 +187,7 @@ const CreatorDashboard = () => {
               className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-xl font-medium flex items-center space-x-2 hover:shadow-lg transition-all"
             >
               <Plus className="w-5 h-5" />
-              <span>New Post</span>
+              <span>{t('creator.dashboard.newPost')}</span>
             </motion.button>
           </Link>
         </div>
@@ -197,7 +197,7 @@ const CreatorDashboard = () => {
           <div className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Followers</p>
+                <p className="text-sm font-medium text-gray-600">{t('creator.dashboard.totalFollowers')}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.totalFollowers.toLocaleString()}</p>
                 <p className="text-sm text-green-600 flex items-center mt-1">
                   <TrendingUp className="w-4 h-4 mr-1" />
@@ -213,9 +213,9 @@ const CreatorDashboard = () => {
           <div className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Views</p>
+                <p className="text-sm font-medium text-gray-600">{t('creator.dashboard.totalViews')}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.totalViews.toLocaleString()}</p>
-                <p className="text-sm text-gray-500 mt-1">This month</p>
+                <p className="text-sm text-gray-500 mt-1">{t('creator.dashboard.thisMonth')}</p>
               </div>
               <div className="p-3 bg-green-100 rounded-lg">
                 <Eye className="w-6 h-6 text-green-600" />
@@ -226,9 +226,9 @@ const CreatorDashboard = () => {
           <div className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Likes</p>
+                <p className="text-sm font-medium text-gray-600">{t('creator.dashboard.totalLikes')}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.totalLikes.toLocaleString()}</p>
-                <p className="text-sm text-gray-500 mt-1">This month</p>
+                <p className="text-sm text-gray-500 mt-1">{t('creator.dashboard.thisMonth')}</p>
               </div>
               <div className="p-3 bg-pink-100 rounded-lg">
                 <Heart className="w-6 h-6 text-pink-600" />
@@ -239,7 +239,7 @@ const CreatorDashboard = () => {
           <div className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Earnings</p>
+                <p className="text-sm font-medium text-gray-600">{t('creator.dashboard.totalEarnings')}</p>
                 <p className="text-2xl font-bold text-gray-900">¥{stats.totalEarnings.toLocaleString()}</p>
                 <p className="text-sm text-green-600 flex items-center mt-1">
                   <TrendingUp className="w-4 h-4 mr-1" />
@@ -255,7 +255,7 @@ const CreatorDashboard = () => {
 
         {/* Quick Actions */}
         <div className="mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Quick Actions</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-6">{t('creator.dashboard.quickActions')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {quickActions.map((action) => (
               <Link key={action.id} to={action.path}>
@@ -282,9 +282,9 @@ const CreatorDashboard = () => {
           {/* Recent Activity */}
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Recent Activity</h2>
+              <h2 className="text-xl font-bold text-gray-900">{t('creator.dashboard.recentActivity')}</h2>
               <Link to="/creator/notifications" className="text-pink-600 hover:text-pink-700 text-sm font-medium">
-                View all
+                {t('creator.dashboard.viewAll')}
               </Link>
             </div>
             <div className="space-y-4">
@@ -313,9 +313,9 @@ const CreatorDashboard = () => {
           {/* Upcoming Events */}
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Upcoming Events</h2>
+              <h2 className="text-xl font-bold text-gray-900">{t('creator.dashboard.upcomingEvents')}</h2>
               <Link to="/creator/queue" className="text-pink-600 hover:text-pink-700 text-sm font-medium">
-                View all
+                {t('creator.dashboard.viewAll')}
               </Link>
             </div>
             <div className="space-y-4">
@@ -324,8 +324,8 @@ const CreatorDashboard = () => {
                   <Calendar className="w-5 h-5 text-blue-600" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900">Behind the Scenes Post</p>
-                  <p className="text-xs text-gray-500">Scheduled for tomorrow at 10:00 AM</p>
+                  <p className="text-sm font-medium text-gray-900">{t('creator.events.behindScenes')}</p>
+                  <p className="text-xs text-gray-500">{t('creator.events.scheduledFor')} {t('creator.events.tomorrow')} at 10:00 AM</p>
                 </div>
               </div>
               <div className="flex items-center space-x-3 p-3 rounded-lg bg-green-50 border border-green-100">
@@ -333,8 +333,8 @@ const CreatorDashboard = () => {
                   <Target className="w-5 h-5 text-green-600" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900">Fan Q&A Session</p>
-                  <p className="text-xs text-gray-500">Scheduled for Friday at 3:00 PM</p>
+                  <p className="text-sm font-medium text-gray-900">{t('creator.events.fanQA')}</p>
+                  <p className="text-xs text-gray-500">{t('creator.events.scheduledFor')} {t('creator.events.friday')} at 3:00 PM</p>
                 </div>
               </div>
               <div className="flex items-center space-x-3 p-3 rounded-lg bg-purple-50 border border-purple-100">
@@ -342,8 +342,8 @@ const CreatorDashboard = () => {
                   <Star className="w-5 h-5 text-purple-600" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900">Premium Content Release</p>
-                  <p className="text-xs text-gray-500">Scheduled for Sunday at 8:00 PM</p>
+                  <p className="text-sm font-medium text-gray-900">{t('creator.events.premiumContent')}</p>
+                  <p className="text-xs text-gray-500">{t('creator.events.scheduledFor')} {t('creator.events.sunday')} at 8:00 PM</p>
                 </div>
               </div>
             </div>
@@ -353,23 +353,23 @@ const CreatorDashboard = () => {
         {/* Performance Summary */}
         <div className="mt-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl p-6 text-white">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold">Performance Summary</h2>
+            <h2 className="text-xl font-bold">{t('creator.dashboard.performanceSummary')}</h2>
             <Link to="/creator/statistics" className="text-white/80 hover:text-white text-sm font-medium">
-              View detailed analytics →
+              {t('creator.dashboard.viewDetailedAnalytics')} →
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center">
               <p className="text-3xl font-bold">{stats.totalPosts}</p>
-              <p className="text-white/80">Total Posts</p>
+              <p className="text-white/80">{t('creator.dashboard.totalPosts')}</p>
             </div>
             <div className="text-center">
               <p className="text-3xl font-bold">{stats.totalComments}</p>
-              <p className="text-white/80">Total Comments</p>
+              <p className="text-white/80">{t('creator.dashboard.totalComments')}</p>
             </div>
             <div className="text-center">
               <p className="text-3xl font-bold">{(stats.totalLikes / stats.totalViews * 100).toFixed(1)}%</p>
-              <p className="text-white/80">Engagement Rate</p>
+              <p className="text-white/80">{t('creator.dashboard.engagementRate')}</p>
             </div>
           </div>
         </div>
