@@ -1,0 +1,414 @@
+{
+    "languageSettings": "言語設定 / 言語",
+    "notification1": "クレジットカード決済使用時に遷移する決済システム画面について",
+    "notification2": "利用規約改定のお知らせ",
+    "termsOfUse": {
+        "title": "利用規約",
+        "chapter1": "第1章：総則",
+        "article1": {
+            "title": "第1条（定義）",
+            "description": "本規約において、以下の用語は次の意味を有するものとします："
+        }
+    },
+    "profile": {
+        "posts": "投稿",
+        "likes": "いいね",
+        "followers": "フォロワー",
+        "following": "フォロー中",
+        "subscribe": "購読する",
+        "follow": "フォローする",
+        "message": "メッセージ",
+        "tip": "チップを送る"
+    },
+    "filters": {
+        "all": "すべて",
+        "images": "画像",
+        "videos": "動画",
+        "new": "新着",
+        "popular": "人気",
+        "old": "古い"
+    },
+    "account": {
+        "viewProfile": "プロフィールを見る",
+        "purchaseSave": {
+            "title": "購入/保存",
+            "highQualityPlan": "高品質プラン",
+            "notSubscribed": "未登録",
+            "subscribedPlans": "登録中のプラン",
+            "paymentMethods": "支払い方法",
+            "purchaseHistory": "購入履歴",
+            "amountAvailable": "利用可能額"
+        },
+        "postsOperations": {
+            "title": "投稿/運営/売上",
+            "description": "クリエイターとして登録すると、コンテンツの投稿や管理、売上の追跡ができます。",
+            "registerCreator": "クリエイターとして登録"
+        },
+        "settings": {
+            "title": "設定",
+            "language": "言語設定 / 言語",
+            "rejectMessage": "メッセージを拒否",
+            "emailNotifications": "メール通知設定",
+            "following": "フォロー中",
+            "blockedUsers": "ブロックしたユーザー",
+            "referralProgram": "紹介プログラム",
+            "personalInfo": "個人情報（名前、生年月日）",
+            "phoneVerification": "電話番号認証",
+            "notices": "お知らせ"
+        },
+        "about": {
+            "title": "Only-Uについて",
+            "terms": "利用規約",
+            "privacy": "プライバシーポリシー",
+            "legal": "特定商取引法に基づく表記",
+            "help": "ヘルプ"
+        },
+        "other": {
+            "title": "その他",
+            "switchAccount": "アカウントを切り替える",
+            "logout": "ログアウト",
+            "login": "ログイン",
+            "X": "Xでサインイン",
+            "forgotps": "パスワードを忘れましたか？",
+            "dha": "アカウントをお持ちでないですか？",
+            "signup": "サインアップ",
+            "logging": "ログイン中...",
+            "logoutConfirmTitle": "ログアウトしますか？",
+            "logoutConfirmText": "本当にログアウトしますか？",
+            "cancel": "キャンセル",
+            "confirm": "ログアウト"
+        },
+        "placeholder": {
+            "email": "メールアドレス",
+            "password": "パスワードを入力"
+        }
+    },
+    "createPost": {
+        "title": "新規投稿",
+        "upload": {
+            "button": "画像 / 動画",
+            "selectedFiles": "選択されたファイル"
+        },
+        "explanation": "説明",
+        "genre": {
+            "title": "ジャンル",
+            "subtitle": "（少なくとも1つ指定してください）"
+        },
+        "genreCat": {
+            "MW": "人妻",
+            "Pervert": "変態",
+            "Btb": "美乳",
+            "Romance": "ロマンス",
+            "Fantasy": "ファンタジー",
+            "Adv": "アドベンチャー"
+        },
+        "tags": "タグ",
+        "switches": {
+            "schedulePost": "投稿を予約する",
+            "publicationPeriod": "公開期間",
+            "addPlan": "プランを追加",
+            "singlePostSales": "単発投稿販売"
+        },
+        "agreements": {
+            "copyright": "投稿内容が著作権侵害や猥褻物の公開に該当しないことを確認しました。",
+            "minors": "投稿に未成年者の画像が含まれておらず、未成年者を示唆する表現も含まれていないことを確認しました。",
+            "censored": "すべての性器や挿入画像が適切にモザイク処理されていることを確認しました。",
+            "contentrequire": "ぼかしが必要なコンテンツ"
+        },
+        "publishButton": "投稿を公開する",
+        "publishing": "公開中...",
+        "files": "ファイル",
+        "footerText": {
+            "thankYou": "当プラットフォームの安全性とセキュリティを確保するためのご協力に感謝します。",
+            "lineone": "公開するコンテンツが当社の利用規約に準拠していることをご確認ください。",
+            "lineonetwo": "利用規約。",
+            "linetwo": "他人のコンテンツをアップロードすることは著作権侵害であり、最長10年の懲役または1,000万円以下の罰金が科せられます。",
+            "linethree": "モザイク処理されていないコンテンツはわいせつ物の頒布に該当し、刑事犯罪となるため、公開しないでください。",
+            "linefour": "性器や性交画像を検閲していない場合、すべての投稿が削除される場合があります。",
+            "buttonclick": "投稿の公開に関するヘルプはこちらをクリックしてください。",
+            "success": "成功しました！",
+            "linepost": "投稿は正常に公開され、フォロワーが閲覧できるようになりました。",
+            "continuehome": "ホームへ進む",
+            "viewprofile": "プロフィールを見る"
+        },
+        "placeholder": {
+            "explanationText": "説明を入力してください",
+            "tagstext": "タグを入力してください"
+        }
+    },
+    "feed": {
+        "forYou": "おすすめ",
+        "following": "フォロー中",
+        "loading": "フィードを読み込み中...",
+        "noPostsAvailable": "投稿がありません",
+        "createFirstPost": "最初の投稿を作成"
+    },
+    "ageVerification": {
+        "warning": "次のページには成人向けコンテンツが含まれています。\n18歳未満の方のアクセスは固く禁止されています。",
+        "question": "あなたは18歳以上ですか？",
+        "yes": "はい",
+        "cancel": "キャンセル",
+        "underageMessage": "18歳未満の方はこのサービスをご利用いただけません",
+        "close": "閉じる"
+    },
+    "emailVerification": {
+        "title": "メールアドレスはまだ確認されていません",
+        "sentInfo": "確認リンクを含むメールを入力されたメールアドレスに送信しました。メールをご確認ください。",
+        "cooperation": "不正・悪意のあるアカウント防止へのご協力に感謝します。",
+        "notReceived": "確認メールが届かない場合は、入力したメールアドレスを再度ご確認のうえ（{link}）、確認メールを再送してください。",
+        "spamSettings": "メールソフトやプロバイダの迷惑メール設定が myfans ドメインからの受信を許可していることを確認してください。",
+        "fromAddress": "確認メールは <strong>noreply@myfans.jp</strong> から送信されます。",
+        "moreInfo": "その他の問題についての情報は {link} をご確認ください。",
+        "backToCreation": "アカウント作成に戻る",
+        "brand": "myfans"
+    },
+    "creatorPage": {
+        "followers": "フォロワー",
+        "follow": "フォロー",
+        "following": "フォロー中",
+        "seeMore": "ランキングでさらに見る",
+        "recommend": "おすすめ",
+        "month": "月",
+        "posts": "投稿",
+        "subscribe": "登録",
+        "viewmore": "もっと見る",
+        "allcreatorhere": "すべてのクリエイターはこちら →"
+    },
+    "navigation": {
+        "home": "ホーム",
+        "feed": "フィード",
+        "ranking": "ランキング",
+        "messages": "メッセージ",
+        "account": "アカウント"
+    },
+    "featuredAdmin": {
+        "header": "管理者おすすめ",
+        "postSection": "投稿",
+        "premiumBanner": {
+            "title": "プレミアムアクセス",
+            "description": "限定コンテンツを解放して、すべてのプレミアム機能を利用しましょう",
+            "button": "今すぐアップグレード"
+        }
+    },
+    "postLibrary": {
+        "all": "全て",
+        "title": "投稿ライブラリ",
+        "purchased": "購入済み",
+        "saved": "保存済み",
+        "liked": "いいね",
+        "viewingHistory": "閲覧履歴",
+        "new": "新着",
+        "viewingdate": "閲覧データ",
+        "mostLiked": "最もいいね！された",
+        "today": "今日"
+    },
+    "notifications": {
+        "paymentRedirect": "クレジットカードでのお支払い時にリダイレクトされる決済システム画面について",
+        "termsUpdate": "利用規約改定のお知らせ"
+    },
+    "genres": {
+        "title": "おすすめのジャンル",
+        "amateur": "素人",
+        "personalFilming": "個人撮影",
+        "marriedWoman": "人妻",
+        "largeBreasts": "巨乳",
+        "pervert": "変態",
+        "homeVideo": "ホームビデオ",
+        "beautifulWoman": "美人",
+        "beautifulBreasts": "美乳",
+        "posts": "{{count}} 件の投稿",
+        "SeeMore": "もっとジャンルを見る"
+    },
+    "ranking": {
+        "title": "ランキング",
+        "filters": {
+            "all": "すべて",
+            "popular": "人気",
+            "premium": "プレミアム",
+            "live": "ライブ"
+        },
+        "empty": {
+            "emoji": "💕",
+            "message": "このカテゴリには投稿がありません"
+        }
+    },
+    "creatorFollow": {
+        "title": "クリエイター",
+        "recruit": "リクルート",
+        "recruitMessage": "運営/開発メンバー募集中"
+    },
+    "rankingPage": {
+        "tabs": {
+            "post": "投稿",
+            "creator": "クリエイター"
+        },
+        "time": {
+            "daily": "毎日",
+            "weekly": "毎週",
+            "monthly": "毎月",
+            "allTime": "全期間"
+        }
+    },
+    "gender": {
+        "title": "閲覧したい投稿を選択してください",
+        "general": {
+            "label": "一般向けアダルト",
+            "description": "すべての成人向けコンテンツ"
+        },
+        "gay": {
+            "label": "ゲイ・BL",
+            "description": "LGBTQ+向けコンテンツ"
+        },
+        "show": "表示する",
+        "cancel": "キャンセル"
+    },
+    "homePage": {
+        "gender": "性別",
+        "welcomeMessage": "FANS HUBへようこそ",
+        "introText": "お気に入りのクリエイターによる限定コンテンツをご覧ください。登録してフォローし、パーソナライズされた体験をお楽しみください。",
+        "getStarted": "始める",
+        "learnMore": "詳細はこちら"
+    },
+    "postPage": {
+        "like": "いいね！",
+        "likes": "いいね！",
+        "comments": "コメント",
+        "share": "シェア",
+        "save": "保存",
+        "viewProfile": "プロフィールを見る",
+        "addComment": "コメントを追加...",
+        "noComments": "まだコメントがありません。最初にコメントしてください！",
+        "loadMoreComments": "もっとコメントを読み込む",
+        "commentPlaceholder": "コメントを書く...",
+        "postComment": "コメントを投稿",
+        "viewmore": "もっと見る",
+        "new": "新着",
+        "allgenres": "すべてのジャンルはこちら →",
+        "creatorcomingsoon": "クリエイタータブのコンテンツは次に実装されます"
+    },
+    "notices": {
+        "creditCard": "クレジットカード決済使用時に遷移する決済システム画面について",
+        "termsUpdate": "利用規約改定のお知らせ"
+    },
+    "GenreCategory": {
+        "listTitle": "ジャンル一覧",
+        "browseByCategory": "カテゴリから探す",
+        "loadMore": "さらにカテゴリを読み込む",
+        "appearance": {
+            "title": "外見",
+            "description": "巨乳や高身長など出演者の特徴に基づくジャンル"
+        },
+        "play": {
+            "title": "プレイ",
+            "description": "騎乗位やフェラチオなど内容に基づくジャンル"
+        },
+        "type": {
+            "title": "タイプ",
+            "description": "素人や人妻などコンセプトに基づくジャンル"
+        },
+        "situation": {
+            "title": "シチュエーション",
+            "description": "カップルやスパなど撮影シナリオに基づくジャンル"
+        },
+        "costume": {
+            "title": "コスチューム",
+            "description": "制服や水着など衣装に基づくジャンル"
+        }
+    },
+    "emailVerify": {
+        "title": "メールアドレスはまだ確認されていません。",
+        "afterBr": "まだ確認されていません。",
+        "sentInfo": "ご入力いただいたメールアドレスに確認リンクを記載したメールを送信しました。ご確認ください。",
+        "cooperation": "不正なアカウントや悪質なアカウントの防止にご協力いただきありがとうございます。",
+        "notReceived": "確認メールが届かない場合は、ご入力いただいたメールアドレス（{link}を参照）をご確認の上、確認メールを再送信してください。",
+        "spamSettings": "お使いのメールソフトまたはメールプロバイダーのスパム設定で、myfansドメインからの受信が許可されていることをご確認ください。"
+    },
+    "notificationPage": {
+        "title": "通知",
+        "tabs": {
+            "administration": "事務局",
+            "notices": "お知らせ",
+            "purchases": "売買"
+        }
+    },
+    "register_creator": {
+        "progress": {
+            "step1": "情報を入力",
+            "step2": "電話番号認証",
+            "step3": "書類を提出",
+            "step4": "書類審査"
+        },
+        "title": "個人情報を入力してください",
+        "subtitle": "この情報は、次のページで提出する本人確認書類の情報と一致する必要があります。",
+        "form": {
+            "name": "氏名",
+            "furigana_family": "フリガナ（姓）",
+            "furigana_first": "フリガナ（名）",
+            "address": "住所",
+            "dob": "生年月日"
+        },
+        "content_kind": {
+            "title": "どのようなコンテンツを投稿しますか？",
+            "general_adult": "一般（成人）",
+            "gay_bl": "ゲイ・BL"
+        },
+        "notice": "ここで入力した情報は後で変更できません",
+        "next": "次へ",
+        "back": "戻る"
+    },
+    "AdminPage": {
+        "title": "管理パネル",
+        "topTitle": "管理ダッシュボード",
+        "status": "ステータス",
+        "action": "操作",
+        "id": "ID",
+        "dashboardPage": {
+            "title": "ダッシュボード",
+            "stats": "統計とランキング",
+            "views": "閲覧数",
+            "followers": "フォロワー数",
+            "ltv": "LTV（顧客生涯価値）"
+        },
+        "postsPage": {
+            "title": "投稿",
+            "postMng": "投稿管理",
+            "stitle": "タイトル",
+            "toggle": "切り替え",
+            "switchBtn": "スイッチ"
+        },
+        "reportsPage": {
+            "title": "通報",
+            "reportProc": "通報処理",
+            "type": "種類",
+            "user": "ユーザー",
+            "resolveBtn": "解決"
+        },
+        "salesPage": {
+            "title": "売上",
+            "salesRevenue": "売上と収益",
+            "transId": "取引ID",
+            "user": "ユーザー",
+            "amount": "金額"
+        },
+        "userPage": {
+            "title": "ユーザー",
+            "userMng": "ユーザー管理",
+            "name": "名前",
+            "banBtn": "禁止"
+        },
+        "creatorPage": {
+            "title": "クリエイター",
+            "creatorMng": "クリエイター管理",
+            "name": "名前",
+            "banBtn": "禁止"
+        },
+        "verificationPage": {
+            "title": "認証",
+            "identityVer": "本人確認と年齢確認",
+            "user": "ユーザー",
+            "type": "種類",
+            "approveBtn": "承認",
+            "rejectBtn": "拒否"
+        }
+    }
+}

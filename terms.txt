@@ -1,0 +1,276 @@
+Terms of Use for MyFans
+Tokuneko Co., Ltd. (hereinafter referred to as “the Company”) establishes the following terms of use (hereinafter referred to as “these Terms”) regarding the use of the services provided on the websites operated by the Company. These Terms apply to all users of the services provided by the Company.
+
+Chapter 1: General Provisions
+Article 1 (Definitions)
+The following terms are defined as follows in these Terms:
+
+1. "This Site"
+Refers to the websites operated by the Company under the following URL. The URL may change due to the Company's circumstances.
+
+https://lp.myfans.jp/
+
+2. "Users"
+Refers to individuals who use this Site.
+
+3. "This Service"
+Refers to the fan club site services provided by the Company. Details are specified in Chapter 2 of these Terms and on this Site.
+
+4. "Members"
+Refers to Users who have completed the membership registration procedures specified in Article 2 of these Terms and include both Organizers and Participants.
+
+5. "Organizers"
+Refers to individuals who have submitted a notification under the Act on Control and Improvement of Amusement Business, etc., and have completed the registration procedures as Organizers for operating a fan club site.
+
+6. "Participants"
+Refers to Members who have completed the registration procedures to use the services provided by Organizers on the fan club site.
+
+7. "Content"
+Refers to digital information such as activity updates, private videos, still images, text, and communication services provided by Organizers to Participants.
+
+8. "Fan Club Site"
+Refers to a website where Organizers can distribute various Content to Participants.
+
+9. "Fan Club Site Usage Agreement"
+Refers to the agreement formed between the Organizer and the Participant when the Participant applies for the use of a Fan Club Site and the Organizer accepts it.
+
+10. "Fan Club Membership Fees"
+Refers to the fees that Participants pay to Organizers based on the Fan Club Site Usage Agreement.
+
+11. "This System"
+Refers to the hardware and software used by the Company to operate and manage this Site and this Service.
+
+12. "These Terms, etc."
+Refers collectively to these Terms, the Privacy Policy, and other conditions set by the Company for using this Service.
+
+13. "This Agreement"
+Refers to the agreement between the Company and Users based on these Terms, etc.
+
+Article 2 (Membership Registration)
+The membership registration procedures for this Service must be conducted by the User themselves. Minors (defined as persons under 18 years of age after April 1, 2022) are not allowed to use this Service.
+Applicants for membership registration (hereinafter referred to as "Membership Registration Applicants") shall input and submit the required information specified by the Company on the membership registration screen of this Site. Membership is granted when the Company notifies the Applicant (via email, etc.) of its acceptance.
+The Company may refuse or cancel acceptance of membership registration if the Applicant or Member falls under any of the following:
+False information, errors, or omissions in the information entered on this Site.
+If the Applicant or Member is found not to exist.
+Duplicate registration.
+Previous penalties, such as suspension or disqualification of membership, under Article 21, Paragraph 1 or 2 of these Terms.
+Registration by minors.
+If determined to be part of or associated with antisocial forces, including organized crime groups.
+Any other cases deemed inappropriate by the Company.
+Applicants for membership registration must select whether to register as an Organizer or Participant.
+Those applying as Organizers must declare and warrant that they have submitted notifications under applicable laws regarding special businesses.
+If any of the above in Paragraph 3 is found to apply after registration, the Company may cancel the registration and suspend the use of this Service.
+Members must comply with these Terms, etc.
+Article 3 (Changes to Member Information)
+Members must promptly notify the Company of any changes or corrections to their registered information, such as name, address, phone number, or email address. The Company is not liable for any damages incurred by the Member or third parties due to failure or delay in providing such notice.
+
+Article 4 (Succession of Membership Status)
+Membership status under this Agreement is not inheritable. However, any payment obligations for membership fees that have already arisen are subject to inheritance.
+
+Article 5 (Notifications to Users)
+Notifications to Users (including Members) may be made by posting on this Site. Notifications are deemed effective when the posted information becomes accessible on the Company's server.
+Individual notifications to Members about this Service may be made using the contact information provided by the Member. Such notifications are deemed effective when sent by the Company, even if delays occur due to failure to update contact details under Article 3.
+Article 6 (Changes to These Terms, etc.)
+The Company may change these Terms, etc., without individual agreements under the following conditions:
+If the changes benefit Users generally.
+If the changes are reasonable, considering their necessity, appropriateness, and the circumstances.
+Changes to these Terms, etc., will be announced with an effective date, and the revised Terms will apply from that date.
+Article 7 (Management of Passwords and User IDs)
+Members are responsible for managing and storing their passwords and User IDs. They must not allow third-party use, transfer, or sale of this information. Regular password updates are required.
+Members bear responsibility for damages arising from inadequate management or third-party misuse of passwords or User IDs.
+The Company considers all actions conducted using a Member's credentials as performed by the Member.
+Members must immediately notify the Company if unauthorized use or leakage of credentials is detected.
+Article 8 (User's Responsibility for Maintaining Their Environment)
+Users must prepare and maintain, at their own expense, the necessary hardware and software for connecting to and using this Service.
+Users are responsible for ensuring that their equipment functions properly.
+Article 9 (Site Monitoring and Review)
+The Company reserves the right to monitor this Site to ensure compliance with these Terms, including investigating posted data and whether legal violations are occurring.
+
+Article 10 (Contents of This Service)
+Organizers can establish fan club sites and provide Content to Participants.
+Organizers may allow Participants to view restricted Content on their fan club sites.
+Organizers can use various management functions provided by the Company for site operations.
+Organizers authorize the Company to act as their agent in collecting membership fees and other payments.
+Chapter 2: This Service
+Article 11 (Intellectual Property Rights of Content Provided by Organizers)
+The intellectual property rights (including but not limited to copyrights) of the Content provided by Organizers on their fan club sites shall remain with the Organizers.
+
+Article 12 (Prohibited Content Provided by Organizers)
+Organizers are prohibited from providing Content or services (hereinafter referred to as "Prohibited Content, etc.") that fall under the following categories on their fan club sites:
+Works or items that infringe upon third-party rights (including but not limited to patent rights, utility model rights, design rights, trademark rights, copyrights, rights to reputation, portrait rights, privacy rights, and publicity rights).
+Performing or singing songs for which rights have not been cleared.
+Selling goods.
+Works or items related to child pornography.
+Content containing or evoking terms like "human trafficking," "incest," "bestiality," "sexual trade," "rape," "abuse," "slavery," "punishment," "hypnosis," etc.
+Stolen goods.
+Works or content that violate laws or public order and morals.
+Any other content deemed inappropriate by the Company.
+Organizers must apply mosaic or other concealment processing for the following materials in their user-posted Content:
+Genitals or genital-like areas.
+The junction or insertion points of genitals or anus.
+Vomit, feces, or other waste matter.
+Depictions of dismemberment or excessive damage to bodies, whether living or deceased, including animals.
+Other content deemed potentially offensive by the Company.
+If Organizers violate the above provisions, the Company may impose the following penalties:
+Confiscation of sales equivalent.
+Changes in the commission rate.
+Exclusion from rankings.
+Other measures deemed appropriate by the Company.
+If the Company deems the Content to potentially qualify as Prohibited Content, or receives reports from third parties, it may request documentation (e.g., notification under the Act on Control and Improvement of Amusement Business, performer agreements) to prove compliance. The Company will respond to such reports within 7 days from the date of the report. Failure to provide the required documentation by the specified deadline may result in Content removal or termination of the fan club site.
+The Company shall not be liable for any damages incurred by Organizers, Participants, or third parties due to actions taken under this Article.
+Article 13 (Fan Club Site Usage Agreement)
+The agreement between an Organizer and a Participant is formed when a Participant applies for the use of a fan club site and the Organizer accepts the application.
+By entering into a Fan Club Site Usage Agreement, Participants agree to pay the membership fees specified for each fan club site.
+Details of the pricing structure and payment methods for each fan club site will be posted on this Site.
+In the event of disputes between Participants and Organizers, the Company may take appropriate measures to ensure smooth service operation.
+Article 14 (Participant Payments)
+Tokuneko UK Limited is responsible for payment processing.
+Organizers grant the Company the authority to collect membership fees on their behalf, and payments are considered complete when Participants pay the Company.
+Participants must pay membership fees for the current month by the end of the previous month to use the relevant fan club site.
+Participants must use payment services specified on this Site for membership fees.
+If Participants use credit card payments, they must adhere to their agreements with credit card companies, resolving disputes with the credit card company independently.
+Article 15 (Payments from the Company to Organizers)
+The Company deducts fees as stipulated in Articles 15 and 17 from the collected membership fees before transferring the remaining balance to the bank account designated by the Organizer, upon their withdrawal request. The minimum request amount is JPY 10,000.
+Withdrawals requested between the 1st and last day of a month will be processed on the 5th of the second following month. No interest accrues during this period.
+The Company may process express withdrawals with a separate fee payable by the Organizer.
+If no withdrawal request is made within 180 days of the Organizer's last service use, the Company may deem the Organizer to have waived the claim for the amount due.
+Article 16 (Incorrect Bank Account Information)
+If payment cannot be processed due to errors in the designated bank account, the Company may treat the withdrawal request as invalid and notify the Organizer to resubmit.
+If payments are erroneously transferred to a third party due to such errors, the Company may consider the payment valid and is indemnified against claims.
+If the Company performs reversal procedures to recover funds, the Organizer will bear the associated fee of JPY 880.
+Article 17 (Service Fees)
+Organizers must pay a fee equal to 17.5% of the membership fees collected by the Company (including consumption tax, rounded to the nearest decimal).
+A JPY 330 transfer fee (including consumption tax) will be deducted for each withdrawal request. This applies even if payment is unsuccessful due to errors in bank account information.
+The Company may deduct applicable fees from payments made to Organizers.
+Article 18 (Handling of Content Upon Organizer Cancellation)
+Organizers may cancel their contract at the end of the month following their cancellation request.
+Organizers must notify fan club members of their decision to cease operations before the cancellation date.
+The Company may delete fan club pages, including posted Content, 180 days after cancellation, except for illegal or infringing content, which may be deleted immediately.
+Chapter 3: General Provisions
+Article 19 (Operation and Maintenance of This Service)
+The Company will operate and maintain this Service to ensure Users can safely use this Site and Service.
+Maintenance operations may be outsourced to third parties.
+Article 20 (Liability for Damages by Users)
+Users who breach this Agreement and cause damages to the Company are liable for compensation.
+
+Chapter 3: General Provisions (Continued)
+Article 21 (Prohibited Acts)
+The Company prohibits Users (including Members) from engaging in the following acts:
+Actions that infringe upon or may infringe upon third-party rights or legal interests, including but not limited to intellectual property rights (patents, copyrights, trademarks, design rights, etc.).
+Reposting Content without the prior written consent of the Organizer.
+Sending or uploading harmful computer programs to this system.
+Violating laws or engaging in criminal acts, or actions that may lead to such violations.
+Actions against public order and morals, or those that may violate such principles.
+Actions that interfere with the operation of this Site or the provision of this Service, or that may cause such interference.
+Actions that obstruct other Users’ ability to use this Site or this Service, or that may cause such obstruction.
+Allowing third parties to use this Service in any way not explicitly allowed under these Terms, including but not limited to transfer, lending, sublicensing, or licensing.
+Transferring, lending, selling, or offering as collateral any rights or obligations under this Agreement.
+Allowing third parties to use passwords or User IDs associated with this Service.
+Impersonating third parties.
+Engaging in actions that infringe upon the intellectual property rights of this Site or Service, including but not limited to reverse engineering.
+Posting or transmitting on this Site information that:
+Contains excessively violent or cruel expressions.
+Aims to solicit sexual encounters, obscene acts, or prostitution.
+Includes viruses or other harmful computer programs.
+Encourages self-harm or suicide.
+Promotes illegal or inappropriate drug use.
+Links to harmful sites, such as phishing or malware distribution sites.
+Advertises products or services unrelated to this Service, or solicits for multi-level marketing schemes.
+Includes antisocial or offensive expressions.
+Distributes chain messages.
+Contains sexually stimulating or explicit content involving minors.
+Encouraging or facilitating any of the prohibited actions listed above.
+Any other actions deemed inappropriate by the Company.
+Users bear full responsibility for actions violating the above provisions, and the Company accepts no liability.
+If a Member engages in any prohibited acts, the Company may, without prior notice, suspend all or part of this Service and deem any benefits obtained as unjust enrichment.
+Article 22 (Handling of Personal Information)
+Users agree that the Company may collect, use, or provide to third parties personal information and usage history under the following purposes:
+To confirm Service applications.
+To process membership registration.
+To send emails related to this Service.
+To collect membership fees and transfer them to Organizers.
+To respond to inquiries from Users.
+To inform Users about updates, changes to these Terms, or new services.
+To analyze trends for marketing purposes.
+To improve existing services or develop new ones.
+To investigate and prevent illegal activities such as cyberattacks.
+To confirm whether Users are associated with antisocial forces.
+To comply with the Company’s Privacy Policy or Cookie Policy.
+Any other purpose for which Users have given separate consent.
+Personal information is managed in accordance with the Privacy Policy and other Company policies.
+The Company may entrust personal information to subcontractors within the scope necessary for achieving the purposes stated above.
+The Company will not disclose personal information to third parties except under specific conditions, such as User consent, legal requirements, or emergencies.
+Article 23 (Suspension of Use)
+If a Member violates these Terms and fails to rectify the situation after being given reasonable notice, the Company may suspend their use of this Service or cancel their membership.
+The Company may immediately suspend or cancel membership if any of the following applies:
+The Member violates Article 2, Paragraph 3.
+The Member becomes uncontactable.
+The Member passes away.
+The Member registers for purposes other than Service use.
+Notifications under Article 5 fail to reach the Member.
+The Member violates Articles 12 or 21.
+The Member has not used this Service for 180 days.
+Any other reason deemed inappropriate by the Company.
+The Company is not liable for damages resulting from the suspension or cancellation of membership.
+Article 24 (Cancellation by Participants)
+Participants may cancel their Fan Club Site Usage Agreement or this Agreement through specified procedures on this Site.
+Upon cancellation, access to Content ceases immediately, and the Company will not refund fees already paid.
+Participants are not liable for damages incurred by Organizers due to cancellation.
+Article 25 (Confidential Information)
+Members must not disclose or leak the Company’s confidential information obtained during Service use. Exceptions include publicly known information, information already possessed by the Member, or independently developed information.
+Members may not reproduce the Company’s confidential information without prior written consent.
+Article 26 (Temporary Suspension of Service)
+The Company may temporarily suspend this Service under the following conditions:
+Routine maintenance of this System.
+Unavoidable circumstances such as natural disasters or outages.
+Network failures.
+System malfunctions.
+Security measures.
+The Company will notify Users of planned suspensions, except in emergencies.
+The Company is not liable for damages caused by such suspensions.
+Article 27 (Handling Complaints)
+If third parties, including consumer protection groups, report violations, the Company will investigate and delete offending Content if necessary.
+If performers claim non-consent to the use of their work, the Company may restrict access until consent is verified.
+Article 28 (Termination of Service)
+The Company may terminate this Site or Service after providing reasonable notice.
+The Company is not liable for damages except in cases of intent or gross negligence.
+Article 29 (Intellectual Property Rights)
+All intellectual property rights related to this Site and Service belong to the Company or relevant third parties. Service use does not grant any transfer or licensing of such rights.
+
+Article 30 (Disclaimer and Non-Guarantee)
+The Company’s responsibilities are limited to reasonably operating this Service. No warranties are provided for suitability for specific purposes.
+The Company is not liable for User mistakes during transactions or non-refunds.
+The Company is not liable for damages caused by User violations of these Terms.
+Users must provide necessary equipment, and the Company is not responsible for issues arising from such equipment.
+The Company does not guarantee the accuracy or completeness of Content provided on fan club sites.
+Recommended Operating Environment
+
+Smartphones
+Android
+Google Chrome (latest version)
+WebView (latest version)
+iOS
+Safari (latest version)
+Google Chrome (latest version)
+PCs
+Google Chrome (latest version)
+Article 31 (Liability for Damages)
+If the Company violates these Terms and causes damage to Users, the Company is only liable for direct, actual damages resulting from the violation. The Company is not liable for special, indirect, or consequential damages, including loss of profits, except in cases of intent or gross negligence.
+
+Article 32 (Prohibition of Assignment of Rights and Obligations)
+Users may not transfer, assign, or offer as collateral any rights or obligations arising from this Agreement to third parties.
+
+Article 33 (Governing Law)
+This Agreement is governed by the laws of Japan, including its formation, validity, performance, and interpretation.
+
+Article 34 (Severability)
+If any provision of these Terms is deemed invalid or unenforceable under applicable laws, the remaining provisions will remain fully effective.
+
+Article 35 (Jurisdiction)
+If disputes arise regarding this Agreement, Users and the Company agree that the Tokyo Summary Court or the Tokyo District Court shall have exclusive jurisdiction as the court of first instance.
+
+Effective Date
+Enacted: June 13, 2021
+Revised: July 24, 2021
+Revised: August 26, 2021
+Revised: December 26, 2022
