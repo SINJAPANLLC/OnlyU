@@ -1,0 +1,31 @@
+name: Deploy to EC2
+
+# トリガー設定
+on:
+  push:
+    branches: [ "main" ]   # ← mainにpushされたとき実行される
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # ① リポジトリのコードをチェックアウト
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # ② EC2にSSH接続してデプロイ処理を実行
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.EC2_HOST }}        # GitHubに登録した Elastic IP
+        username: ${{ secrets.EC2_USER }}    # "deploy" ユーザー
+        key: ${{ secrets.EC2_SSH_KEY }}      # 秘密鍵
+        script: |
+          cd ~/OnlyU
+          git pull origin main
+          npm install
+          npm run build
+          sudo rm -rf /var/www/html/*
+          sudo cp -r build/* /var/www/html/
+          sudo systemctl restart nginx
