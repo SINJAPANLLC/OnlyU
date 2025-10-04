@@ -90,7 +90,7 @@ const AccountPage = () => {
                         </div>
                     </div>
 
-                    {/* About myfans Section */}
+                    {/* About onlyu Section */}
                     <div>
                         <div className="flex items-center mb-4">
                             <FileText className="w-5 h-5 mr-2 text-gray-700" />

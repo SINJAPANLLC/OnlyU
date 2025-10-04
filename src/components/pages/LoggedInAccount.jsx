@@ -147,7 +147,7 @@ const LoggedInAccountPage = () => {
                     </div>
                 </div>
 
-                {/* About myfans Section */}
+                {/* About onlyu Section */}
                 <div className="px-4 mt-8">
                     <h2 className="flex items-center font-bold text-lg mb-3">
                         <FileText className="mr-2" /> {t('account.about.title')}

@@ -10,8 +10,8 @@ import Home from './components/pages/Home';
 import AgeVerification from './components/pages/AgeVerification';
 import GenreNavigationSystem from './components/pages/Ranking/GenreCategoryList';
 import CreatePostPage from './components/pages/CreatePostPage';
-import MyFansLogin from './Auth/login_page';
-import MyFansSignUp from './Auth/sign_up';
+import OnlyuLogin from './Auth/login_page';
+import OnlyuSignUp from './Auth/sign_up';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { UnreadMessagesProvider } from './context/UnreadMessagesContext';
 import SearchPage from './components/pages/SearchPage';
@@ -96,7 +96,7 @@ const AppRoutes = () => {
         element={
           isAuthenticated ? <Navigate to="/home" replace /> :
             !isVerified ? <Navigate to="/age-verification" replace /> :
-              <MyFansLogin />
+              <OnlyuLogin />
         }
       />
       <Route
@@ -104,7 +104,7 @@ const AppRoutes = () => {
         element={
           isAuthenticated ? <Navigate to="/home" replace /> :
             !isVerified ? <Navigate to="/age-verification" replace /> :
-              <MyFansSignUp />
+              <OnlyuSignUp />
         }
       />
 

@@ -6,7 +6,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase"; // ✅ Updated path to firebase.js
 
-export default function MyFansSignUp() {
+export default function OnlyuSignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -85,7 +85,7 @@ export default function MyFansSignUp() {
             <div className="bg-pink-500 p-2 rounded-lg">
               <Lock className="text-white" size={24} />
             </div>
-            <span className="text-2xl font-bold text-pink-500">myfans</span>
+            <span className="text-2xl font-bold text-pink-500">Only-U</span>
           </div>
         </motion.div>
 

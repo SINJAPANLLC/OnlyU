@@ -156,11 +156,11 @@
         "sentInfo": "We have sent an email with a confirmation link to the email address you entered. Please check for it.",
         "cooperation": "We appreciate your cooperation in preventing fraudulent and malicious accounts.",
         "notReceived": "If you do not receive the confirmation email, please check the email address you entered (see {link}) and resend the confirmation email.",
-        "spamSettings": "Please ensure that the spam settings of your email software or email provider allow you to receive from the myfans domain.",
-        "fromAddress": "The verification email will be sent from <strong>noreply@myfans.jp</strong>.",
+        "spamSettings": "Please ensure that the spam settings of your email software or email provider allow you to receive from the onlyu domain.",
+        "fromAddress": "The verification email will be sent from <strong>noreply@onlyu.jp</strong>.",
         "moreInfo": "For information about other possible problems, {link}.",
         "backToCreation": "Back to account creation",
-        "brand": "myfans"
+        "brand": "onlyu"
     },
     "creatorPage": {
         "followers": "Followers",
@@ -321,7 +321,7 @@
         "settings": "Settings",
         "help": "Help",
         "languagesettings": "Language settings / Languages",
-        "aboutonlyu": "About myfans"
+        "aboutonlyu": "About onlyu"
     },
     "emailVerify": {
         "title": "Your email address has not been",
@@ -329,7 +329,7 @@
         "sentInfo": "We have sent an email with a confirmation link to the email address you entered. Please check for it.",
         "cooperation": "We appreciate your cooperation in preventing fraudulent and malicious accounts.",
         "notReceived": "If you do not receive the confirmation email, please check the email address you entered (see {link}) and resend the confirmation email.",
-        "spamSettings": "Please ensure that the spam settings of your email software or email provider allow you to receive from the myfans domain."
+        "spamSettings": "Please ensure that the spam settings of your email software or email provider allow you to receive from the onlyu domain."
     },
     "notificationPage": {
         "title": "Notification",

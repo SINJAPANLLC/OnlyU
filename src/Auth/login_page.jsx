@@ -8,7 +8,7 @@ import { doc, updateDoc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase"; // ✅ Updated path to firebase.js
 import { useTranslation } from 'react-i18next';
 
-export default function MyFansLogin() {
+export default function OnlyuLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);

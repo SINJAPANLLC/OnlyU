@@ -1,4 +1,4 @@
-Terms of Use for MyFans
+Terms of Use for onlyu
 Tokuneko Co., Ltd. (hereinafter referred to as “the Company”) establishes the following terms of use (hereinafter referred to as “these Terms”) regarding the use of the services provided on the websites operated by the Company. These Terms apply to all users of the services provided by the Company.
 
 Chapter 1: General Provisions
@@ -8,7 +8,7 @@ The following terms are defined as follows in these Terms:
 1. "This Site"
 Refers to the websites operated by the Company under the following URL. The URL may change due to the Company's circumstances.
 
-https://lp.myfans.jp/
+https://lp.onlyu.jp/
 
 2. "Users"
 Refers to individuals who use this Site.

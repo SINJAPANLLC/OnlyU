@@ -96,7 +96,7 @@ GET /search?keyword=...: Keyword search
 GET /tags: Get a list of tags
 
 reference website:
-https://myfans.jp/en
+https://onlyu.jp/en
 
 google Docs:
 https://docs.google.com/spreadsheets/d/12fPmn0gpb0N2n52IBiIHz0pawjuX8EEDQYNhWLmiK7U/edit?gid=0#gid=0
