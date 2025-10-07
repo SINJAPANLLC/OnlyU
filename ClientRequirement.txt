@@ -1,0 +1,106 @@
+Milestone 1 (Implementation and Verification of Core Functionality)
+
+Main Scope (Delivery Criteria)
+1. Member Registration/Login (including Social Media Integration)   --- Done
+2. Posts, Feeds, Comments, Direct Messages, and Community      --- Half Done
+3. Search/Rankings/Notifications/Various Settings             --- Half Done
+4. Static Pages such as Terms of Use and Privacy Policy     --- Done
+
+Delivers
+Delivery in a form that can be tested in a staging environment (link sharing)
+Full source code, deployment instructions, API specifications (excerpts), and simple test results
+
+Acceptance Criteria
+The above functions must function as specified and be verified and approved by the client.
+------------------------------------------------------
+
+Milestone 2 (Monetization, Operational Functions, and Production Readiness)
+Main Scope (Delivery Criteria)
+
+1. Tips/High-Quality Plan (Subscription)
+2. Payment Integration (Stripe, Pay.jp, etc.), Sales Management, and Bank Transfer Destination Registration (including Fee Management)
+3. Live Streaming Service Integration (e.g., Mux, Vimeo, etc.)
+4. Identity Verification/Age Verification (KYC)
+5. Administrator Features (Violation Detection, Report Response, User Management, and Logging)
+6. External Social Media Integration (Twitter, TikTok)
+
+Final testing and production deployment
+Delivers
+Implementation of production-grade functionality, payment and streaming connectivity checks, operation manual (dashboard operation, sales management flow, etc.)
+
+Acceptance conditions
+Payment and streaming operation checks, basic admin panel operation checks, client approval
+
+
+-----------------------------------------------------------
+
+Member Registration / Login
+
+Authentication: Firebase Authentication / Auth0 / Custom JWT Authentication
+Social Media Integration (Optional): Google, Apple, Twitter API
+
+■ Content Posting and Distribution (Images/Videos)
+
+Storage: AWS S3 / Firebase Storage
+Video Distribution: Mux / Vimeo API / CloudFront (CDN)
+Posting Database Management: Firebase Firestore / MongoDB
+
+■ Community (Timeline, Likes, Comments)
+
+Data Structure: Real-time Database (e.g., Firebase) or REST API Design
+Notification Integration: Firebase Cloud Messaging (FCM)
+
+■ Payment Function (Subscriptions/Content Purchases)
+
+Stripe API / Pay.jp / Apple/Google In-App Purchase
+
+■ Admin Panel and Analytics (Optional)
+
+Admin Web UI: React / Next.js, etc.
+Analysis Tools: Google Analytics / Firebase Analytics / Custom BI Function
+
+GET /users/:id: Get User Profile
+PUT /users/:id: Edit profile
+POST /users/:id/follow: Follow a user
+DELETE /users/:id/follow: Unfollow
+
+Posts/Content
+
+POST /posts: New post (supports text, images, and videos)
+GET /posts: Get a list of posts (supports search and pagination)
+GET /posts/:id: Get post details
+DELETE /posts/:id: Delete a post
+
+Video/Live Stream
+
+POST /videos: Upload a video
+GET /videos/:id: Get a video viewing URL
+POST /live/start: Start a live stream
+GET /live/:id/stream: Get a live streaming URL
+
+Comments/Reactions
+
+POST /comments: Post a comment
+POST /likes: Like a post
+DELETE /likes: Remove a like
+
+Payments/Subscriptions
+
+POST /payments/checkout: Start a payment (supports Stripe, etc.)
+GET /subscription/status: Check subscription status
+POST /subscription/cancel: Cancel a subscription
+
+Search and tagging functions
+
+GET /search?keyword=...: Keyword search
+GET /tags: Get a list of tags
+
+reference website:
+https://myfans.jp/en
+
+google Docs:
+https://docs.google.com/spreadsheets/d/12fPmn0gpb0N2n52IBiIHz0pawjuX8EEDQYNhWLmiK7U/edit?gid=0#gid=0
+
+
+Figma Design Link:
+https://www.figma.com/design/ZoOJzFVwC7NaLyIIRDIfYy/OnlyU?node-id=9-57&t=J3og0YUCQ2SqXsO0-1
