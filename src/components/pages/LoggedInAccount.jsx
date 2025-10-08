@@ -33,8 +33,9 @@ const LoggedInAccountPage = () => {
         else if (path === 'account') navigate('/account');
         else if (path === '/logout') {/* Implement logout logic here */ navigate('/login'); }
         else if (path === '/register-creator') navigate('/register-creator');
+        else if (path === '/creator-dashboard') navigate('/creator-dashboard');
         else if (path) navigate(path);
-        else if (path === 'languages') navigate('/settings/languages');
+        else if (path === 'languages') navigate('/settings/language');
         else if (path === 'switch-account') navigate('/login');
         else navigate('/');
     };
@@ -99,7 +100,6 @@ const LoggedInAccountPage = () => {
                     className="bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg shadow-md p-4 mx-4 mb-6 flex items-center justify-between"
                 >
                     <div className="flex items-center space-x-3">
-                        <Lock className="w-6 h-6 text-white" />
                         <h2 className="text-white text-lg font-semibold">{t('account.creatorDashboard.title')}</h2>
                     </div>
                     <motion.button
@@ -119,15 +119,15 @@ const LoggedInAccountPage = () => {
                         <CreditCard className="mr-2" /> {t('account.purchaseSave.title')}
                     </h2>
                     <div className="border rounded-lg divide-y divide-gray-200">
-                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/subscription')}
+                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/high-quality-plan')}
                         >
-                            <span>{t('account.purchaseSave.highQualityPlan')}</span>
-                            <span className="text-pink-600">{user.subscriptionStatus}</span>
+                            <span>高画質プラン</span>
+                            <span className="text-pink-600">未加入</span>
                         </button>
-                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/plans')}>{t('account.purchaseSave.subscribedPlans')}</button>
-                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/payment-methods')}>{t('account.purchaseSave.paymentMethods')}</button>
-                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/purchase-history')}>{t('account.purchaseSave.purchaseHistory')}</button>
-                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/amount-available')}>{t('account.purchaseSave.amountAvailable')}</button>
+                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/current-plan')}>加入中のプラン</button>
+                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/payment-methods')}>支払い方法</button>
+                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/purchase-history')}>購入履歴</button>
+                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/coupons')}>クーポン一覧</button>
                     </div>
                 </div>
 
@@ -140,6 +140,64 @@ const LoggedInAccountPage = () => {
                         {t('account.postsOperations.description')}
                     </p>
                     <button className="block w-full text-left px-4 py-3 border border-gray-200 rounded hover:bg-gray-50 text-gray-800" onClick={() => handleNavigation('/register-creator')}>{t('account.postsOperations.registerCreator')}</button>
+                    
+                    {/* Creator Management Features */}
+                    <div className="mt-4 space-y-2">
+                        <button 
+                            className="block w-full text-left px-4 py-3 border border-gray-200 rounded hover:bg-gray-50 text-gray-800" 
+                            onClick={() => handleNavigation('/exclusive-creator-registration')}
+                        >
+                            Only-U独占クリエイター登録
+                        </button>
+                        <button 
+                            className="block w-full text-left px-4 py-3 border border-gray-200 rounded hover:bg-gray-50 text-gray-800" 
+                            onClick={() => handleNavigation('/creator-ranking')}
+                        >
+                            クリエイターランキング
+                        </button>
+                        <button 
+                            className="block w-full text-left px-4 py-3 border border-gray-200 rounded hover:bg-gray-50 text-gray-800" 
+                            onClick={() => handleNavigation('/active-plans')}
+                        >
+                            運営中のプラン
+                        </button>
+                        <button 
+                            className="block w-full text-left px-4 py-3 border border-gray-200 rounded hover:bg-gray-50 text-gray-800" 
+                            onClick={() => handleNavigation('/my-posts')}
+                        >
+                            あなたの投稿
+                        </button>
+                        <button 
+                            className="block w-full text-left px-4 py-3 border border-gray-200 rounded hover:bg-gray-50 text-gray-800" 
+                            onClick={() => handleNavigation('/post-comments')}
+                        >
+                            投稿へのコメント
+                        </button>
+                        <button 
+                            className="block w-full text-left px-4 py-3 border border-gray-200 rounded hover:bg-gray-50 text-gray-800" 
+                            onClick={() => handleNavigation('/sales-management')}
+                        >
+                            売上管理
+                        </button>
+                        <button 
+                            className="block w-full text-left px-4 py-3 border border-gray-200 rounded hover:bg-gray-50 text-gray-800" 
+                            onClick={() => handleNavigation('/bank-account-registration')}
+                        >
+                            振込先口座の登録
+                        </button>
+                        <button 
+                            className="block w-full text-left px-4 py-3 border border-gray-200 rounded hover:bg-gray-50 text-gray-800" 
+                            onClick={() => handleNavigation('/transfer-request')}
+                        >
+                            振込申請
+                        </button>
+                        <button 
+                            className="block w-full text-left px-4 py-3 border border-gray-200 rounded hover:bg-gray-50 text-gray-800" 
+                            onClick={() => handleNavigation('/coupon-management')}
+                        >
+                            クーポン管理
+                        </button>
+                    </div>
                 </div>
 
                 {/* Settings Section */}
@@ -159,13 +217,13 @@ const LoggedInAccountPage = () => {
                             </label>
                             <span className="ml-2 cursor-help text-gray-400" title="Toggle to reject incoming messages.">?</span>
                         </div>
-                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/email-notifications')}>{t('account.settings.emailNotifications')}</button>
-                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/following')}>{t('account.settings.following')}</button>
-                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/blocked-users')}>{t('account.settings.blockedUsers')}</button>
-                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/personal-information')}>{t('account.settings.personalInfo')}</button>
-                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/phone-verification')}>{t('account.settings.phoneVerification')}</button>
-                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/email-verification')}>{t('account.settings.emailVerification')}</button>
-                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => navigate('/notifications')}>{t('account.settings.notices')}</button>
+                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/settings/email-notifications')}>{t('account.settings.emailNotifications')}</button>
+                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/settings/follow-list')}>{t('account.settings.following')}</button>
+                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/settings/blocked-users')}>{t('account.settings.blockedUsers')}</button>
+                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/settings/personal-info')}>{t('account.settings.personalInfo')}</button>
+                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/settings/phone-verification')}>{t('account.settings.phoneVerification')}</button>
+                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/settings/email-verification')}>{t('account.settings.emailVerification')}</button>
+                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => navigate('/settings/notifications')}>{t('account.settings.notices')}</button>
                     </div>
                 </div>
 
@@ -180,7 +238,7 @@ const LoggedInAccountPage = () => {
                         <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/privacy')}>{t('account.about.privacy')}</button>
                         <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/legal')}>{t('account.about.legal')}</button>
                         <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/guidelines')}>{t('account.about.guidelines')}</button>
-                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/help')}>{t('account.about.help')}</button>
+                        <button className="flex justify-between items-center py-3 px-4 hover:bg-gray-50 w-full text-gray-800" onClick={() => handleNavigation('/settings/help')}>{t('account.about.help')}</button>
                     </div>
                 </div>
 

@@ -38,7 +38,7 @@ const BottomNavigation = ({ active = "Home" }) => {
                                     </div>
                                 )}
                             </div>
-                            <span className="text-xs mt-1">{t(`navigation.${item.key}`)}</span>
+                            <span className="text-xs mt-1 whitespace-nowrap">{t(`navigation.${item.key}`)}</span>
                             {active.toLowerCase() === item.key && (
                                 <div className="w-1 h-1 bg-pink-500 rounded-full mt-1" />
                             )}

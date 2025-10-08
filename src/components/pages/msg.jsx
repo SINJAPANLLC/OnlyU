@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Send, ArrowLeft, MoreVertical, Plus, X, Users, ChevronRight } from 'lucide-react';
-import BottomNavigation from '../BottomNavigation';
+import BottomNavigationWithCreator from '../BottomNavigationWithCreator';
 import { useAuth } from '../../context/AuthContext';
 import { useUnreadMessages } from '../../context/UnreadMessagesContext';
 import { rtdb, db } from '../../firebase';
@@ -590,13 +590,6 @@ const MessagesUI = () => {
                   </button>
                 </div>
 
-                <button 
-                  onClick={handleNewChatClick}
-                  className="bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm hover:bg-gray-200 flex items-center space-x-2 mx-auto"
-                >
-                  <Users className="w-4 h-4" />
-                  <span>{t('messages.browseAllUsers')}</span>
-                </button>
               </div>
             )}
           </div>
@@ -734,13 +727,6 @@ const MessagesUI = () => {
                   <span>{t('messages.tryDemoChat')}</span>
                 </button>
                 
-                <button 
-                  onClick={handleNewChatClick}
-                  className="bg-gray-100 text-gray-700 px-6 py-3 rounded-full font-medium hover:bg-gray-200 flex items-center space-x-2 mx-auto"
-                >
-                  <Users className="w-5 h-5" />
-                  <span>{t('messages.browseUsers')}</span>
-                </button>
               </div>
               
               {/* Instruction */}
@@ -905,7 +891,7 @@ const MessagesUI = () => {
                   </div>
                 </motion.div>
               </div>
-            )}      <BottomNavigation active="Messages" />
+            )}      <BottomNavigationWithCreator active="Messages" />
     </div>
   );
 };

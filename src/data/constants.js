@@ -49,6 +49,37 @@ export const genreData = [
     { id: 8, nameKey: "beautifulBreasts", count: 60114, color: "from-purple-500 to-pink-600" }
 ];
 
+// ジャンル別動画数を取得する関数（実際のAPIから取得する場合はここを修正）
+export const getGenreVideoCount = async (genreNameKey) => {
+    // 実際の実装では、APIから動画数を取得
+    // 現在はローカルストレージまたはサンプルデータを使用
+    try {
+        const storedCounts = localStorage.getItem('genreVideoCounts');
+        if (storedCounts) {
+            const counts = JSON.parse(storedCounts);
+            return counts[genreNameKey] || 0;
+        }
+    } catch (error) {
+        console.error('Error getting genre video count:', error);
+    }
+    
+    // デフォルト値としてconstants.jsの値を返す
+    const genre = genreData.find(g => g.nameKey === genreNameKey);
+    return genre ? genre.count : 0;
+};
+
+// ジャンル別動画数を更新する関数
+export const updateGenreVideoCount = (genreNameKey, count) => {
+    try {
+        const storedCounts = localStorage.getItem('genreVideoCounts') || '{}';
+        const counts = JSON.parse(storedCounts);
+        counts[genreNameKey] = count;
+        localStorage.setItem('genreVideoCounts', JSON.stringify(counts));
+    } catch (error) {
+        console.error('Error updating genre video count:', error);
+    }
+};
+
 
 export const navItems = [
     { icon: 'Home', label: 'Home', id: 'home' },

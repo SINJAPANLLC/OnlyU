@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Search, Video, Image as ImageIcon, Heart, Bookmark, ChevronRight, ArrowUpDown } from 'lucide-react';
+import { ArrowLeft, Search, Video, Image as ImageIcon, Heart, Bookmark } from 'lucide-react';
 import BottomNavigation from '../BottomNavigation';
+import { useUserInteractions } from '../../hooks/useUserInteractions';
+import { useUserStats } from '../../context/UserStatsContext';
 
 export const genreData = [
     { name: '運営Pik UP', count: '410,177 posts', color: 'from-pink-500 to-purple-600' },
@@ -17,10 +19,84 @@ export const genreData = [
 const GenrePage = () => {
     const { genreName } = useParams();
     const navigate = useNavigate();
+    const { likedPosts, savedPosts, toggleLike, toggleSave, isLiked, isSaved, loading, error } = useUserInteractions();
+    const { updateLikedCount, updateSavedCount } = useUserStats();
 
-    const [activeGenre, setActiveGenre] = useState(genreName || '運営Pik UP');
-    const [filterType, setFilterType] = useState('all');
-    const [sortBy, setSortBy] = useState('Sort by popularity');
+    const [activeGenre, setActiveGenre] = useState(genreName ? decodeURIComponent(genreName) : '運営Pik UP');
+    const [localLikedPosts, setLocalLikedPosts] = useState(new Set());
+    const [localSavedPosts, setLocalSavedPosts] = useState(new Set());
+    
+    // ジャンル名を取得する関数
+    const getGenreDisplayName = () => {
+        if (activeGenre && activeGenre !== 'undefined') {
+            return activeGenre;
+        }
+        // genreDataから最初のジャンル名を取得
+        return genreData[0]?.name || 'ジャンル';
+    };
+
+    // クリック機能
+    const handleVideoClick = (post) => {
+        navigate(`/video/${post.id}`);
+    };
+
+    const handleAccountClick = (post) => {
+        navigate(`/profile/${post.user.id}`);
+    };
+
+    const handleLikeClick = (postId, e) => {
+        e.stopPropagation();
+        console.log('Like clicked for post:', postId);
+        const wasLiked = localLikedPosts.has(postId);
+        
+        setLocalLikedPosts(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(postId)) {
+                newSet.delete(postId);
+                console.log('Removed like from local state');
+                updateLikedCount(-1); // 統計を減らす
+            } else {
+                newSet.add(postId);
+                console.log('Added like to local state');
+                updateLikedCount(1); // 統計を増やす
+            }
+            return newSet;
+        });
+        
+        // 非同期でFirebaseにも保存
+        toggleLike(postId).catch(error => {
+            console.error('Error toggling like:', error);
+            // エラーの場合は統計を元に戻す
+            updateLikedCount(wasLiked ? 1 : -1);
+        });
+    };
+
+    const handleSaveClick = (postId, e) => {
+        e.stopPropagation();
+        console.log('Save clicked for post:', postId);
+        const wasSaved = localSavedPosts.has(postId);
+        
+        setLocalSavedPosts(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(postId)) {
+                newSet.delete(postId);
+                console.log('Removed save from local state');
+                updateSavedCount(-1); // 統計を減らす
+            } else {
+                newSet.add(postId);
+                console.log('Added save to local state');
+                updateSavedCount(1); // 統計を増やす
+            }
+            return newSet;
+        });
+        
+        // 非同期でFirebaseにも保存
+        toggleSave(postId).catch(error => {
+            console.error('Error toggling save:', error);
+            // エラーの場合は統計を元に戻す
+            updateSavedCount(wasSaved ? 1 : -1);
+        });
+    };
 
     useEffect(() => {
         if (genreName) {
@@ -42,44 +118,63 @@ const GenrePage = () => {
         {
             id: 1,
             title: '🎁天公開映像プレゼント企画開催中🎁※3日間限定【本編無料】テンパで...',
-            author: 'Creator Name',
+            author: 'クリエイター名',
             likes: 125,
             bookmarks: 101,
             timeAgo: '1 day ago',
-            type: 'video'
+            type: 'video',
+            user: {
+                id: 'creator_1',
+                name: 'クリエイター名',
+                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'
+            }
         },
         {
             id: 2,
             title: 'かほちゃん、🐻が見える動画です☆ えろうな体操服を見つけたのでお着...',
-            author: 'Another Creator',
+            author: '別のクリエイター',
             likes: 141,
             bookmarks: 54,
             timeAgo: '1 day ago',
-            type: 'image'
+            type: 'image',
+            user: {
+                id: 'creator_2',
+                name: '別のクリエイター',
+                avatar: 'https://images.unsplash.com/photo-1494790108755-2616c933448c?w=150&h=150&fit=crop&crop=face'
+            }
         },
         {
             id: 3,
-            title: 'Sample video post 3',
-            author: 'Creator 3',
+            title: 'サンプル動画投稿 3',
+            author: 'クリエイター 3',
             likes: 89,
             bookmarks: 67,
             timeAgo: '2 days ago',
-            type: 'video'
+            type: 'video',
+            user: {
+                id: 'creator_3',
+                name: 'クリエイター 3',
+                avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face'
+            }
         },
         {
             id: 4,
-            title: 'Sample image post 4',
-            author: 'Creator 4',
+            title: 'サンプル画像投稿 4',
+            author: 'クリエイター 4',
             likes: 203,
             bookmarks: 156,
             timeAgo: '3 days ago',
-            type: 'image'
+            type: 'image',
+            user: {
+                id: 'creator_4',
+                name: 'クリエイター 4',
+                avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face'
+            }
         }
     ];
 
-    const filteredPosts = posts.filter(post =>
-        filterType === 'all' || post.type === filterType
-    );
+    // 投稿を人気順でソート
+    const sortedPosts = [...posts].sort((a, b) => (b.likes + b.bookmarks) - (a.likes + a.bookmarks));
 
     return (
         <>
@@ -92,128 +187,114 @@ const GenrePage = () => {
                     <div className="flex-1 mx-3">
                         <div className="flex items-center bg-gray-100 rounded-full px-3 py-2">
                             <Search size={16} className="text-gray-500 mr-2" />
-                            <span className="text-pink-600 text-sm font-medium mr-2">🎀 {activeGenre}</span>
                             <input
                                 type="text"
-                                placeholder="Please enter a search keyword"
+                                placeholder="検索キーワードを入力してください"
                                 className="bg-transparent flex-1 text-sm text-gray-500 outline-none"
                             />
                         </div>
                     </div>
                 </div>
 
-                {/* View Rankings Link */}
-                <div className="bg-white px-4 py-3 border-b border-gray-200">
-                    <div
-                        className="flex items-center justify-between cursor-pointer"
-                        onClick={() => navigate(`/rankings/${activeGenre}`)}
-                    >
-                        <span className="text-pink-600 text-sm font-medium">🎀 View the rankings of {activeGenre}.</span>
-                        <ChevronRight size={16} className="text-pink-600" />
-                    </div>
-                </div>
 
                 {/* Content Section */}
                 <div className="bg-white px-4 py-4">
                     <h2 className="text-base font-semibold text-gray-900 mb-4">
-                        Recommended posts in the genre '{activeGenre}'.
+                        {getGenreDisplayName()}
                     </h2>
 
-                    {/* Filter Controls */}
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center space-x-2">
-                            <button
-                                onClick={() => setFilterType('all')}
-                                className={`px-3 py-1 text-sm rounded border ${filterType === 'all'
-                                    ? 'bg-pink-600 text-white border-pink-600'
-                                    : 'bg-white text-gray-600 border-gray-300'
-                                    }`}
-                            >
-                                All
-                            </button>
-                            <button
-                                onClick={() => setFilterType('video')}
-                                className={`p-2 rounded border ${filterType === 'video'
-                                    ? 'bg-pink-600 text-white border-pink-600'
-                                    : 'bg-white text-gray-600 border-gray-300'
-                                    }`}
-                            >
-                                <Video size={16} />
-                            </button>
-                            <button
-                                onClick={() => setFilterType('image')}
-                                className={`p-2 rounded border ${filterType === 'image'
-                                    ? 'bg-pink-600 text-white border-pink-600'
-                                    : 'bg-white text-gray-600 border-gray-300'
-                                    }`}
-                            >
-                                <ImageIcon size={16} />
-                            </button>
-                        </div>
-
-                        <div className="flex items-center space-x-2">
-                            <select
-                                value={sortBy}
-                                onChange={(e) => setSortBy(e.target.value)}
-                                className="px-3 py-1 border border-gray-300 rounded text-sm bg-white"
-                            >
-                                <option>Sort by popularity</option>
-                                <option>Sort by newest</option>
-                                <option>Sort by oldest</option>
-                                <option>Sort by most liked</option>
-                            </select>
-                            <ArrowUpDown size={16} className="text-gray-500" />
-                        </div>
-                    </div>
 
                     {/* Posts Grid */}
-                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                        {filteredPosts.map((post) => (
-                            <div key={post.id} className="bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
-                                {/* Thumbnail */}
-                                <div className="relative">
-                                    <div className="w-full h-40 bg-yellow-400 flex items-center justify-center">
-                                        {post.type === 'video' && (
-                                            <div className="absolute bottom-2 right-2 text-white text-xs bg-black/50 px-1 py-0.5 rounded">
-                                                4:32
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
+                    {sortedPosts.length === 0 ? (
+                        <div className="text-center py-12">
+                            <div className="text-gray-400 text-4xl mb-4">📷</div>
+                            <p className="text-gray-500">このジャンルにはまだ投稿がありません</p>
+                        </div>
+                           ) : (
+                               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                                   {sortedPosts.map((post) => (
+                                   <div 
+                                       key={post.id} 
+                                       className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+                                   >
+                                       {/* Thumbnail - クリックで動画ページへ */}
+                                       <div 
+                                           className="relative cursor-pointer"
+                                           onClick={() => handleVideoClick(post)}
+                                       >
+                                           <div className={`w-full h-40 flex items-center justify-center ${
+                                               post.type === 'video' ? 'bg-gradient-to-br from-purple-400 to-pink-400' : 'bg-gradient-to-br from-blue-400 to-indigo-400'
+                                           }`}>
+                                               <div className="text-white text-center">
+                                                   {post.type === 'video' ? (
+                                                       <>
+                                                           <Video size={24} className="mx-auto mb-1" />
+                                                           <div className="text-xs">動画</div>
+                                                       </>
+                                                   ) : (
+                                                       <>
+                                                           <ImageIcon size={24} className="mx-auto mb-1" />
+                                                           <div className="text-xs">画像</div>
+                                                       </>
+                                                   )}
+                                               </div>
+                                               {post.type === 'video' && (
+                                                   <div className="absolute bottom-2 right-2 text-white text-xs bg-black/50 px-1 py-0.5 rounded">
+                                                       4:32
+                                                   </div>
+                                               )}
+                                           </div>
+                                       </div>
 
-                                {/* Content */}
-                                <div className="p-3">
-                                    <h3 className="text-sm font-medium mb-2 line-clamp-2 leading-tight">
-                                        {post.title}
-                                    </h3>
+                                       {/* Content */}
+                                       <div className="p-3">
+                                           <h3 className="text-sm font-medium mb-2 line-clamp-2 leading-tight">
+                                               {post.title}
+                                           </h3>
 
-                                    {/* Author */}
-                                    <div className="flex items-center mb-2">
-                                        <img
-                                            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=20&h=20&fit=crop"
-                                            alt="Author"
-                                            className="w-4 h-4 rounded-full mr-2"
-                                        />
-                                        <span className="text-xs text-gray-600 truncate">{post.author}</span>
-                                    </div>
+                                           {/* Author - クリックでプロフィールページへ */}
+                                           <div 
+                                               className="flex items-center mb-2 cursor-pointer"
+                                               onClick={() => handleAccountClick(post)}
+                                           >
+                                               <img
+                                                   src={post.user.avatar}
+                                                   alt="Author"
+                                                   className="w-4 h-4 rounded-full mr-2"
+                                               />
+                                               <span className="text-xs text-gray-600 truncate">{post.author}</span>
+                                           </div>
 
-                                    {/* Stats */}
-                                    <div className="flex items-center justify-between text-xs text-gray-500">
-                                        <div className="flex items-center space-x-2">
-                                            <div className="flex items-center space-x-1">
-                                                <Heart size={12} className="text-pink-500" />
-                                                <span>{post.likes}</span>
-                                            </div>
-                                            <div className="flex items-center space-x-1">
-                                                <Bookmark size={12} className="text-pink-500" />
-                                                <span>{post.bookmarks}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                                           {/* Stats */}
+                                           <div className="flex items-center justify-between text-xs text-gray-500">
+                                               <div className="flex items-center space-x-2">
+                                                   <div 
+                                                       className="flex items-center space-x-1 cursor-pointer hover:bg-gray-100 p-1 rounded"
+                                                       onClick={(e) => handleLikeClick(post.id, e)}
+                                                   >
+                                                       <Heart 
+                                                           size={12} 
+                                                           className={`${localLikedPosts.has(post.id) ? 'text-red-500 fill-current' : 'text-pink-500'}`} 
+                                                       />
+                                                       <span>{post.likes}</span>
+                                                   </div>
+                                                   <div 
+                                                       className="flex items-center space-x-1 cursor-pointer hover:bg-gray-100 p-1 rounded"
+                                                       onClick={(e) => handleSaveClick(post.id, e)}
+                                                   >
+                                                       <Bookmark 
+                                                           size={12} 
+                                                           className={`${localSavedPosts.has(post.id) ? 'text-blue-500 fill-current' : 'text-pink-500'}`} 
+                                                       />
+                                                       <span>{post.bookmarks}</span>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>
+                               ))}
+                               </div>
+                           )}
                 </div>
             </div>
 

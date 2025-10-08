@@ -12,7 +12,7 @@ import Ranking from '../RomanticRanking';
 import CreatorPage from '../CreatorPage';
 import FeaturedAdminPage from '../FeaturedAdmin';
 import CleanCreatorPage from '../FollowCreatorPage';
-import BottomNavigation from '../BottomNavigation';
+import BottomNavigationWithCreator from '../BottomNavigationWithCreator';
 
 const Home = () => {
     const [activeTab, setActiveTab] = useState('home');
@@ -116,7 +116,7 @@ const Home = () => {
                 <CleanCreatorPage />
             </div>
 
-            <BottomNavigation activeTab={activeTab} handleNavigation={handleNavigation} />
+            <BottomNavigationWithCreator activeTab={activeTab} handleNavigation={handleNavigation} />
 
             {/* Padding for fixed nav */}
             <div className="h-20"></div>

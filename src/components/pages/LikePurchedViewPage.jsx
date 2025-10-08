@@ -5,15 +5,21 @@ import {
 } from 'lucide-react';
 import BottomNavigation from '../BottomNavigation';
 import { t } from 'i18next';
+import { useUserInteractions } from '../../hooks/useUserInteractions';
+import { useUserStats } from '../../context/UserStatsContext';
 
 const UserContentPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { likedPosts, savedPosts, toggleLike, toggleSave, isLiked, isSaved } = useUserInteractions();
+    const { stats, updateLikedCount, updateSavedCount } = useUserStats();
     // const { contentType = 'purchased' } = useParams();
 
     const [filter, setFilter] = useState('all');
     const [sort, setSort] = useState('New');
     const [activeTab, setActiveTab] = useState('purchased');
+    const [localLikedPosts, setLocalLikedPosts] = useState(new Set());
+    const [localSavedPosts, setLocalSavedPosts] = useState(new Set());
 
     // const [dropdownFilter, setDropdownFilter] = useState('All');
 
@@ -35,7 +41,13 @@ const UserContentPage = () => {
                 bookmarks: '1.3K',
                 timeAgo: '1 year ago',
                 type: 'video',
-                thumbnail: 'https://picsum.photos/300/200?random=1'
+                thumbnail: 'https://picsum.photos/300/200?random=1',
+                userId: 'creator_1',
+                user: {
+                    id: 'creator_1',
+                    name: '雄 -YUU- 彼氏持ち、人妻、ママをNTR',
+                    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'
+                }
             },
             {
                 id: 2,
@@ -45,7 +57,13 @@ const UserContentPage = () => {
                 bookmarks: '8',
                 timeAgo: '2 days ago',
                 type: 'video',
-                thumbnail: 'https://picsum.photos/300/200?random=2'
+                thumbnail: 'https://picsum.photos/300/200?random=2',
+                userId: 'creator_1',
+                user: {
+                    id: 'creator_1',
+                    name: '雄 -YUU- 彼氏持ち、人妻、ママをNTR',
+                    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'
+                }
             },
             {
                 id: 3,
@@ -55,7 +73,13 @@ const UserContentPage = () => {
                 bookmarks: '490',
                 timeAgo: 'a month ago',
                 type: 'image',
-                thumbnail: 'https://picsum.photos/300/200?random=3'
+                thumbnail: 'https://picsum.photos/300/200?random=3',
+                userId: 'creator_2',
+                user: {
+                    id: 'creator_2',
+                    name: 'Creator Name',
+                    avatar: 'https://images.unsplash.com/photo-1494790108755-2616c933448c?w=150&h=150&fit=crop&crop=face'
+                }
             }
         ],
         saved: [
@@ -67,7 +91,13 @@ const UserContentPage = () => {
                 bookmarks: '80',
                 timeAgo: '3 days ago',
                 type: 'video',
-                thumbnail: 'https://picsum.photos/300/200?random=4'
+                thumbnail: 'https://picsum.photos/300/200?random=4',
+                userId: 'creator_3',
+                user: {
+                    id: 'creator_3',
+                    name: 'Another Creator',
+                    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face'
+                }
             }
         ],
         viewingHistory: [
@@ -79,7 +109,13 @@ const UserContentPage = () => {
                 bookmarks: '100',
                 timeAgo: 'Today',
                 type: 'image',
-                thumbnail: 'https://picsum.photos/300/200?random=5'
+                thumbnail: 'https://picsum.photos/300/200?random=5',
+                userId: 'creator_4',
+                user: {
+                    id: 'creator_4',
+                    name: 'Popular Creator',
+                    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face'
+                }
             }
         ]
     };
@@ -95,6 +131,69 @@ const UserContentPage = () => {
         else navigate('/');
     };
 
+    // クリック機能
+    const handleVideoClick = (post) => {
+        navigate(`/video/${post.id}`);
+    };
+
+    const handleAccountClick = (post) => {
+        navigate(`/profile/${post.userId || post.id}`);
+    };
+
+    const handleLikeClick = (postId, e) => {
+        e.stopPropagation();
+        console.log('Like clicked for post:', postId);
+        const wasLiked = localLikedPosts.has(postId);
+        
+        setLocalLikedPosts(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(postId)) {
+                newSet.delete(postId);
+                console.log('Removed like from local state');
+                updateLikedCount(-1); // 統計を減らす
+            } else {
+                newSet.add(postId);
+                console.log('Added like to local state');
+                updateLikedCount(1); // 統計を増やす
+            }
+            return newSet;
+        });
+        
+        // 非同期でFirebaseにも保存
+        toggleLike(postId).catch(error => {
+            console.error('Error toggling like:', error);
+            // エラーの場合は統計を元に戻す
+            updateLikedCount(wasLiked ? 1 : -1);
+        });
+    };
+
+    const handleSaveClick = (postId, e) => {
+        e.stopPropagation();
+        console.log('Save clicked for post:', postId);
+        const wasSaved = localSavedPosts.has(postId);
+        
+        setLocalSavedPosts(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(postId)) {
+                newSet.delete(postId);
+                console.log('Removed save from local state');
+                updateSavedCount(-1); // 統計を減らす
+            } else {
+                newSet.add(postId);
+                console.log('Added save to local state');
+                updateSavedCount(1); // 統計を増やす
+            }
+            return newSet;
+        });
+        
+        // 非同期でFirebaseにも保存
+        toggleSave(postId).catch(error => {
+            console.error('Error toggling save:', error);
+            // エラーの場合は統計を元に戻す
+            updateSavedCount(wasSaved ? 1 : -1);
+        });
+    };
+
     // Update when location state changes
     useEffect(() => {
         if (location.state?.activeTab) {
@@ -105,10 +204,10 @@ const UserContentPage = () => {
     // Dynamic page title based on activeTab
     const getPageTitle = () => {
         const titles = {
-            purchased: 'Purchased posts',
-            liked: 'Liked posts',
-            saved: 'Saved posts',
-            viewingHistory: 'Viewing history'
+            purchased: t('postLibrary.purchased'),
+            liked: t('postLibrary.liked'),
+            saved: t('postLibrary.saved'),
+            viewingHistory: t('postLibrary.viewingHistory')
         };
         return titles[activeTab] || 'Posts';
     };
@@ -120,10 +219,10 @@ const UserContentPage = () => {
 
     // const getPageTitle = () => {
     //     const titles = {
-    //         purchased: 'Purchased posts',
-    //         liked: 'Liked posts',
-    //         saved: 'Saved posts',
-    //         viewingHistory: 'Viewing history'
+    //         purchased: t('postLibrary.purchased'),
+    //         liked: t('postLibrary.liked'),
+    //         saved: t('postLibrary.saved'),
+    //         viewingHistory: t('postLibrary.viewingHistory')
     //     };
     //     console.log('Active Tab:', activeTab);
     //     return titles[activeTab] || 'Posts';
@@ -138,14 +237,17 @@ const UserContentPage = () => {
             <div className="w-16 h-16 border-2 border-pink-500 rounded-lg flex items-center justify-center mb-4">
                 <Grid3x3 size={24} className="text-pink-500" />
             </div>
-            <p className="text-pink-500 font-semibold">No posts</p>
+            <p className="text-pink-500 font-semibold">コンテンツがありません</p>
         </div>
     );
 
     const PostCard = ({ post }) => (
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
-            {/* Thumbnail */}
-            <div className="relative">
+        <div className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+            {/* Thumbnail - クリックで動画ページへ */}
+            <div 
+                className="relative cursor-pointer"
+                onClick={() => handleVideoClick(post)}
+            >
                 <div className="w-full h-40 bg-yellow-400 flex items-center justify-center">
                     {/* Yellow placeholder as shown in your images */}
                     <div className="absolute bottom-2 right-2 text-white text-xs bg-black/50 px-1 py-0.5 rounded">
@@ -165,10 +267,13 @@ const UserContentPage = () => {
                     {post.title}
                 </h3>
 
-                {/* Author */}
-                <div className="flex items-center mb-2">
+                {/* Author - クリックでプロフィールページへ */}
+                <div 
+                    className="flex items-center mb-2 cursor-pointer"
+                    onClick={() => handleAccountClick(post)}
+                >
                     <img
-                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=20&h=20&fit=crop"
+                        src={post.user?.avatar || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=20&h=20&fit=crop"}
                         alt="Author"
                         className="w-5 h-5 rounded-full mr-2"
                     />
@@ -178,12 +283,24 @@ const UserContentPage = () => {
                 {/* Stats */}
                 <div className="flex items-center justify-between text-xs text-gray-500">
                     <div className="flex items-center space-x-3">
-                        <div className="flex items-center space-x-1">
-                            <Heart size={12} className="text-pink-500" />
+                        <div 
+                            className="flex items-center space-x-1 cursor-pointer hover:bg-gray-100 p-1 rounded"
+                            onClick={(e) => handleLikeClick(post.id, e)}
+                        >
+                            <Heart 
+                                size={12} 
+                                className={`${localLikedPosts.has(post.id) ? 'text-red-500 fill-current' : 'text-pink-500'}`} 
+                            />
                             <span>{post.likes}</span>
                         </div>
-                        <div className="flex items-center space-x-1">
-                            <Bookmark size={12} className="text-pink-500" />
+                        <div 
+                            className="flex items-center space-x-1 cursor-pointer hover:bg-gray-100 p-1 rounded"
+                            onClick={(e) => handleSaveClick(post.id, e)}
+                        >
+                            <Bookmark 
+                                size={12} 
+                                className={`${localSavedPosts.has(post.id) ? 'text-blue-500 fill-current' : 'text-pink-500'}`} 
+                            />
                             <span>{post.bookmarks}</span>
                         </div>
                     </div>
@@ -203,6 +320,49 @@ const UserContentPage = () => {
                     </button>
                     <h1 className="text-base font-semibold">{getPageTitle()}</h1>
                     <div className="w-8"></div>
+                </div>
+
+                {/* Stats Cards */}
+                <div className="bg-white px-4 py-4 border-b border-gray-200">
+                    <div className="grid grid-cols-4 gap-3">
+                        {/* 購入済み */}
+                        <div className="text-center">
+                            <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <Video size={20} className="text-gray-600" />
+                            </div>
+                            <div className="text-sm font-medium text-gray-600">購入済み</div>
+                            <div className="text-lg font-bold text-gray-800">{stats.purchased}</div>
+                        </div>
+                        
+                        {/* 保存済み */}
+                        <div className="text-center">
+                            <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <Bookmark size={20} className="text-gray-600" />
+                            </div>
+                            <div className="text-sm font-medium text-gray-600">保存済み</div>
+                            <div className="text-lg font-bold text-gray-800">{stats.saved}</div>
+                        </div>
+                        
+                        {/* いいね */}
+                        <div className="text-center">
+                            <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <Heart size={20} className="text-gray-600" />
+                            </div>
+                            <div className="text-sm font-medium text-gray-600">いいね</div>
+                            <div className="text-lg font-bold text-gray-800">{stats.liked}</div>
+                        </div>
+                        
+                        {/* 視聴履歴 */}
+                        <div className="text-center">
+                            <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <div className="w-5 h-5 border-2 border-gray-600 rounded-full flex items-center justify-center">
+                                    <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                </div>
+                            </div>
+                            <div className="text-sm font-medium text-gray-600">視聴履歴</div>
+                            <div className="text-lg font-bold text-gray-800">{stats.viewingHistory}</div>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Tab Navigation */}
@@ -239,7 +399,7 @@ const UserContentPage = () => {
                                     : 'border-gray-300 text-gray-600'
                                     }`}
                             >
-                                All
+                                すべて
                             </button>
                             <button
                                 onClick={() => setFilter('video')}

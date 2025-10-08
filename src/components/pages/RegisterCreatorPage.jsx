@@ -25,6 +25,19 @@ const RegisterCreatorPage = () => {
         }));
     };
 
+    const handleNext = () => {
+        // バリデーション
+        if (!formData.name || !formData.furiganaFamily || !formData.furiganaFirst || 
+            !formData.address || !formData.dob || !formData.contentKind || !formData.agreed) {
+            alert('すべての項目を入力してください。');
+            return;
+        }
+
+        // データをURLパラメータとして渡して次のページに遷移
+        const data = encodeURIComponent(JSON.stringify(formData));
+        navigate(`/creator-phone-verification?data=${data}`);
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -175,6 +188,7 @@ const RegisterCreatorPage = () => {
 
                 <button
                     type="button"
+                    onClick={handleNext}
                     className="flex-1 py-3 px-4 bg-pink-500 text-white rounded hover:bg-pink-600"
                 >
                     {t("register_creator.next")}

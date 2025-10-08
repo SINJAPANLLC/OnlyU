@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, FileText, MoreHorizontal, ChevronRight } from 'lucide-react';
+import { Settings, FileText, MoreHorizontal, ChevronRight, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import BottomNavigation from '../BottomNavigation';
+import BottomNavigationWithCreator from '../BottomNavigationWithCreator';
 import { t } from 'i18next';
 
 const AccountPage = () => {
@@ -82,9 +82,26 @@ const AccountPage = () => {
                         <div className="bg-white rounded-lg border border-gray-200">
                             <button
                                 className="w-full px-4 py-4 flex justify-between items-center text-gray-800 hover:bg-gray-50"
-                                onClick={() => navigate('/settings/languages')}
+                                onClick={() => navigate('/settings')}
                             >
-                                <span className="font-medium">{t('AccountPage.languagesettings')}</span>
+                                <span className="font-medium">設定</span>
+                                <ChevronRight className="w-5 h-5 text-gray-400" />
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Account Management Section */}
+                    <div>
+                        <div className="flex items-center mb-4">
+                            <Users className="w-5 h-5 mr-2 text-gray-700" />
+                            <h2 className="text-lg font-bold text-gray-900">アカウント管理</h2>
+                        </div>
+                        <div className="bg-white rounded-lg border border-gray-200">
+                            <button
+                                className="w-full px-4 py-4 flex justify-between items-center text-gray-800 hover:bg-gray-50"
+                                onClick={() => navigate('/switch-account')}
+                            >
+                                <span className="font-medium">アカウントを切り替える</span>
                                 <ChevronRight className="w-5 h-5 text-gray-400" />
                             </button>
                         </div>
@@ -127,7 +144,7 @@ const AccountPage = () => {
                             </button>
                             <button
                                 className="w-full px-4 py-4 flex justify-between items-center text-gray-800 hover:bg-gray-50"
-                                onClick={() => navigate('/help')}
+                                onClick={() => navigate('/settings/help')}
                             >
                                 <span className="font-medium">Help</span>
                                 <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -204,7 +221,7 @@ const AccountPage = () => {
                 )}
             </AnimatePresence>
 
-            <BottomNavigation activeTab="Account" handleNavigation={handleNavigation} />
+            <BottomNavigationWithCreator activeTab="Account" handleNavigation={handleNavigation} />
         </>
     );
 };

@@ -33,98 +33,88 @@ const GenreSubcategoryPage = ({ selectedGenre, onBack, onSubcategorySelect }) =>
         navigate('/rankingpage');
     }
 
+    const handleSubcategoryClick = (genreName) => {
+        navigate(`/genre/${encodeURIComponent(genreName)}`);
+    };
+
     // Genre data with subcategories
     const genreData = {
         appearance: {
-            title: 'Appearance',
+            title: 'ビジュアル',
             icon: User,
             subcategories: [
-                { name: 'Large Breasts', posts: '97,902 posts' },
-                { name: 'Beautiful Woman', posts: '66,327 posts' },
-                { name: 'Beautiful Breasts', posts: '60,570 posts' },
-                { name: 'Nipples', posts: '24,470 posts' },
-                { name: 'Butt', posts: '23,472 posts' },
-                { name: 'Small Breasts', posts: '18,726 posts' },
-                { name: 'Chubby', posts: '17,467 posts' },
-                { name: 'Slender', posts: '16,680 posts' },
-                { name: 'Shaved', posts: '13,701 posts' },
-                { name: 'Cute', posts: '11,804 posts' },
-                { name: 'Pregnant', posts: '5,576 posts' },
-                { name: 'Petite', posts: '4,676 posts' },
-                { name: 'Muscles', posts: '3,770 posts' },
-                { name: 'Virgin', posts: '2,227 posts' }
+                { name: 'ロリ顔', posts: '97,902 posts' },
+                { name: '地味顔', posts: '66,327 posts' },
+                { name: 'ギャル', posts: '60,570 posts' },
+                { name: 'お姉さん', posts: '24,470 posts' },
+                { name: '熟女', posts: '23,472 posts' },
+                { name: 'デカ尻', posts: '18,726 posts' },
+                { name: '巨乳', posts: '17,467 posts' },
+                { name: '貧乳', posts: '16,680 posts' },
+                { name: '入れ墨', posts: '13,701 posts' }
             ]
         },
         play: {
-            title: 'Play',
+            title: 'プレイ',
             icon: Play,
             subcategories: [
-                { name: 'Interactive Play', posts: '45,832 posts' },
-                { name: 'Solo Performance', posts: '38,921 posts' },
-                { name: 'Couple Activities', posts: '29,456 posts' },
-                { name: 'Group Sessions', posts: '21,387 posts' },
-                { name: 'Fetish Content', posts: '18,654 posts' },
-                { name: 'Roleplay', posts: '16,789 posts' },
-                { name: 'BDSM', posts: '14,235 posts' },
-                { name: 'Vanilla Content', posts: '12,678 posts' },
-                { name: 'Toys & Props', posts: '11,543 posts' },
-                { name: 'Oil Massage', posts: '9,876 posts' },
-                { name: 'Teasing', posts: '8,432 posts' },
-                { name: 'Domination', posts: '7,654 posts' }
-            ]
-        },
-        type: {
-            title: 'Type',
-            icon: Heart,
-            subcategories: [
-                { name: 'Amateur', posts: '52,143 posts' },
-                { name: 'Professional', posts: '41,876 posts' },
-                { name: 'Student', posts: '34,592 posts' },
-                { name: 'Office Worker', posts: '28,743 posts' },
-                { name: 'Housewife', posts: '25,689 posts' },
-                { name: 'Model', posts: '22,154 posts' },
-                { name: 'Teacher', posts: '18,432 posts' },
-                { name: 'Nurse', posts: '16,789 posts' },
-                { name: 'Maid', posts: '14,567 posts' },
-                { name: 'Secretary', posts: '12,345 posts' },
-                { name: 'Celebrity', posts: '9,876 posts' },
-                { name: 'Influencer', posts: '8,432 posts' }
+                { name: '正常位', posts: '11,804 posts' },
+                { name: '騎乗位', posts: '5,576 posts' },
+                { name: 'バック', posts: '4,676 posts' },
+                { name: '種付けプレス', posts: '3,770 posts' },
+                { name: 'フェラチオ', posts: '2,227 posts' },
+                { name: 'パイずり', posts: '1,500 posts' },
+                { name: '中だし', posts: '1,200 posts' },
+                { name: '顔射', posts: '1,000 posts' },
+                { name: '言葉責め', posts: '900 posts' },
+                { name: 'クンニ', posts: '800 posts' },
+                { name: '玩具', posts: '700 posts' },
+                { name: '潮吹き（女）', posts: '600 posts' },
+                { name: 'アナル', posts: '500 posts' },
+                { name: '企画', posts: '400 posts' }
             ]
         },
         situation: {
-            title: 'Situation',
+            title: 'シチュエーション',
             icon: MapPin,
             subcategories: [
-                { name: 'Bedroom', posts: '48,932 posts' },
-                { name: 'Bathroom', posts: '32,154 posts' },
-                { name: 'Office', posts: '28,576 posts' },
-                { name: 'Hotel Room', posts: '24,891 posts' },
-                { name: 'Outdoor', posts: '21,437 posts' },
-                { name: 'Kitchen', posts: '18,692 posts' },
-                { name: 'Living Room', posts: '16,543 posts' },
-                { name: 'Car', posts: '14,287 posts' },
-                { name: 'Spa/Salon', posts: '12,156 posts' },
-                { name: 'Pool', posts: '9,843 posts' },
-                { name: 'Beach', posts: '8,576 posts' },
-                { name: 'Public Place', posts: '6,432 posts' }
+                { name: '複数プレイ', posts: '350 posts' },
+                { name: '女性優位', posts: '300 posts' },
+                { name: '寝取られ', posts: '280 posts' },
+                { name: '野外・露出', posts: '250 posts' },
+                { name: 'オナニー', posts: '220 posts' },
+                { name: 'ハメ撮り', posts: '200 posts' },
+                { name: 'コスプレ', posts: '180 posts' },
+                { name: '主観', posts: '160 posts' },
+                { name: '盗撮', posts: '140 posts' },
+                { name: 'レイプ', posts: '120 posts' },
+                { name: 'ＧＬ', posts: '100 posts' },
+                { name: 'ＢＬ', posts: '90 posts' }
             ]
         },
-        costume: {
-            title: 'Costume',
+        abnormal: {
+            title: 'アブノーマル',
+            icon: Heart,
+            subcategories: [
+                { name: '緊縛', posts: '80 posts' },
+                { name: '浣腸', posts: '70 posts' },
+                { name: '調教', posts: '60 posts' },
+                { name: '拡張', posts: '50 posts' },
+                { name: '殴打', posts: '40 posts' },
+                { name: '女装・男の娘', posts: '35 posts' },
+                { name: '潮吹き（男）', posts: '30 posts' },
+                { name: '尿道', posts: '25 posts' },
+                { name: 'その他フェチ', posts: '20 posts' }
+            ]
+        },
+        other: {
+            title: 'その他',
             icon: Shirt,
             subcategories: [
-                { name: 'School Uniform', posts: '42,765 posts' },
-                { name: 'Lingerie', posts: '38,921 posts' },
-                { name: 'Swimwear', posts: '31,456 posts' },
-                { name: 'Nurse Outfit', posts: '26,789 posts' },
-                { name: 'Maid Costume', posts: '23,654 posts' },
-                { name: 'Business Suit', posts: '19,432 posts' },
-                { name: 'Cosplay', posts: '17,891 posts' },
-                { name: 'Casual Wear', posts: '15,678 posts' },
-                { name: 'Sportswear', posts: '13,245 posts' },
-                { name: 'Traditional Dress', posts: '11,567 posts' },
-                { name: 'Wedding Dress', posts: '8,934 posts' },
-                { name: 'Leather Outfit', posts: '7,432 posts' }
+                { name: '会いに行ける', posts: '15 posts' },
+                { name: 'イベント', posts: '12 posts' },
+                { name: 'HowTo', posts: '10 posts' },
+                { name: 'ASMR', posts: '8 posts' }
             ]
         }
     };
@@ -153,7 +143,7 @@ const GenreSubcategoryPage = ({ selectedGenre, onBack, onSubcategorySelect }) =>
         <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => onSubcategorySelect && onSubcategorySelect(subcategory)}
+            onClick={() => handleSubcategoryClick(subcategory.name)}
             className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-all duration-200 hover:border-pink-200"
         >
             <div className="flex-1">
@@ -222,7 +212,7 @@ const GenreSubcategoryPage = ({ selectedGenre, onBack, onSubcategorySelect }) =>
                         whileTap={{ scale: 0.95 }}
                         className="bg-pink-500 text-white px-8 py-3 rounded-full font-medium hover:bg-pink-600 transition-colors shadow-lg"
                     >
-                        Load More Categories
+                        さらにカテゴリを読み込む
                     </motion.button>
                 </div>
             </div>
@@ -243,36 +233,36 @@ const GenreNavigationSystem = () => {
     const genreCategories = [
         {
             id: 'appearance',
-            title: 'Appearance',
-            description: 'Genres based on performer attributes such as large breasts or tall height',
+            title: 'ビジュアル',
+            description: 'ロリ顔、地味顔、ギャルなど出演者の属性に応じたジャンル',
             icon: User,
             color: 'text-pink-500'
         },
         {
             id: 'play',
-            title: 'Play',
-            description: 'Genres based on content such as riding or fellatio',
+            title: 'プレイ',
+            description: '騎乗位、フェラチオなどプレイ内容に応じたジャンル',
             icon: Play,
             color: 'text-purple-500'
         },
         {
-            id: 'type',
-            title: 'Type',
-            description: 'Genres based on concepts such as amateurs or housewives',
-            icon: Heart,
-            color: 'text-red-500'
-        },
-        {
             id: 'situation',
-            title: 'Situation',
-            description: 'Genres based on filming scenarios such as couples or spas',
+            title: 'シチュエーション',
+            description: '複数プレイ、野外・露出など撮影状況に応じたジャンル',
             icon: MapPin,
             color: 'text-blue-500'
         },
         {
-            id: 'costume',
-            title: 'Costume',
-            description: 'Genres based on costumes such as uniforms or swimwear',
+            id: 'abnormal',
+            title: 'アブノーマル',
+            description: '緊縛、調教など特殊なプレイに応じたジャンル',
+            icon: Heart,
+            color: 'text-red-500'
+        },
+        {
+            id: 'other',
+            title: 'その他',
+            description: '会いに行ける、イベントなどその他のジャンル',
             icon: Shirt,
             color: 'text-green-500'
         }

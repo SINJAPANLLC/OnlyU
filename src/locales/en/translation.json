@@ -166,7 +166,7 @@
         "followers": "Followers",
         "follow": "Follow",
         "following": "Following",
-        "seeMore": "See more in ranking",
+        "seeMore": " ランキングをもっと見る",
         "recommend": "Recommendation",
         "month": "month",
         "posts": "Posts",
@@ -179,7 +179,9 @@
         "feed": "Feed",
         "ranking": "Ranking",
         "messages": "Messages",
-        "account": "Account"
+        "account": "Account",
+        "create": "Create",
+        "dashboard": "Dashboard"
     },
     "featuredAdmin": {
         "header": "Featured by admin",

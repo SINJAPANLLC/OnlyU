@@ -50,7 +50,7 @@ const GenderSelectionModal = ({ isOpen, onClose, selectedGender, onGenderSelect,
                         <X className="w-5 h-5 text-gray-500" />
                     </button>
 
-                    <h2 className="text-xl font-bold text-gray-900 text-center mb-2">
+                    <h2 className="text-base font-bold text-gray-900 text-center mb-2">
                         {t('gender.title')}
                     </h2>
                 </div>

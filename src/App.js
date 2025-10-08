@@ -14,6 +14,8 @@ import MyFansLogin from './Auth/login_page';
 import MyFansSignUp from './Auth/sign_up';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { UnreadMessagesProvider } from './context/UnreadMessagesContext';
+import { UserStatsProvider } from './context/UserStatsContext';
+import { CreatorProvider } from './context/CreatorContext';
 import SearchPage from './components/pages/SearchPage';
 import TermsOfUse from './components/pages/TermsOfUse'; // Import TermsOfUse component
 import PrivacyPolicy from './components/pages/PrivacyPolicy';
@@ -22,9 +24,39 @@ import ContentGuidelines from './components/pages/ContentGuidelines';
 import LanguageSettings from './components/pages/LanguagePage';
 import RegisterCreatorPage from './components/pages/RegisterCreatorPage';
 import ProfilePage from './components/pages/ProfilePage';
-import NotificationPage from './Header/HeaderNotificationPage';
+import NotificationPage from './components/pages/NotificationPage';
 import LikePurchasePage from './components/pages/LikePurchedViewPage';
 import GenreDataPage from './components/pages/GenreDataPage';
+import VideoPage from './components/pages/VideoPage';
+import ProfilePageNew from './components/pages/ProfilePage';
+import CreatorDashboard from './components/pages/CreatorDashboard';
+import HighQualityPlanPage from './components/pages/HighQualityPlanPage';
+import CurrentPlanPage from './components/pages/CurrentPlanPage';
+import PaymentMethodsPage from './components/pages/PaymentMethodsPage';
+import PurchaseHistoryPage from './components/pages/PurchaseHistoryPage';
+import CouponListPage from './components/pages/CouponListPage';
+import ExclusiveCreatorRegistrationPage from './components/pages/ExclusiveCreatorRegistrationPage';
+import CreatorRankingPage from './components/pages/CreatorRankingPage';
+import ActivePlansPage from './components/pages/ActivePlansPage';
+import MyPostsPage from './components/pages/MyPostsPage';
+import PostCommentsPage from './components/pages/PostCommentsPage';
+import SalesManagementPage from './components/pages/SalesManagementPage';
+import BankAccountRegistrationPage from './components/pages/BankAccountRegistrationPage';
+import TransferRequestPage from './components/pages/TransferRequestPage';
+import CouponManagementPage from './components/pages/CouponManagementPage';
+import SettingsPage from './components/pages/SettingsPage';
+import EmailNotificationSettingsPage from './components/pages/EmailNotificationSettingsPage';
+import FollowListPage from './components/pages/FollowListPage';
+import BlockedUsersPage from './components/pages/BlockedUsersPage';
+import PersonalInfoPage from './components/pages/PersonalInfoPage';
+import PhoneVerificationPage from './components/pages/PhoneVerificationPage';
+import EmailVerificationPage from './components/pages/EmailVerificationPage';
+import HelpPage from './components/pages/HelpPage';
+import SwitchAccountPage from './components/pages/SwitchAccountPage';
+import CreatorPhoneVerificationPage from './components/pages/CreatorPhoneVerificationPage';
+import EditProfilePage from './components/pages/EditProfilePage';
+import ImagePage from './components/pages/ImagePage';
+import LandingPage from './components/pages/LandingPage';
 
 
 // import AdminLayout from "./components/admin/AdminLayout";
@@ -121,12 +153,15 @@ const AppRoutes = () => {
       <Route path="/search" element={<SearchPage />} />
 
       <Route path="/genre/:genreName" element={<ProtectedRoute><GenreDataPage /></ProtectedRoute>} />
+      <Route path="/video/:id" element={<ProtectedRoute><VideoPage /></ProtectedRoute>} />
+      <Route path="/profile/:id" element={<ProtectedRoute><ProfilePageNew /></ProtectedRoute>} />
 
       <Route path="/added-content/:contentType?" element={<ProtectedRoute><LikePurchasePage /></ProtectedRoute>} />
 
       <Route path="/notifications" element={<ProtectedRoute><NotificationPage /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
       <Route path="/profile/:userId" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+      <Route path="/creator-dashboard" element={<ProtectedRoute><CreatorDashboard /></ProtectedRoute>} />
       <Route path="/terms" element={<TermsOfUse />} /> {/* Add this route */}
 
       {/* Other legal pages */}
@@ -138,19 +173,39 @@ const AppRoutes = () => {
       {/* Default route */}
       <Route path="/subscription" element={<ProtectedRoute><div>Subscription Page</div></ProtectedRoute>} />
       <Route path="/plans" element={<ProtectedRoute><div>Plans Page</div></ProtectedRoute>} />
-      <Route path="/payment-methods" element={<ProtectedRoute><div>Payment Methods Page</div></ProtectedRoute>} />
-      <Route path="/purchase-history" element={<ProtectedRoute><div>Purchase History Page</div></ProtectedRoute>} />
+      <Route path="/high-quality-plan" element={<ProtectedRoute><HighQualityPlanPage /></ProtectedRoute>} />
+      <Route path="/current-plan" element={<ProtectedRoute><CurrentPlanPage /></ProtectedRoute>} />
+      <Route path="/payment-methods" element={<ProtectedRoute><PaymentMethodsPage /></ProtectedRoute>} />
+      <Route path="/purchase-history" element={<ProtectedRoute><PurchaseHistoryPage /></ProtectedRoute>} />
+      <Route path="/coupons" element={<ProtectedRoute><CouponListPage /></ProtectedRoute>} />
+      <Route path="/exclusive-creator-registration" element={<ProtectedRoute><ExclusiveCreatorRegistrationPage /></ProtectedRoute>} />
+      <Route path="/creator-ranking" element={<ProtectedRoute><CreatorRankingPage /></ProtectedRoute>} />
+      <Route path="/active-plans" element={<ProtectedRoute><ActivePlansPage /></ProtectedRoute>} />
+      <Route path="/my-posts" element={<ProtectedRoute><MyPostsPage /></ProtectedRoute>} />
+      <Route path="/post-comments" element={<ProtectedRoute><PostCommentsPage /></ProtectedRoute>} />
+      <Route path="/sales-management" element={<ProtectedRoute><SalesManagementPage /></ProtectedRoute>} />
+      <Route path="/bank-account-registration" element={<ProtectedRoute><BankAccountRegistrationPage /></ProtectedRoute>} />
+      <Route path="/transfer-request" element={<ProtectedRoute><TransferRequestPage /></ProtectedRoute>} />
+      <Route path="/coupon-management" element={<ProtectedRoute><CouponManagementPage /></ProtectedRoute>} />
+      <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+      <Route path="/settings/email-notifications" element={<ProtectedRoute><EmailNotificationSettingsPage /></ProtectedRoute>} />
+      <Route path="/settings/follow-list" element={<ProtectedRoute><FollowListPage /></ProtectedRoute>} />
+      <Route path="/settings/blocked-users" element={<ProtectedRoute><BlockedUsersPage /></ProtectedRoute>} />
+      <Route path="/settings/personal-info" element={<ProtectedRoute><PersonalInfoPage /></ProtectedRoute>} />
+      <Route path="/settings/phone-verification" element={<ProtectedRoute><PhoneVerificationPage /></ProtectedRoute>} />
+      <Route path="/settings/email-verification" element={<ProtectedRoute><EmailVerificationPage /></ProtectedRoute>} />
+      <Route path="/settings/notifications" element={<ProtectedRoute><NotificationPage /></ProtectedRoute>} />
+      <Route path="/settings/language" element={<ProtectedRoute><LanguageSettings /></ProtectedRoute>} />
+      <Route path="/settings/help" element={<ProtectedRoute><HelpPage /></ProtectedRoute>} />
       <Route path="/amount-available" element={<ProtectedRoute><div>Amount Available Page</div></ProtectedRoute>} />
       {/* <Route path="/register-creator" element={<ProtectedRoute><RegisterCreatorPage /></ProtectedRoute>} /> */}
       <Route path="/register-creator" element={<RegisterCreatorPage />} />
-      <Route path="/email-notifications" element={<ProtectedRoute><div>Email Notifications Page</div></ProtectedRoute>} />
-      <Route path="/following" element={<ProtectedRoute><div>Following Page</div></ProtectedRoute>} />
-      <Route path="/blocked-users" element={<ProtectedRoute><div>Blocked Users Page</div></ProtectedRoute>} />
       <Route path="/referral-program" element={<ProtectedRoute><div>Referral Program Page</div></ProtectedRoute>} />
-      <Route path="/personal-information" element={<ProtectedRoute><div>Personal Information Page</div></ProtectedRoute>} />
-      <Route path="/phone-verification" element={<ProtectedRoute><div>Phone Verification Page</div></ProtectedRoute>} />
-      <Route path="/notices" element={<ProtectedRoute><div>Notices Page</div></ProtectedRoute>} />
-      <Route path="/switch-account" element={<ProtectedRoute><div>Switch Account Page</div></ProtectedRoute>} />
+      <Route path="/switch-account" element={<ProtectedRoute><SwitchAccountPage /></ProtectedRoute>} />
+      <Route path="/creator-phone-verification" element={<ProtectedRoute><CreatorPhoneVerificationPage /></ProtectedRoute>} />
+      <Route path="/edit-profile" element={<ProtectedRoute><EditProfilePage /></ProtectedRoute>} />
+      <Route path="/image/:id" element={<ProtectedRoute><ImagePage /></ProtectedRoute>} />
+      <Route path="/lp" element={<LandingPage />} />
       <Route path="/logout" element={<ProtectedRoute><div>Logout Handler</div></ProtectedRoute>} />
 
 
@@ -181,11 +236,15 @@ function App() {
   return (
     <AuthProvider>
       <UnreadMessagesProvider>
-        <Router>
-          <div className="App">
-            <AppRoutes />
-          </div>
-        </Router>
+        <UserStatsProvider>
+          <CreatorProvider>
+            <Router>
+              <div className="App">
+                <AppRoutes />
+              </div>
+            </Router>
+          </CreatorProvider>
+        </UserStatsProvider>
       </UnreadMessagesProvider>
     </AuthProvider>
   );

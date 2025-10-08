@@ -31,7 +31,34 @@ const SearchPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
 
-    // Display dummy data regardless of search term for demo
+    // ジャンルをクリックした時の処理
+    const handleGenreClick = (genreName) => {
+        navigate(`/genre/${encodeURIComponent(genreName)}`);
+    };
+
+    // タグをクリックした時の処理
+    const handleTagClick = (tagName) => {
+        navigate(`/genre/${encodeURIComponent(tagName)}`);
+    };
+
+    // クリエイターをクリックした時の処理
+    const handleCreatorClick = (creatorId) => {
+        navigate(`/profile/${creatorId}`);
+    };
+
+    // フリーワード検索を実行
+    const handleFreeWordSearch = () => {
+        if (searchTerm.trim()) {
+            navigate(`/feed?search=${encodeURIComponent(searchTerm)}`);
+        }
+    };
+
+    // キーボードでエンターキーが押された時の処理
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleFreeWordSearch();
+        }
+    };
 
     return (
         <motion.div
@@ -50,6 +77,7 @@ const SearchPage = () => {
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyPress={handleKeyPress}
                     placeholder="検索キーワードを入力してください"
                     className="flex-grow border border-pink-600 rounded-lg py-1 px-3 focus:outline-none focus:ring-2 focus:ring-pink-500"
                 />
@@ -67,7 +95,10 @@ const SearchPage = () => {
                 {searchTerm && (
                     <div className="mb-6">
                         <h3 className="font-semibold mb-2">フリーワード検索</h3>
-                        <div className="flex items-center space-x-2 text-pink-600">
+                        <div 
+                            className="flex items-center space-x-2 text-pink-600 cursor-pointer hover:bg-pink-50 p-2 rounded-lg transition-colors"
+                            onClick={handleFreeWordSearch}
+                        >
                             <Triangle className="w-5 h-5" />
                             <span className="italic">{`"${searchTerm}"`}</span>
                         </div>
@@ -78,7 +109,11 @@ const SearchPage = () => {
                 <div className="mb-6">
                     <h3 className="font-semibold mb-2">ジャンル</h3>
                     {dummyData.genres.map((genre) => (
-                        <div key={genre.id} className="flex items-center space-x-3 mb-3">
+                        <div 
+                            key={genre.id} 
+                            className="flex items-center space-x-3 mb-3 cursor-pointer hover:bg-pink-50 p-2 rounded-lg transition-colors"
+                            onClick={() => handleGenreClick(genre.label)}
+                        >
                             <Triangle className="w-6 h-6 text-pink-300 bg-pink-100 rounded-full p-1" />
                             <span>{genre.label}</span>
                         </div>
@@ -89,7 +124,11 @@ const SearchPage = () => {
                 <div className="mb-6">
                     <h3 className="font-semibold mb-2">タグ</h3>
                     {dummyData.tags.map((tag) => (
-                        <div key={tag.id} className="flex items-center space-x-3 mb-3">
+                        <div 
+                            key={tag.id} 
+                            className="flex items-center space-x-3 mb-3 cursor-pointer hover:bg-pink-50 p-2 rounded-lg transition-colors"
+                            onClick={() => handleTagClick(tag.label)}
+                        >
                             <Hash className="w-6 h-6 text-pink-300 bg-pink-100 rounded-full p-1" />
                             <span>{tag.label}</span>
                         </div>
@@ -100,7 +139,11 @@ const SearchPage = () => {
                 <div className="mb-6">
                     <h3 className="font-semibold mb-2">クリエイター</h3>
                     {dummyData.creators.map((creator) => (
-                        <div key={creator.id} className="flex items-center space-x-4 mb-4">
+                        <div 
+                            key={creator.id} 
+                            className="flex items-center space-x-4 mb-4 cursor-pointer hover:bg-pink-50 p-2 rounded-lg transition-colors"
+                            onClick={() => handleCreatorClick(creator.id)}
+                        >
                             <img
                                 src={creator.avatar}
                                 alt={creator.name}

@@ -1,16 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Star } from 'lucide-react';
-import { genreData } from '../data/constants';
+import { genreData, getGenreVideoCount, updateGenreVideoCount } from '../data/constants';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const RecommendedGenres = ({ likedItems, toggleLike }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
+    const [genreCounts, setGenreCounts] = useState({});
+
     const handleGenreClick = (genreName) => {
         navigate(`/genre/${encodeURIComponent(genreName)}`);
     };
-    const { t } = useTranslation();
+
+    // ジャンル別動画数を取得
+    useEffect(() => {
+        const fetchGenreCounts = async () => {
+            const counts = {};
+            for (const genre of genreData) {
+                const count = await getGenreVideoCount(genre.nameKey);
+                counts[genre.nameKey] = count;
+            }
+            setGenreCounts(counts);
+        };
+
+        fetchGenreCounts();
+    }, []);
+
+    // 動画数を更新する関数（他のコンポーネントから呼び出し可能）
+    const refreshGenreCounts = async () => {
+        const counts = {};
+        for (const genre of genreData) {
+            const count = await getGenreVideoCount(genre.nameKey);
+            counts[genre.nameKey] = count;
+        }
+        setGenreCounts(counts);
+    };
 
     return (
         <motion.div
@@ -51,7 +77,7 @@ const RecommendedGenres = ({ likedItems, toggleLike }) => {
                                 {t(`genres.${genre.nameKey}`)}
                             </h3>
                             <p className="text-xs text-gray-500 text-center">
-                                {genre.count.toLocaleString()} Videos
+                                {(genreCounts[genre.nameKey] || genre.count).toLocaleString()} Videos
                             </p>
                         </div>
                     </motion.div>

@@ -63,7 +63,7 @@ const Header = () => {
 
                         <button
                             className="p-2 hover:bg-pink-50 rounded-full transition-colors relative"
-                            onClick={() => navigate('/notifications')}
+                            onClick={() => navigate('/settings/notifications')}
                         >
                             <Bell className="w-5 h-5 text-gray-600" />
                             <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></div>

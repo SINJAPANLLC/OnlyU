@@ -316,11 +316,11 @@ return (
                 </div>
                 <div>
                     <div className="text-lg sm:text-xl lg:text-2xl font-bold">{profile.stats.followers}</div>
-                    <div className="text-xs sm:text-sm text-gray-500">Followers</div>
+                    <div className="text-xs sm:text-sm text-gray-500">フォロワー</div>
                 </div>
                 <div>
                     <div className="text-lg sm:text-xl lg:text-2xl font-bold">{profile.stats.following}</div>
-                    <div className="text-xs sm:text-sm text-gray-500">Follow</div>
+                    <div className="text-xs sm:text-sm text-gray-500">フォロー中</div>
                 </div>
             </div>
 
@@ -485,7 +485,7 @@ return (
             ) : (
                 <div className="text-center py-8 sm:py-12">
                     <div className="text-gray-400 text-4xl sm:text-6xl mb-4">📷</div>
-                    <p className="text-gray-500 text-sm sm:text-base">No posts yet</p>
+                    <p className="text-gray-500 text-sm sm:text-base">コンテンツがありません</p>
                 </div>
             )}
         </div>
@@ -499,8 +499,8 @@ return (
             </button>
             <button className="flex-1 border border-pink-600 text-pink-600 py-2 sm:py-3 rounded-full font-semibold flex items-center justify-center space-x-1 sm:space-x-2 hover:bg-pink-50 text-xs sm:text-sm">
                 <User size={14} className="sm:w-5 sm:h-5" />
-                <span className="hidden sm:inline">+ Follow</span>
-                <span className="sm:hidden">Follow</span>
+                <span className="hidden sm:inline">+ フォロー</span>
+                <span className="sm:hidden">フォロー</span>
             </button>
             <button className="flex-1 border border-gray-300 text-gray-700 py-2 sm:py-3 rounded-full font-semibold flex items-center justify-center space-x-1 sm:space-x-2 hover:bg-gray-50 text-xs sm:text-sm">
                 <MessageCircle size={14} className="sm:w-5 sm:h-5" />

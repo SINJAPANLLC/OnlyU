@@ -1,1029 +1,577 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import {
-    Heart, MessageCircle, Share2, MoreHorizontal, X, Link2, User, ArrowLeft,
-    Grid3X3, List, Pin, Video, Image as ImageIcon, ChevronDown, UserPlus, UserCheck
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { 
+    ArrowLeft, 
+    Share2, 
+    Heart, 
+    MessageCircle, 
+    Play, 
+    Filter, 
+    ChevronDown,
+    Edit3,
+    CheckCircle,
+    Star,
+    Video,
+    Image,
+    Eye,
+    EyeOff,
+    UserPlus,
+    UserMinus,
+    Copy,
+    ExternalLink
 } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import { db } from '../../firebase';
-import { collection, query, where, getDocs, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import BottomNavigationWithCreator from '../BottomNavigationWithCreator';
 
-const EnhancedProfilePage = () => {
+const ProfilePage = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
-    const { userId } = useParams(); // Get userId from URL parameters
-    const { currentUser, loading } = useAuth();
-    const [activeTab, setActiveTab] = useState('Post');
-    const [viewMode, setViewMode] = useState('grid');
-    const [sortBy, setSortBy] = useState('New');
-    const [selectedTags] = useState('All tags');
-    const [selectedFilter, setSelectedFilter] = useState('All');
-    const [showFilters, setShowFilters] = useState(false);
-    const [userPosts, setUserPosts] = useState([]);
-    const [postsLoading, setPostsLoading] = useState(true);
-    const [postsError, setPostsError] = useState(null);
-    const [profileUser, setProfileUser] = useState(null); // Store the profile user data
+    const [activeTab, setActiveTab] = useState('posts');
+    const [showRankings, setShowRankings] = useState(true);
+    const [showAllPlans, setShowAllPlans] = useState(false);
+    const [selectedFilter, setSelectedFilter] = useState('all');
     const [isFollowing, setIsFollowing] = useState(false);
-    const [followersCount, setFollowersCount] = useState(0);
-    const [followingCount, setFollowingCount] = useState(0);
-    const [followLoading, setFollowLoading] = useState(false);
-    
-    // Determine which user's profile we're viewing
-    const isOwnProfile = !userId || userId === currentUser?.uid;
-    const targetUserId = userId || currentUser?.uid;
+    const [showShareModal, setShowShareModal] = useState(false);
+    const [showPlanModal, setShowPlanModal] = useState(null);
+    const [contentData, setContentData] = useState([]);
 
-    // Filter and sort options
-    const filterOptions = ['All', 'Images', 'Videos'];
-    const sortOptions = ['New', 'Popular', 'Old'];
-
-    // Fetch profile user data
-    const fetchProfileUser = useCallback(async () => {
-        if (!targetUserId) return;
-
-        try {
-            const userDoc = await getDoc(doc(db, 'users', targetUserId));
-            if (userDoc.exists()) {
-                const userData = userDoc.data();
-                setProfileUser({
-                    uid: targetUserId,
-                    ...userData
-                });
-                
-                // Set followers/following count
-                setFollowersCount(userData.followers?.length || 0);
-                setFollowingCount(userData.following?.length || 0);
-                
-                // Check if current user is following this profile
-                if (currentUser && !isOwnProfile) {
-                    const isCurrentlyFollowing = userData.followers?.includes(currentUser.uid) || false;
-                    setIsFollowing(isCurrentlyFollowing);
-                    console.log('🔍 Follow status check:', {
-                        currentUserId: currentUser.uid,
-                        targetUserId,
-                        followers: userData.followers,
-                        isFollowing: isCurrentlyFollowing
-                    });
-                }
-            } else {
-                // If user document doesn't exist, create basic profile from current user
-                if (isOwnProfile && currentUser) {
-                    const newUserData = {
-                        uid: currentUser.uid,
-                        displayName: currentUser.displayName || 'User',
-                        email: currentUser.email,
-                        photoURL: currentUser.photoURL,
-                        followers: [],
-                        following: [],
-                        createdAt: new Date().toISOString()
-                    };
-                    
-                    // Create the user document in Firestore
-                    await setDoc(doc(db, 'users', currentUser.uid), newUserData);
-                    setProfileUser(newUserData);
-                } else {
-                    // Profile user not found and not own profile
-                    console.log('Profile user not found:', targetUserId);
-                }
-            }
-        } catch (error) {
-            console.error('Error fetching profile user:', error);
-        }
-    }, [targetUserId, currentUser, isOwnProfile]);
-
-    // Handle follow/unfollow
-    const handleFollowToggle = async () => {
-        if (!currentUser || !targetUserId || isOwnProfile || followLoading) return;
-
-        console.log('🔄 Follow toggle started:', {
-            currentUser: currentUser.uid,
-            targetUserId,
-            isFollowing,
-            isOwnProfile
-        });
-
-        setFollowLoading(true);
-        try {
-            const currentUserRef = doc(db, 'users', currentUser.uid);
-            const targetUserRef = doc(db, 'users', targetUserId);
-
-            console.log('📄 Checking user documents...');
-            // Ensure both user documents exist before updating
-            const [currentUserDoc, targetUserDoc] = await Promise.all([
-                getDoc(currentUserRef),
-                getDoc(targetUserRef)
-            ]);
-
-            console.log('📄 User documents status:', {
-                currentUserExists: currentUserDoc.exists(),
-                targetUserExists: targetUserDoc.exists()
-            });
-
-            // Create current user document if it doesn't exist
-            if (!currentUserDoc.exists()) {
-                await setDoc(currentUserRef, {
-                    uid: currentUser.uid,
-                    displayName: currentUser.displayName || 'User',
-                    email: currentUser.email,
-                    photoURL: currentUser.photoURL,
-                    followers: [],
-                    following: [],
-                    createdAt: new Date().toISOString()
-                });
-            }
-
-            // Create target user document if it doesn't exist (basic placeholder)
-            if (!targetUserDoc.exists()) {
-                await setDoc(targetUserRef, {
-                    uid: targetUserId,
-                    displayName: 'User',
-                    followers: [],
-                    following: [],
-                    createdAt: new Date().toISOString()
-                });
-            }
-
-            if (isFollowing) {
-                // Unfollow
-                console.log('👎 Unfollowing user...');
-                await updateDoc(currentUserRef, {
-                    following: arrayRemove(targetUserId)
-                });
-                await updateDoc(targetUserRef, {
-                    followers: arrayRemove(currentUser.uid)
-                });
-                setIsFollowing(false);
-                setFollowersCount(prev => Math.max(0, prev - 1));
-                console.log('✅ Unfollow successful');
-            } else {
-                // Follow
-                console.log('👍 Following user...');
-                await updateDoc(currentUserRef, {
-                    following: arrayUnion(targetUserId)
-                });
-                await updateDoc(targetUserRef, {
-                    followers: arrayUnion(currentUser.uid)
-                });
-                setIsFollowing(true);
-                setFollowersCount(prev => prev + 1);
-                console.log('✅ Follow successful');
-            }
-
-            // Refresh profile data to ensure consistency
-            await fetchProfileUser();
-        } catch (error) {
-            console.error('Error toggling follow:', error);
-            alert('Failed to update follow status. Please try again.');
-        } finally {
-            setFollowLoading(false);
-        }
-    };
-
-    // Debug function to reset follow state
-    const resetFollowState = () => {
-        console.log('🔄 Resetting follow state...');
-        setIsFollowing(false);
-        setFollowersCount(0);
-        setFollowingCount(0);
-        fetchProfileUser();
-    };
-
-    // Fetch user posts from Firebase
-    const fetchUserPosts = useCallback(async () => {
-        if (!targetUserId) return;
-
-        try {
-            setPostsLoading(true);
-            setPostsError(null);
-            
-            console.log('Fetching posts for user:', targetUserId);
-            
-            // Try simple query first without orderBy to avoid index issues
-            const postsQuery = query(
-                collection(db, 'posts'),
-                where('userId', '==', targetUserId)
-            );
-            
-            const postsSnapshot = await getDocs(postsQuery);
-            const posts = [];
-            
-            postsSnapshot.forEach((doc) => {
-                const postData = doc.data();
-                console.log('Post data:', postData);
-                
-                // Safely extract image URL - handle different data structures
-                let imageUrl = null;
-                if (postData.files && Array.isArray(postData.files) && postData.files.length > 0) {
-                    // Handle Cloudinary structure
-                    const firstFile = postData.files[0];
-                    imageUrl = firstFile.url || firstFile.secure_url || null;
-                }
-                
-                // Process the post to extract Cloudinary images
-                const processedPost = {
-                    id: doc.id,
-                    ...postData,
-                    // Extract thumbnail from first Cloudinary image
-                    imageUrl: imageUrl,
-                    // Determine type based on file types
-                    type: postData.files && Array.isArray(postData.files) && postData.files.length > 0 
-                        ? (postData.files.some(f => f.type && f.type.startsWith('video/')) ? 'video' : 'image')
-                        : 'text',
-                    // Convert Firebase timestamp to date - handle both serverTimestamp and regular timestamps
-                    date: postData.createdAt ? 
-                        (postData.createdAt.seconds ? 
-                            new Date(postData.createdAt.seconds * 1000).toISOString().split('T')[0] : 
-                            new Date(postData.createdAt).toISOString().split('T')[0]
-                        ) : new Date().toISOString().split('T')[0],
-                    title: postData.explanation || 'Untitled Post',
-                    likes: postData.likes || 0,
-                    comments: postData.comments || 0,
-                    isPinned: false, // You can add pinning functionality later
-                    // Add duration for videos if available
-                    duration: postData.files && postData.files[0] && postData.files[0].duration ? postData.files[0].duration : null,
-                    // Add video thumbnail URL for videos (Cloudinary generates these automatically)
-                    videoThumbnail: postData.files && postData.files[0] && postData.files[0].type && postData.files[0].type.startsWith('video/') 
-                        ? postData.files[0].url.replace('/upload/', '/upload/so_auto,w_300,h_300,c_fill,q_auto,f_jpg/') 
-                        : null
-                };
-                
-                posts.push(processedPost);
-            });
-            
-            // Sort posts by date manually since we removed orderBy from query
-            posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            // Filter out posts without images to avoid grey boxes
-            const postsWithImages = posts.filter(post => post.imageUrl && post.imageUrl.trim() !== '');
-            
-            console.log('Processed posts:', posts);
-            console.log('Posts with images:', postsWithImages);
-            setUserPosts(postsWithImages);
-            
-        } catch (error) {
-            console.error('Error fetching user posts:', error);
-            console.error('Error details:', {
-                message: error.message,
-                code: error.code,
-                stack: error.stack
-            });
-            
-            // More specific error messages
-            let errorMessage = 'Failed to load posts';
-            if (error.code) {
-                switch (error.code) {
-                    case 'permission-denied':
-                        errorMessage = 'Permission denied. Please check your authentication.';
-                        break;
-                    case 'failed-precondition':
-                        errorMessage = 'Database index required. Please contact support.';
-                        break;
-                    case 'unavailable':
-                        errorMessage = 'Service temporarily unavailable. Please try again.';
-                        break;
-                    case 'invalid-argument':
-                        errorMessage = 'Invalid query. Please try again.';
-                        break;
-                    default:
-                        errorMessage = `Error: ${error.message}`;
-                }
-            }
-            
-            setPostsError(errorMessage);
-        } finally {
-            setPostsLoading(false);
-        }
-    }, [targetUserId]);
-
-    // Fetch profile user data and posts when component mounts or params change
-    useEffect(() => {
-        if (targetUserId) {
-            fetchProfileUser();
-            fetchUserPosts();
-        }
-    }, [targetUserId, fetchProfileUser, fetchUserPosts]);
-
-    // Watch for currentUser changes to update follow status
-    useEffect(() => {
-        if (currentUser && profileUser && !isOwnProfile) {
-            fetchProfileUser(); // Refresh to get updated follow status
-        }
-    }, [currentUser, fetchProfileUser, isOwnProfile, profileUser]);
-
-    const [profile] = useState({
-        name: currentUser?.displayName || 'User Name',
-        username: currentUser?.displayName || 'User Name',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop',
-        verified: true,
+    // サンプルプロフィールデータ（画像に合わせて調整）
+    const profileData = {
+        id: id,
+        name: "ミルク",
+        emoji: "🍼",
+        username: "@milk_av",
+        bio: "Twitter: @milk_av\n\n会った女の子たちと\nOOOOOOO\nOOOOOOOOO",
+        avatar: "https://images.unsplash.com/photo-1494790108755-2616c933448c?w=150&h=150&fit=crop&crop=face",
+        coverImage: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=200&fit=crop",
+        isVerified: true,
         stats: {
-            posts: 293,
-            likes: '59.3K',
-            followers: '108.5K',
-            following: 0
+            posts: 45,
+            likes: 112,
+            followers: 217,
+            following: 117
         },
-        description: '彼氏や旦那とのえっちに満足できていない女の子を、おもちゃ責め、潮吹き、高速ピストンなどのバチボコセックスでイカせまくり、別世界のえっちを体験させる裏垢男子。。彼氏がMであんまりいじめてくれな...',
-        rankings: [
-            { category: 'Married Woman', position: '1st' },
-            { category: 'Pervert', position: '1st' },
-            { category: 'Beautiful Breasts', position: '1st' }
+        genreRankings: [
+            { genre: "美乳", rank: 342 },
+            { genre: "オナニー", rank: 452 },
+            { genre: "素人", rank: 2350 }
         ],
-        subscriptionPlan: {
-            label: 'Recommendation',
-            name: '見放題プラン',
-            price: '¥5,000',
-            period: 'month',
-            posts: 99,
-            description: 'こちらのプランでは全ての投稿を見ることができます。入会日から翌...'
-        },
-        postsData: {
-            total: 685,
-            images: 194,
-            videos: 491
-        },
-        posts: [
-            {
-                id: 1,
-                imageUrl: 'https://picsum.photos/300/400?random=1',
-                isPinned: true,
-                type: 'video',
-                title: 'Sample video post',
-                date: '2024-09-01',
-                likes: 120,
-                comments: 15
-            },
-            {
-                id: 2,
-                imageUrl: 'https://picsum.photos/300/400?random=2',
-                isPinned: false,
-                type: 'image',
-                title: 'Beautiful photo',
-                date: '2024-08-30',
-                likes: 89,
-                comments: 8
-            },
-            {
-                id: 3,
-                imageUrl: 'https://picsum.photos/300/400?random=3',
-                isPinned: true,
-                type: 'video',
-                title: 'Another video',
-                date: '2024-08-28',
-                likes: 256,
-                comments: 32
-            },
-            {
-                id: 4,
-                imageUrl: 'https://picsum.photos/300/400?random=4',
-                isPinned: false,
-                type: 'image',
-                title: 'Great shot',
-                date: '2024-08-25',
-                likes: 178,
-                comments: 22
-            },
-            {
-                id: 5,
-                imageUrl: 'https://picsum.photos/300/400?random=5',
-                isPinned: false,
-                type: 'video',
-                title: 'Video content',
-                date: '2024-08-20',
-                likes: 340,
-                comments: 45
-            },
-            {
-                id: 6,
-                imageUrl: 'https://picsum.photos/300/400?random=6',
-                isPinned: false,
-                type: 'image',
-                title: 'Amazing view',
-                date: '2024-08-18',
-                likes: 95,
-                comments: 12
-            },
-        ]
-    });
-
-    // Post Grid Item Component
-    const PostGridItem = ({ post, index }) => {
-        // Generate Cloudinary thumbnail URL if the image is from Cloudinary
-        const getThumbnailUrl = (originalUrl, postType) => {
-            if (!originalUrl || originalUrl.trim() === '') {
-                return null; // Return null instead of placeholder
-            }
-            
-            // Check if it's a Cloudinary URL
-            if (originalUrl.includes('cloudinary.com')) {
-                try {
-                    // For videos, generate a thumbnail image from the video
-                    if (postType === 'video') {
-                        const transformedUrl = originalUrl.replace(
-                            '/upload/',
-                            '/upload/so_auto,w_300,h_300,c_fill,q_auto,f_jpg/'
-                        );
-                        return transformedUrl;
-                    } else {
-                        // For images, add transformation for thumbnail: 300x300, crop to fill, quality auto
-                        const transformedUrl = originalUrl.replace(
-                            '/upload/',
-                            '/upload/w_300,h_300,c_fill,q_auto,f_auto/'
-                        );
-                        return transformedUrl;
-                    }
-                } catch (error) {
-                    console.warn('Error transforming Cloudinary URL:', error);
-                    return originalUrl;
-                }
-            }
-            
-            return originalUrl;
-        };
-
-        const thumbnailUrl = getThumbnailUrl(post.videoThumbnail || post.imageUrl, post.type);
-        
-        // Don't render if no valid image URL
-        if (!thumbnailUrl) {
-            return null;
-        }
-
-        return (
-            <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-                className="aspect-square bg-gray-100 rounded-lg overflow-hidden relative group cursor-pointer"
-            >
-                {post.type === 'video' ? (
-                    <div className="relative w-full h-full">
-                        <img
-                            src={thumbnailUrl}
-                            alt={post.title || 'Video thumbnail'}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            loading="lazy"
-                            onError={(e) => {
-                                console.warn('Video thumbnail failed to load:', post.imageUrl);
-                                e.target.closest('.aspect-square').style.display = 'none';
-                            }}
-                            onLoad={() => {
-                                console.log('Video thumbnail loaded successfully:', post.imageUrl);
-                            }}
-                        />
-                        {/* Video play button overlay */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-8 h-8 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-lg">
-                                <svg className="w-4 h-4 text-gray-800 ml-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                ) : (
-                    <img
-                        src={thumbnailUrl}
-                        alt={post.title || 'Post image'}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                        onError={(e) => {
-                            console.warn('Image failed to load:', post.imageUrl);
-                            e.target.closest('.aspect-square').style.display = 'none';
-                        }}
-                        onLoad={() => {
-                            console.log('Image loaded successfully:', post.imageUrl);
-                        }}
-                    />
-                )}
-                {post.type === 'video' && (
-                    <div className="absolute top-2 right-2">
-                        <Video size={16} className="text-white drop-shadow-lg" />
-                    </div>
-                )}
-                {post.type === 'video' && post.duration && (
-                    <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-1.5 py-0.5 rounded">
-                        {post.duration}
-                    </div>
-                )}
-                {post.isPinned && (
-                    <div className="absolute top-2 left-2">
-                        <Pin size={16} className="text-yellow-400 drop-shadow-lg" />
-                    </div>
-                )}
-                {/* Video play button overlay */}
-                {post.type === 'video' && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-8 h-8 bg-white bg-opacity-80 rounded-full flex items-center justify-center">
-                            <svg className="w-4 h-4 text-gray-800 ml-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
-                            </svg>
-                        </div>
-                    </div>
-                )}
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                    <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
-                        <div className="flex items-center justify-center space-x-4 text-sm">
-                            <span className="flex items-center space-x-1">
-                                <Heart size={14} />
-                                <span>{post.likes || 0}</span>
-                            </span>
-                            <span className="flex items-center space-x-1">
-                                <MessageCircle size={14} />
-                                <span>{post.comments || 0}</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </motion.div>
-        );
+        isFollowing: isFollowing
     };
 
-    // Post List Item Component
-    const PostListItem = ({ post }) => {
-        // Generate Cloudinary thumbnail URL for list view
-        const getListThumbnailUrl = (originalUrl, postType) => {
-            if (!originalUrl || originalUrl.trim() === '') {
-                return null; // Return null instead of placeholder
-            }
-            
-            // Check if it's a Cloudinary URL
-            if (originalUrl.includes('cloudinary.com')) {
-                try {
-                    // For videos, generate a thumbnail image from the video
-                    if (postType === 'video') {
-                        const transformedUrl = originalUrl.replace(
-                            '/upload/',
-                            '/upload/so_auto,w_100,h_100,c_fill,q_auto,f_jpg/'
-                        );
-                        return transformedUrl;
-                    } else {
-                        // For images, add transformation for list thumbnail: 100x100, crop to fill, quality auto
-                        const transformedUrl = originalUrl.replace(
-                            '/upload/',
-                            '/upload/w_100,h_100,c_fill,q_auto,f_auto/'
-                        );
-                        return transformedUrl;
-                    }
-                } catch (error) {
-                    console.warn('Error transforming Cloudinary URL for list view:', error);
-                    return originalUrl;
-                }
-            }
-            
-            return originalUrl;
+    // サブスクリプションプラン
+    const subscriptionPlans = [
+        {
+            id: 1,
+            title: "ミルク 最新見放題ぶらん...",
+            emoji: "🍼💕",
+            price: "¥3,980/月",
+            posts: 30,
+            description: "ミルクのファン限定3ヶ月以内の最新動画や写真が全て見...",
+            isRecommended: true
+        },
+        {
+            id: 2,
+            title: "ミルク 過去コンテンツ",
+            emoji: "🍼💕",
+            price: "¥1,980/月",
+            posts: 16,
+            description: "ミルクの3ヶ月以上前の動画や写真が見放題"
+        },
+        {
+            id: 3,
+            title: "ミルク ワンコインプライス",
+            emoji: "🍼💕",
+            price: "¥500/月",
+            posts: 17,
+            description: "ミルクを応援したい方向けプラン 愛くるしいからとりあえ..."
+        }
+    ];
+
+    // 初期コンテンツデータ
+    const initialContentData = [
+        { id: 1, type: "video", duration: "1:00:18", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 2, type: "image", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 3, type: "video", duration: "02:06", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 4, type: "image", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 5, type: "video", duration: "02:57", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 6, type: "image", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 7, type: "video", duration: "01:22", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 8, type: "image", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 9, type: "video", duration: "03:04", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 10, type: "image", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 11, type: "video", duration: "01:48", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 12, type: "image", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 13, type: "video", duration: "02:47", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 14, type: "image", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 15, type: "video", duration: "03:05", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 16, type: "image", likes: 0, comments: 1, isFree: true, isLiked: false, watermark: "MK" },
+        { id: 17, type: "image", likes: 0, comments: 1, isFree: true, isLiked: true, watermark: "MK" }
+    ];
+
+    // コンテンツデータを初期化
+    useEffect(() => {
+        setContentData(initialContentData);
+    }, []);
+
+    // アクション関数群
+    const handleShare = async () => {
+        const shareData = {
+            title: `${profileData.name}のプロフィール`,
+            text: `${profileData.name}のOnlyUプロフィールをチェック！`,
+            url: window.location.href
         };
 
-        const listThumbnailUrl = getListThumbnailUrl(post.videoThumbnail || post.imageUrl, post.type);
-        
-        // Don't render if no valid image URL
-        if (!listThumbnailUrl) {
-            return null;
+        try {
+            if (navigator.share) {
+                await navigator.share(shareData);
+            } else {
+                // フォールバック: URLをクリップボードにコピー
+                await navigator.clipboard.writeText(shareData.url);
+                alert('プロフィールURLをクリップボードにコピーしました！');
+            }
+        } catch (error) {
+            console.error('シェアに失敗しました:', error);
+            // フォールバック: 手動でコピー
+            setShowShareModal(true);
         }
-
-        return (
-            <div className="p-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors">
-                <div className="flex space-x-4">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
-                        <img
-                            src={listThumbnailUrl}
-                            alt={post.title || 'Post image'}
-                            className="w-full h-full object-cover"
-                            loading="lazy"
-                            onError={(e) => {
-                                console.warn('List image failed to load:', post.imageUrl);
-                                // Hide the entire post item if image fails to load
-                                e.target.closest('.p-4').style.display = 'none';
-                            }}
-                            onLoad={() => {
-                                console.log('List image loaded successfully:', post.imageUrl);
-                            }}
-                        />
-                        {post.type === 'video' && (
-                            <div className="absolute top-1 right-1">
-                                <Video size={12} className="text-white drop-shadow-lg" />
-                            </div>
-                        )}
-                        {post.type === 'video' && post.duration && (
-                            <div className="absolute bottom-1 right-1 bg-black bg-opacity-70 text-white text-xs px-1 py-0.5 rounded">
-                                {post.duration}
-                            </div>
-                        )}
-                        {post.isPinned && (
-                            <div className="absolute top-1 left-1">
-                                <Pin size={12} className="text-yellow-400 drop-shadow-lg" />
-                            </div>
-                        )}
-                        {/* Video play button overlay for list view */}
-                        {post.type === 'video' && (
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="w-6 h-6 bg-white bg-opacity-80 rounded-full flex items-center justify-center">
-                                    <svg className="w-3 h-3 text-gray-800 ml-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
-                                    </svg>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-gray-900 truncate">{post.title || 'Untitled Post'}</h3>
-                        <p className="text-sm text-gray-500 mt-1">{post.date}</p>
-                        <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
-                            <span className="flex items-center space-x-1">
-                                <Heart size={14} />
-                                <span>{post.likes || 0}</span>
-                            </span>
-                            <span className="flex items-center space-x-1">
-                                <MessageCircle size={14} />
-                                <span>{post.comments || 0}</span>
-                            </span>
-                        </div>
-                    </div>
-                    <div className="flex-shrink-0">
-                        <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                            <MoreHorizontal size={16} className="text-gray-400" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
     };
 
-    // If still loading authentication state
-    if (loading) {
-        return (
-            <div className="min-h-screen bg-white flex items-center justify-center">
-                <div className="text-gray-500">Loading...</div>
-            </div>
-        );
-    }
+    const handleFollow = async () => {
+        try {
+            setIsFollowing(!isFollowing);
+            // 実際のアプリではAPIを呼び出し
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            if (!isFollowing) {
+                alert(`${profileData.name}をフォローしました！`);
+            } else {
+                alert(`${profileData.name}のフォローを解除しました。`);
+            }
+        } catch (error) {
+            console.error('フォロー操作に失敗しました:', error);
+            setIsFollowing(!isFollowing); // エラー時は元に戻す
+        }
+    };
 
-    // If user is not authenticated, redirect to login
-    if (!currentUser) {
-        navigate('/');
-        return null;
-    }
+    const handleMessage = () => {
+        navigate(`/messages?user=${profileData.username}`);
+    };
 
-    // Debug render state
-    console.log('🎨 ProfilePage render:', {
-        urlParamUserId: userId,
-        currentUser: currentUser?.uid,
-        targetUserId,
-        isOwnProfile,
-        isFollowing,
-        followersCount,
-        profileUser: profileUser?.uid
-    });
+    const handlePlanConfirm = (planId) => {
+        setShowPlanModal(planId);
+    };
+
+    const handlePlanSubscribe = async (planId) => {
+        try {
+            const plan = subscriptionPlans.find(p => p.id === planId);
+            // 実際のアプリでは決済処理を実装
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            alert(`${plan.title}に加入しました！`);
+            setShowPlanModal(null);
+        } catch (error) {
+            console.error('プラン加入に失敗しました:', error);
+            alert('プラン加入に失敗しました。しばらくしてからお試しください。');
+        }
+    };
+
+    const handleContentLike = async (contentId) => {
+        setContentData(prev => prev.map(item => {
+            if (item.id === contentId) {
+                return {
+                    ...item,
+                    isLiked: !item.isLiked,
+                    likes: item.isLiked ? item.likes - 1 : item.likes + 1
+                };
+            }
+            return item;
+        }));
+    };
+
+    const handleContentClick = (contentId) => {
+        const content = contentData.find(item => item.id === contentId);
+        if (content.type === 'video') {
+            navigate(`/video/${contentId}`);
+        } else {
+            navigate(`/image/${contentId}`);
+        }
+    };
+
+    const handleEditProfile = () => {
+        navigate('/edit-profile');
+    };
+
+    const handleFilterChange = (filter) => {
+        setSelectedFilter(filter);
+        // フィルターに応じてコンテンツを更新
+        let filteredData = initialContentData;
+        
+        if (filter === 'video') {
+            filteredData = initialContentData.filter(item => item.type === 'video');
+        } else if (filter === 'image') {
+            filteredData = initialContentData.filter(item => item.type === 'image');
+        }
+        
+        setContentData(filteredData);
+    };
+
+    const handleCopyLink = async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            alert('プロフィールURLをクリップボードにコピーしました！');
+            setShowShareModal(false);
+        } catch (error) {
+            console.error('コピーに失敗しました:', error);
+        }
+    };
+
+    const displayedPlans = showAllPlans ? subscriptionPlans : subscriptionPlans.slice(0, 3);
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-white pb-20">
             {/* Header */}
-            <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 sticky top-0 bg-white z-10">
-                <button onClick={() => navigate(-1)} className="p-1 sm:p-2">
-                    <ArrowLeft size={20} className="sm:w-6 sm:h-6 text-gray-700" />
+            <div className="flex items-center justify-between p-4 bg-black text-white sticky top-0 z-20">
+                <button onClick={() => navigate(-1)} className="p-1">
+                    <ArrowLeft size={20} />
                 </button>
-                <h1 className="font-semibold text-sm sm:text-lg truncate max-w-[150px] sm:max-w-xs">
-                    {profileUser?.displayName || profileUser?.name || profile.name}
-                </h1>
-                <div className="flex items-center space-x-2 sm:space-x-4">
-                    <Share2 size={18} className="sm:w-6 sm:h-6 text-gray-700" />
-                    <MoreHorizontal size={18} className="sm:w-6 sm:h-6 text-gray-700" />
-                </div>
+                <button onClick={handleShare} className="p-1">
+                    <Share2 size={20} />
+                </button>
             </div>
 
-            <div className="px-3 sm:px-4 lg:px-6 pb-20">
-                {/* Profile Info */}
-                <div className="flex items-start space-x-3 sm:space-x-4 py-4 sm:py-6">
-                    <div className="relative flex-shrink-0">
+            {/* Cover Image */}
+            <div className="h-48 bg-gradient-to-br from-pink-400 via-purple-500 to-blue-500 relative">
+                <img
+                    src={profileData.coverImage}
+                    alt="Cover"
+                    className="w-full h-full object-cover"
+                />
+            </div>
+
+            {/* Profile Info */}
+            <div className="px-4 pb-4 -mt-16 relative">
+                <div className="flex items-start justify-between mb-4">
+                    {/* Avatar with verification */}
+                    <div className="relative">
                         <img
-                            src={profileUser?.photoURL || profileUser?.avatar || profile.avatar}
-                            alt={profileUser?.displayName || profileUser?.name || profile.name}
-                            className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full shadow-lg border-4 border-white"
+                            src={profileData.avatar}
+                            alt={profileData.name}
+                            className="w-24 h-24 rounded-full border-4 border-white"
                         />
-                        {profile.verified && (
-                            <div className="absolute -bottom-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 bg-green-500 rounded-full flex items-center justify-center border-2 border-white">
-                                <div className="w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full"></div>
-                            </div>
+                        {profileData.isVerified && (
+                            <CheckCircle className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 text-white rounded-full" size={20} />
                         )}
                     </div>
-                    <div className="flex-1 min-w-0 pt-8">
-                        <div className="flex items-start justify-between mb-2">
-                            <div className="min-w-0 flex-1">
-                                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
-                                    {profileUser?.displayName || profileUser?.name || profile.name}
-                                </h1>
-                                <p className="text-gray-200 text-sm sm:text-base">
-                                    {profileUser?.email || profile.username}
-                                </p>
-                            </div>
-                            <div className="flex items-center space-x-2 ml-2 flex-shrink-0">
-                                {/* Debug info - remove this later */}
-                                {process.env.NODE_ENV === 'development' && (
-                                    <div className="flex items-center space-x-1">
-                                        <div className="text-xs bg-yellow-100 p-1 rounded">
-                                            {isOwnProfile ? 'Own' : 'Other'} | {isFollowing ? 'Following' : 'Not Following'}
-                                        </div>
-                                        <button
-                                            onClick={fetchProfileUser}
-                                            className="text-xs bg-blue-100 p-1 rounded hover:bg-blue-200"
-                                            title="Refresh profile data"
-                                        >
-                                            🔄
-                                        </button>
-                                        <button
-                                            onClick={resetFollowState}
-                                            className="text-xs bg-red-100 p-1 rounded hover:bg-red-200"
-                                            title="Reset follow state"
-                                        >
-                                            🔃
-                                        </button>
-                                    </div>
-                                )}
-                                
-                                {!isOwnProfile && currentUser && (
-                                    <button
-                                        onClick={handleFollowToggle}
-                                        disabled={followLoading}
-                                        className={`flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 ${
-                                            isFollowing
-                                                ? 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                                                : 'bg-pink-600 text-white hover:bg-pink-700'
-                                        } ${followLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                    >
-                                        {followLoading ? (
-                                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                                        ) : isFollowing ? (
-                                            <>
-                                                <UserCheck size={16} />
-                                                <span>Following</span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <UserPlus size={16} />
-                                                <span>Follow</span>
-                                            </>
-                                        )}
-                                    </button>
-                                )}
-                                <X size={16} className="sm:w-5 sm:h-5 text-pink-600" />
-                                <Link2 size={16} className="sm:w-5 sm:h-5 text-pink-600" />
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                {/* Rest of your existing code stays exactly the same... */}
+                {/* Name and username */}
+                <div className="mb-3">
+                    <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+                        {profileData.name} {profileData.emoji}
+                    </h1>
+                    <p className="text-gray-500 text-sm">{profileData.username}</p>
+                </div>
+
                 {/* Stats */}
-                <div className="grid grid-cols-4 gap-2 text-center mb-4 sm:mb-6">
+                <div className="flex space-x-6 mb-4">
                     <div>
-                        <div className="text-lg sm:text-xl lg:text-2xl font-bold">{userPosts.length}</div>
-                        <div className="text-xs sm:text-sm text-gray-500">Posts</div>
+                        <span className="font-bold text-gray-900">{profileData.stats.posts}</span>
+                        <span className="text-gray-500 text-sm ml-1">投稿</span>
                     </div>
                     <div>
-                        <div className="text-lg sm:text-xl lg:text-2xl font-bold">
-                            {userPosts.reduce((total, post) => total + (post.likes || 0), 0)}
-                        </div>
-                        <div className="text-xs sm:text-sm text-gray-500">Likes</div>
+                        <span className="font-bold text-gray-900">{profileData.stats.likes}</span>
+                        <span className="text-gray-500 text-sm ml-1">いいね</span>
                     </div>
                     <div>
-                        <div className="text-lg sm:text-xl lg:text-2xl font-bold">{followersCount}</div>
-                        <div className="text-xs sm:text-sm text-gray-500">Followers</div>
+                        <span className="font-bold text-gray-900">{profileData.stats.followers}</span>
+                        <span className="text-gray-500 text-sm ml-1">フォロワー</span>
                     </div>
                     <div>
-                        <div className="text-lg sm:text-xl lg:text-2xl font-bold">{followingCount}</div>
-                        <div className="text-xs sm:text-sm text-gray-500">Following</div>
+                        <span className="font-bold text-gray-900">{profileData.stats.following}</span>
+                        <span className="text-gray-500 text-sm ml-1">フォロー</span>
                     </div>
                 </div>
 
-                {/* Description */}
-                <p className="text-xs sm:text-sm text-gray-700 mb-4 sm:mb-6 leading-relaxed">
-                    {profile.description}
-                </p>
+                {/* Bio */}
+                <div className="mb-6">
+                    <p className="text-gray-800 text-sm whitespace-pre-line">{profileData.bio}</p>
+                </div>
 
                 {/* Genre Rankings */}
-                <div className="mb-4 sm:mb-6">
-                    <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-2">Genre-based ranking (Daily)</p>
-                    <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:flex lg:space-x-6">
-                        {profile.rankings.map((ranking, index) => (
-                            <div key={index} className="text-center">
-                                <div className="text-xs sm:text-sm font-medium truncate">{ranking.category}</div>
-                                <div className="text-sm sm:text-lg font-bold text-red-500">{ranking.position}</div>
+                <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                    <h3 className="font-semibold text-gray-900 mb-3">ジャンル別ランキング(日間)</h3>
+                    <div className="space-y-2">
+                        {profileData.genreRankings.map((item, index) => (
+                            <div key={index} className="flex justify-between items-center">
+                                <span className="text-gray-700">{item.genre}</span>
+                                <span className="font-bold text-gray-900">{item.rank}位</span>
                             </div>
                         ))}
                     </div>
-                </div>
-
-                {/* Subscription Plan */}
-                <div className="bg-pink-50 border border-pink-300 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-                        <div className="flex-1">
-                            <span className="bg-pink-600 text-white text-xs px-2 py-1 rounded mb-2 inline-block">
-                                {profile.subscriptionPlan.label}
-                            </span>
-                            <h3 className="font-bold text-pink-600 text-base sm:text-lg mb-1">
-                                {profile.subscriptionPlan.name}
-                            </h3>
-                            <div className="flex flex-wrap items-baseline gap-1 mb-2">
-                                <span className="font-bold text-sm sm:text-lg">{profile.subscriptionPlan.price}</span>
-                                <span className="text-xs sm:text-sm text-gray-600">/ {profile.subscriptionPlan.period}</span>
-                                <span className="text-xs sm:text-sm text-gray-600">Posts: {profile.subscriptionPlan.posts}</span>
-                            </div>
-                            <p className="text-xs text-gray-600 line-clamp-2">{profile.subscriptionPlan.description}</p>
-                        </div>
-                        <button className="bg-pink-600 text-white px-4 sm:px-6 py-2 rounded-full font-semibold hover:bg-pink-700 text-sm sm:text-base w-full sm:w-auto">
-                            Subscribe
+                    
+                    {/* Toggle for showing rankings */}
+                    <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-200">
+                        <span className="text-sm text-gray-600">ジャンル別ランキング(日間)を他ユーザーに表示する</span>
+                        <button
+                            onClick={() => setShowRankings(!showRankings)}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                                showRankings ? 'bg-pink-500' : 'bg-gray-300'
+                            }`}
+                        >
+                            <span
+                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                                    showRankings ? 'translate-x-6' : 'translate-x-1'
+                                }`}
+                            />
                         </button>
                     </div>
                 </div>
 
-                {/* Tabs */}
-                <div className="flex space-x-4 sm:space-x-8 mb-4 sm:mb-6 overflow-x-auto">
-                    <button
-                        onClick={() => setActiveTab('Post')}
-                        className={`pb-2 border-b-2 font-semibold whitespace-nowrap text-sm sm:text-base ${activeTab === 'Post'
-                            ? 'text-pink-600 border-pink-600'
-                            : 'text-gray-400 border-transparent'
-                            }`}
-                    >
-                        Post
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('Single post sales')}
-                        className={`pb-2 border-b-2 font-semibold whitespace-nowrap text-sm sm:text-base ${activeTab === 'Single post sales'
-                            ? 'text-pink-600 border-pink-600'
-                            : 'text-gray-400 border-transparent'
-                            }`}
-                    >
-                        Single post sales
-                    </button>
-                </div>
-
-                {/* Filters and Controls */}
-                <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-                        <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
-                            {/* Tags Filter */}
-                            <div className="relative">
-                                <button
-                                    onClick={() => setShowFilters(!showFilters)}
-                                    className="flex items-center justify-between w-full sm:w-auto space-x-2 border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm bg-white"
+                {/* Subscription Plans */}
+                <div className="space-y-3 mb-6">
+                    {displayedPlans.map((plan) => (
+                        <div key={plan.id} className="bg-white border border-gray-200 rounded-lg p-4 relative">
+                            {plan.isRecommended && (
+                                <div className="absolute -top-2 left-4">
+                                    <span className="bg-pink-500 text-white text-xs px-3 py-1 rounded-full">おすすめ</span>
+                                </div>
+                            )}
+                            <div className="flex justify-between items-start">
+                                <div className="flex-1">
+                                    <h4 className="font-semibold text-gray-900 flex items-center mb-1">
+                                        {plan.title} {plan.emoji}
+                                    </h4>
+                                    <p className="text-sm text-gray-600 mb-2">{plan.price} 投稿{plan.posts}件</p>
+                                    <p className="text-xs text-gray-500">{plan.description}</p>
+                                </div>
+                                <button 
+                                    onClick={() => handlePlanConfirm(plan.id)}
+                                    className="bg-pink-500 text-white px-4 py-2 rounded-lg text-sm font-medium ml-4 hover:bg-pink-600 transition-colors"
                                 >
-                                    <span className="truncate">{selectedTags}</span>
-                                    <ChevronDown size={14} className="flex-shrink-0" />
+                                    確認する
                                 </button>
                             </div>
-
-                            {/* Content Type Filter */}
-                            <div className="flex flex-wrap gap-1 sm:gap-2">
-                                {filterOptions.map((filter) => (
-                                    <button
-                                        key={filter}
-                                        onClick={() => setSelectedFilter(filter)}
-                                        className={`px-2 sm:px-3 py-1 text-xs rounded border flex items-center space-x-1 ${selectedFilter === filter
-                                            ? 'bg-pink-600 text-white border-pink-600'
-                                            : 'bg-white text-gray-600 border-gray-300'
-                                            }`}
-                                    >
-                                        {filter === 'Images' && <ImageIcon size={10} className="sm:w-3 sm:h-3" />}
-                                        {filter === 'Videos' && <Video size={10} className="sm:w-3 sm:h-3" />}
-                                        <span>{filter}</span>
-                                    </button>
-                                ))}
-                            </div>
-
-                            {/* Sort Dropdown */}
-                            <div className="relative">
-                                <select
-                                    value={sortBy}
-                                    onChange={(e) => setSortBy(e.target.value)}
-                                    className="border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm bg-white w-full sm:w-auto"
-                                >
-                                    {sortOptions.map(option => (
-                                        <option key={option} value={option}>{option}</option>
-                                    ))}
-                                </select>
-                            </div>
                         </div>
+                    ))}
+                    
+                    {subscriptionPlans.length > 3 && (
+                        <button
+                            onClick={() => setShowAllPlans(!showAllPlans)}
+                            className="w-full text-center text-gray-600 py-2 flex items-center justify-center space-x-1"
+                        >
+                            <span>すべてのプランを表示</span>
+                            <ChevronDown 
+                                size={16} 
+                                className={`transition-transform ${showAllPlans ? 'rotate-180' : ''}`} 
+                            />
+                        </button>
+                    )}
+                </div>
 
-                        {/* View Toggle */}
-                        <div className="flex items-center space-x-2 self-end sm:self-auto">
-                            <button
-                                onClick={() => setViewMode('grid')}
-                                className={`p-2 rounded ${viewMode === 'grid' ? 'bg-pink-600 text-white' : 'bg-gray-100 text-gray-600'
-                                    }`}
-                            >
-                                <Grid3X3 size={14} className="sm:w-4 sm:h-4" />
-                            </button>
-                            <button
-                                onClick={() => setViewMode('list')}
-                                className={`p-2 rounded ${viewMode === 'list' ? 'bg-pink-600 text-white' : 'bg-gray-100 text-gray-600'
-                                    }`}
-                            >
-                                <List size={14} className="sm:w-4 sm:h-4" />
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Post Count - Only show posts with images */}
-                    <div className="flex items-center space-x-3 sm:space-x-4 text-xs sm:text-sm text-gray-600 overflow-x-auto">
-                        <span className="whitespace-nowrap">{userPosts.length} posts with images</span>
-                        <span className="flex items-center space-x-1 whitespace-nowrap">
-                            <ImageIcon size={12} className="sm:w-4 sm:h-4" />
-                            <span>{userPosts.filter(post => post.type === 'image').length}</span>
-                        </span>
-                        <span className="flex items-center space-x-1 whitespace-nowrap">
-                            <Video size={12} className="sm:w-4 sm:h-4" />
-                            <span>{userPosts.filter(post => post.type === 'video').length}</span>
-                        </span>
+                {/* Content Tabs */}
+                <div className="border-b border-gray-200 mb-4">
+                    <div className="flex space-x-8">
+                        <button
+                            onClick={() => setActiveTab('posts')}
+                            className={`pb-3 text-sm font-medium border-b-2 transition-colors ${
+                                activeTab === 'posts' 
+                                    ? 'text-pink-500 border-pink-500' 
+                                    : 'text-gray-500 border-transparent'
+                            }`}
+                        >
+                            投稿
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('single')}
+                            className={`pb-3 text-sm font-medium border-b-2 transition-colors ${
+                                activeTab === 'single' 
+                                    ? 'text-pink-500 border-pink-500' 
+                                    : 'text-gray-500 border-transparent'
+                            }`}
+                        >
+                            単品販売
+                        </button>
                     </div>
                 </div>
 
-                {/* Posts Content */}
-                {postsLoading ? (
-                    <div className="text-center py-8 sm:py-12">
-                        <div className="animate-spin rounded-full h-8 w-8 border-2 border-pink-500 border-t-transparent mx-auto mb-4"></div>
-                        <p className="text-gray-500 text-sm sm:text-base">Loading posts...</p>
-                    </div>
-                ) : postsError ? (
-                    <div className="text-center py-8 sm:py-12">
-                        <div className="text-red-400 text-4xl sm:text-6xl mb-4">⚠️</div>
-                        <p className="text-red-500 text-sm sm:text-base">{postsError}</p>
-                        <button 
-                            onClick={fetchUserPosts}
-                            className="mt-4 px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors"
+                {/* Filters */}
+                <div className="flex items-center space-x-3 mb-4 overflow-x-auto">
+                    <button className="flex items-center space-x-1 bg-gray-100 text-gray-700 px-3 py-2 rounded-full text-sm">
+                        <Filter size={16} />
+                        <span>すべてのタグ</span>
+                    </button>
+                    <button 
+                        onClick={() => handleFilterChange('all')}
+                        className={`px-3 py-2 rounded-full text-sm font-medium ${
+                            selectedFilter === 'all' 
+                                ? 'bg-pink-500 text-white' 
+                                : 'bg-gray-100 text-gray-700'
+                        }`}
+                    >
+                        All
+                    </button>
+                    <button 
+                        onClick={() => handleFilterChange('video')}
+                        className={`p-2 rounded-full ${
+                            selectedFilter === 'video' 
+                                ? 'bg-pink-500 text-white' 
+                                : 'bg-gray-100 text-gray-700'
+                        }`}
+                    >
+                        <Video size={16} />
+                    </button>
+                    <button 
+                        onClick={() => handleFilterChange('image')}
+                        className={`p-2 rounded-full ${
+                            selectedFilter === 'image' 
+                                ? 'bg-pink-500 text-white' 
+                                : 'bg-gray-100 text-gray-700'
+                        }`}
+                    >
+                        <Image size={16} />
+                    </button>
+                    <button className="flex items-center space-x-1 bg-gray-100 text-gray-700 px-3 py-2 rounded-full text-sm ml-auto">
+                        <span>新しい↓</span>
+                    </button>
+                </div>
+
+                {/* Content Grid */}
+                <div className="grid grid-cols-3 gap-2">
+                    {contentData.map((item) => (
+                        <div 
+                            key={item.id} 
+                            onClick={() => handleContentClick(item.id)}
+                            className="aspect-square bg-gray-200 rounded-lg overflow-hidden relative group cursor-pointer"
                         >
-                            Retry
-                        </button>
-                    </div>
-                ) : userPosts.length > 0 ? (
-                    viewMode === 'grid' ? (
-                        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1 sm:gap-2">
-                            {userPosts.map((post, index) => (
-                                <PostGridItem key={post.id} post={post} index={index} />
-                            ))}
+                            {/* Placeholder image */}
+                            <div className="w-full h-full bg-gradient-to-br from-pink-300 to-purple-400 flex items-center justify-center">
+                                <span className="text-white font-bold text-lg">{item.id}</span>
+                            </div>
+                            
+                            {/* FREE badge */}
+                            {item.isFree && (
+                                <div className="absolute top-2 left-2 bg-pink-500 text-white text-xs px-2 py-1 rounded">
+                                    FREE
+                                </div>
+                            )}
+                            
+                            {/* Watermark */}
+                            {item.watermark && (
+                                <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                                    {item.watermark}
+                                </div>
+                            )}
+                            
+                            {/* Duration for videos */}
+                            {item.type === 'video' && item.duration && (
+                                <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                                    {item.duration}
+                                </div>
+                            )}
+                            
+                            {/* Interaction overlay */}
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center space-x-4 text-white">
+                                    <div className="flex items-center space-x-1">
+                                        <MessageCircle size={16} />
+                                        <span className="text-xs">{item.comments}</span>
+                                    </div>
+                                    <div 
+                                        className="flex items-center space-x-1 cursor-pointer"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleContentLike(item.id);
+                                        }}
+                                    >
+                                        <Heart 
+                                            size={16} 
+                                            className={item.isLiked ? 'fill-red-500 text-red-500' : ''} 
+                                        />
+                                        <span className="text-xs">{item.likes}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Liked button */}
+                            {item.isLiked && (
+                                <div className="absolute bottom-2 left-2 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                                    いいね済み
+                                </div>
+                            )}
                         </div>
-                    ) : (
-                        <div className="border border-gray-200 rounded-lg overflow-hidden">
-                            {userPosts.map((post) => (
-                                <PostListItem key={post.id} post={post} />
-                            ))}
-                        </div>
-                    )
-                ) : (
-                    <div className="text-center py-8 sm:py-12">
-                        <div className="text-gray-400 text-4xl sm:text-6xl mb-4">📷</div>
-                        <p className="text-gray-500 text-sm sm:text-base">No posts with images yet</p>
-                        <p className="text-gray-400 text-xs sm:text-sm mt-2">Create a post with images to see them here</p>
-                        <button 
-                            onClick={() => navigate('/create-post')}
-                            className="mt-4 px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors"
-                        >
-                            Create Your First Post
-                        </button>
-                    </div>
-                )}
+                    ))}
+                </div>
             </div>
 
-            {/* Bottom Action Buttons */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 sm:p-4 flex space-x-2 sm:space-x-3">
-                <button className="flex-1 bg-pink-600 text-white py-2 sm:py-3 rounded-full font-semibold flex items-center justify-center space-x-1 sm:space-x-2 hover:bg-pink-700 text-xs sm:text-sm">
-                    <Heart size={14} className="sm:w-5 sm:h-5" />
-                    <span className="hidden sm:inline">Send a tip</span>
-                    <span className="sm:hidden">Tip</span>
-                </button>
-                
-                {/* Follow/Unfollow Button - Only show if not own profile */}
-                {!isOwnProfile && currentUser && (
-                    <button
-                        onClick={handleFollowToggle}
-                        disabled={followLoading}
-                        className={`flex-1 py-2 sm:py-3 rounded-full font-semibold flex items-center justify-center space-x-1 sm:space-x-2 text-xs sm:text-sm transition-all duration-200 ${
-                            isFollowing
-                                ? 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                                : 'border border-pink-600 text-pink-600 hover:bg-pink-50'
-                        } ${followLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    >
-                        {followLoading ? (
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
-                        ) : isFollowing ? (
-                            <>
-                                <UserCheck size={14} className="sm:w-5 sm:h-5" />
-                                <span className="hidden sm:inline">Following</span>
-                                <span className="sm:hidden">Following</span>
-                            </>
-                        ) : (
-                            <>
-                                <User size={14} className="sm:w-5 sm:h-5" />
-                                <span className="hidden sm:inline">+ Follow</span>
-                                <span className="sm:hidden">Follow</span>
-                            </>
-                        )}
-                    </button>
-                )}
-                
-                <button className="flex-1 border border-gray-300 text-gray-700 py-2 sm:py-3 rounded-full font-semibold flex items-center justify-center space-x-1 sm:space-x-2 hover:bg-gray-50 text-xs sm:text-sm">
-                    <MessageCircle size={14} className="sm:w-5 sm:h-5" />
-                    <span className="hidden sm:inline">Messages</span>
-                    <span className="sm:hidden">Msg</span>
+            {/* Edit Profile Button */}
+            <div className="fixed bottom-20 left-4 right-4 z-10">
+                <button 
+                    onClick={handleEditProfile}
+                    className="w-full bg-white border-2 border-pink-200 text-pink-600 py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 shadow-lg hover:bg-pink-50 transition-colors"
+                >
+                    <Edit3 size={20} />
+                    <span>プロフィールを編集</span>
                 </button>
             </div>
+
+            {/* Share Modal */}
+            {showShareModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-xl p-6 w-full max-w-sm">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">プロフィールをシェア</h3>
+                        <div className="space-y-3">
+                            <button
+                                onClick={handleCopyLink}
+                                className="w-full flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                            >
+                                <Copy size={20} className="text-gray-600" />
+                                <span className="text-gray-900">リンクをコピー</span>
+                            </button>
+                            <button
+                                onClick={() => setShowShareModal(false)}
+                                className="w-full p-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors"
+                            >
+                                キャンセル
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Plan Modal */}
+            {showPlanModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-xl p-6 w-full max-w-sm">
+                        {(() => {
+                            const plan = subscriptionPlans.find(p => p.id === showPlanModal);
+                            return (
+                                <>
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{plan.title}</h3>
+                                    <p className="text-sm text-gray-600 mb-4">{plan.price} - 投稿{plan.posts}件</p>
+                                    <p className="text-sm text-gray-700 mb-6">{plan.description}</p>
+                                    <div className="flex space-x-3">
+                                        <button
+                                            onClick={() => setShowPlanModal(null)}
+                                            className="flex-1 p-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                                        >
+                                            キャンセル
+                                        </button>
+                                        <button
+                                            onClick={() => handlePlanSubscribe(plan.id)}
+                                            className="flex-1 p-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors"
+                                        >
+                                            加入する
+                                        </button>
+                                    </div>
+                                </>
+                            );
+                        })()}
+                    </div>
+                </div>
+            )}
+
+            <BottomNavigationWithCreator active="account" />
         </div>
     );
 };
 
-export default EnhancedProfilePage;
+export default ProfilePage;
