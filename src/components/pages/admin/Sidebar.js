@@ -1,9 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Users, UserPlus, FileText, BarChart3, DollarSign, Shield } from "lucide-react";
+import { Users, UserPlus, FileText, BarChart3, DollarSign, Shield, LogOut, Mail, Bell } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-export default function Sidebar({ open, setOpen }) {
+export default function Sidebar({ open, setOpen, onLogout }) {
   const { t } = useTranslation();
 
   const navItems = [
@@ -14,6 +14,8 @@ export default function Sidebar({ open, setOpen }) {
     { name: t('AdminPage.postsPage.title'), path: "/admin/posts", icon: FileText },
     { name: t('AdminPage.salesPage.title'), path: "/admin/sales", icon: DollarSign },
     { name: t('AdminPage.verificationPage.title'), path: "/admin/verification", icon: Shield },
+    { name: "メール通知管理", path: "/admin/email-notifications", icon: Mail },
+    { name: "プッシュ通知管理", path: "/admin/push-notifications", icon: Bell },
   ];
 
   return (
@@ -51,14 +53,23 @@ export default function Sidebar({ open, setOpen }) {
             ))}
           </nav>
 
-          {/* Bottom Logo */}
-          <div className="p-4 border-t text-center">
-            <img
-              src="/logo192.png"
-              alt="Logo"
-              className="w-12 h-12 mx-auto mb-2"
-            />
-            <p className="text-xs text-gray-500">© 2025 Lord tech</p>
+          {/* Bottom Logo and Logout */}
+          <div className="p-4 border-t">
+            <button
+              onClick={onLogout}
+              className="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors mb-4"
+            >
+              <LogOut className="w-5 h-5 mr-3" />
+              ログアウト
+            </button>
+            <div className="text-center">
+              <img
+                src="/logo192.png"
+                alt="Logo"
+                className="w-16 h-16 mx-auto mb-2"
+              />
+              <p className="text-xs text-gray-500">© 2025 SIN JAPAN LLC</p>
+            </div>
           </div>
         </div>
       </aside>

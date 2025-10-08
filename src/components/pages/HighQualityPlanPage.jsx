@@ -21,18 +21,16 @@ const HighQualityPlanPage = () => {
   const [selectedQuality, setSelectedQuality] = useState('4k');
   const [showPaymentDetails, setShowPaymentDetails] = useState(false);
   
-  // 手数料計算
-  const basePrice = 980; // 月額料金
-  const serviceFeeRate = 0.10; // サービス手数料率（10%税別）
+  // 高画質プラン料金（税込）
+  const basePrice = 980; // 高画質プラン月額料金（税込）
   const taxRate = 0.10; // 消費税率（10%）
   
-  // サービス手数料の計算
-  const serviceFeeExcludingTax = Math.floor(basePrice * serviceFeeRate);
-  const serviceFeeTax = Math.floor(serviceFeeExcludingTax * taxRate);
-  const serviceFeeIncludingTax = serviceFeeExcludingTax + serviceFeeTax;
+  // 税込から税抜を逆算
+  const priceExcludingTax = Math.floor(basePrice / (1 + taxRate));
+  const tax = basePrice - priceExcludingTax;
   
-  // 合計金額
-  const totalAmount = basePrice + serviceFeeIncludingTax;
+  // 高画質プランは手数料なし（税込価格）
+  const totalAmount = basePrice;
 
   const plans = [
     {
@@ -241,8 +239,7 @@ const HighQualityPlanPage = () => {
               {formatCurrency(totalAmount)}/月
             </div>
             <div className="text-sm text-gray-600 mb-2">
-              <span className="line-through">{formatCurrency(basePrice)}</span>
-              <span className="ml-2">+ サービス手数料 {formatCurrency(serviceFeeIncludingTax)}（税込）</span>
+              月額料金（税込）
             </div>
             <p className="text-gray-600 text-sm leading-relaxed">
               通常は標準画質の動画コンテンツを、高画質で視聴することができます。<br />
@@ -282,15 +279,15 @@ const HighQualityPlanPage = () => {
                   <span className="font-semibold">{formatCurrency(basePrice)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">サービス手数料（10%税別）</span>
-                  <span className="font-semibold text-orange-600">+{formatCurrency(serviceFeeIncludingTax)}</span>
+                  <span className="text-gray-600">月額料金（税込）</span>
+                  <span className="font-semibold text-orange-600">{formatCurrency(basePrice)}</span>
                 </div>
                 <div className="border-t pt-2 flex justify-between">
                   <span className="font-semibold text-gray-900">合計金額</span>
                   <span className="font-bold text-pink-600">{formatCurrency(totalAmount)}</span>
                 </div>
                 <p className="text-xs text-gray-500 mt-2">
-                  ※ サービス手数料には消費税が含まれています
+                  ※ 月額料金は税込価格です
                 </p>
               </div>
             </motion.div>
@@ -305,7 +302,6 @@ const HighQualityPlanPage = () => {
             // 決済処理を実装
             console.log('Payment processing:', {
               basePrice,
-              serviceFee: serviceFeeIncludingTax,
               totalAmount
             });
             alert(`決済処理を開始します\n合計金額: ${formatCurrency(totalAmount)}`);

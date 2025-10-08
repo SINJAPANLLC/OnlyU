@@ -16,6 +16,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { UnreadMessagesProvider } from './context/UnreadMessagesContext';
 import { UserStatsProvider } from './context/UserStatsContext';
 import { CreatorProvider } from './context/CreatorContext';
+import { NotificationProvider } from './context/NotificationContext';
 import SearchPage from './components/pages/SearchPage';
 import TermsOfUse from './components/pages/TermsOfUse'; // Import TermsOfUse component
 import PrivacyPolicy from './components/pages/PrivacyPolicy';
@@ -57,7 +58,7 @@ import CreatorPhoneVerificationPage from './components/pages/CreatorPhoneVerific
 import EditProfilePage from './components/pages/EditProfilePage';
 import ImagePage from './components/pages/ImagePage';
 import LandingPage from './components/pages/LandingPage';
-
+import AdminLoginPage from './components/pages/AdminLoginPage';
 
 // import AdminLayout from "./components/admin/AdminLayout";
 import AdminLayout from './components/pages/admin/AdminLayout';
@@ -68,6 +69,20 @@ import Reports from "./components/pages/admin/Reports";
 import Posts from "./components/pages/admin/Posts";
 import Sales from "./components/pages/admin/Sales";
 import Verification from "./components/pages/admin/Verification";
+import NotificationManagement from "./components/pages/admin/NotificationManagement";
+import UserManagement from "./components/pages/admin/UserManagement";
+import AnalyticsDashboard from "./components/pages/admin/AnalyticsDashboard";
+import PostManagement from "./components/pages/admin/PostManagement";
+import RevenueManagement from "./components/pages/admin/RevenueManagement";
+import KYCManagement from "./components/pages/admin/KYCManagement";
+import PDCAManagement from "./components/pages/admin/PDCAManagement";
+import CustomerFeedback from "./components/pages/admin/CustomerFeedback";
+import ABTesting from "./components/pages/admin/ABTesting";
+import KPIDashboard from "./components/pages/admin/KPIDashboard";
+import ReportManagement from "./components/pages/admin/ReportManagement";
+import EmailNotificationManagement from "./components/pages/admin/EmailNotificationManagement";
+import PushNotificationManagement from "./components/pages/admin/PushNotificationManagement";
+import AdminLogin from "./components/pages/admin/AdminLogin";
 
 const AccountWrapper = () => {
   const { isAuthenticated } = useAuth();
@@ -208,6 +223,27 @@ const AppRoutes = () => {
       <Route path="/lp" element={<LandingPage />} />
       <Route path="/logout" element={<ProtectedRoute><div>Logout Handler</div></ProtectedRoute>} />
 
+      {/* Admin login route */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+      
+      {/* Admin management routes - protected by AdminLayout */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="users" element={<UserManagement />} />
+        <Route path="creators" element={<Creators />} />
+                <Route path="reports" element={<ReportManagement />} />
+                <Route path="email-notifications" element={<EmailNotificationManagement />} />
+                <Route path="push-notifications" element={<PushNotificationManagement />} />
+        <Route path="posts" element={<PostManagement />} />
+        <Route path="sales" element={<RevenueManagement />} />
+        <Route path="verification" element={<KYCManagement />} />
+        <Route path="notifications" element={<NotificationManagement />} />
+        <Route path="analytics" element={<AnalyticsDashboard />} />
+        <Route path="pdca" element={<PDCAManagement />} />
+        <Route path="feedback" element={<CustomerFeedback />} />
+        <Route path="ab-testing" element={<ABTesting />} />
+        <Route path="kpi" element={<KPIDashboard />} />
+      </Route>
 
       <Route
         path="/"
@@ -217,17 +253,6 @@ const AppRoutes = () => {
               <Navigate to="/login" replace />
         }
       />
-
-      {/* admin management routes */}
-      <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
-        <Route index element={<Dashboard />} />
-        <Route path="users" element={<Users />} />
-        <Route path="creators" element={<Creators />} />
-        <Route path="reports" element={<Reports />} />
-        <Route path="posts" element={<Posts />} />
-        <Route path="sales" element={<Sales />} />
-        <Route path="verification" element={<Verification />} />
-      </Route>
     </Routes>
   );
 };
@@ -238,11 +263,13 @@ function App() {
       <UnreadMessagesProvider>
         <UserStatsProvider>
           <CreatorProvider>
-            <Router>
-              <div className="App">
-                <AppRoutes />
-              </div>
-            </Router>
+            <NotificationProvider>
+              <Router>
+                <div className="App">
+                  <AppRoutes />
+                </div>
+              </Router>
+            </NotificationProvider>
           </CreatorProvider>
         </UserStatsProvider>
       </UnreadMessagesProvider>
